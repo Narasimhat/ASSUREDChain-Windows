@@ -1,0 +1,44 @@
+{
+  "type": "CoA",
+  "meta": {
+    "cell_line": "BIHi005-A-100",
+    "bank_id": "MB02",
+    "passage": "29",
+    "freeze_date": "2023-10-30",
+    "hpscreg_link": "https://hpscreg.eu/cell-line/BIHi005-A-99",
+    "alt_name": "BIHi005-A TSC2_AA Cl.35",
+    "donor": "Male, 25-29",
+    "genetic_variant": "1364, 1365 SS to AA, heart defects",
+    "freezing_method": "Bambanker",
+    "medium": "E8",
+    "coating": "Geltrex",
+    "edited": true,
+    "reference_url": "https://hpscreg.eu/cell-line/BIHi005-A",
+    "report_date": "2025-11-01",
+    "signatory": "M. Wendt"
+  },
+  "tests": {
+    "myco_method": "IDEXX BioAnalytics RealTime-PCR",
+    "myco_result": "Pass",
+    "bact_method": "4 days culture in antibiotic-free medium",
+    "bact_result": "Pass",
+    "morph_result": "Pass",
+    "pluri_method": "IF / FACS",
+    "pluri_result": "not done",
+    "tri_method": "Spontaneous / Directed",
+    "tri_result": "not done"
+  },
+  "karyotype": {
+    "platform": "Illumina Infinium GSA-24",
+    "summary": "No major structural aberration detected (compared to Parental line)",
+    "vs_parental": "Karyotype matches Parental Cell Line"
+  },
+  "str_analysis": {
+    "method": "Promega GenePrint 10",
+    "result": "Pass",
+    "match_primary": "Identical to profile of primary cells"
+  },
+  "generated_at": 1761992389,
+  "filename": "CoA_BIHi005-A-100_MB02_1761992389_3.docx",
+  "sha256": "779bde73e2fb9abf7fef02ab44234d9c70d03218bf2f40763a9b30d3e805ac6b"
+}

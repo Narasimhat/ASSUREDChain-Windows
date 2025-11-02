@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "project_name": "",
+    "cell_line": "",
+    "owner": "",
+    "created_at": 1762043367,
+    "status": "draft",
+    "project_id": "test2",
+    "compliance": {
+      "project_name": "test2",
+      "facility_name": "",
+      "facility_address": "",
+      "responsible_person": "",
+      "project_contact_email": "",
+      "biosafety_level": "S1",
+      "risk_classification": "",
+      "permit_number": "",
+      "review_date": "2025-11-02",
+      "inspector_notes": "",
+      "activities": [],
+      "emergency_contacts": "",
+      "training_notes": "",
+      "guides": [
+        {
+          "id": "g1",
+          "sequence": "ATGCTGATCGATCGTACGTA",
+          "pam": "TTTV",
+          "strand": null,
+          "genomic_locus": null,
+          "distance_to_edit_bp": 0,
+          "on_target_algo": null,
+          "on_target_score": null,
+          "off_target_algo": null,
+          "off_target_score": null,
+          "notes": null
+        }
+      ],
+      "primers": [
+        {
+          "name": "TIE1_ex7_pair1",
+          "forward": "TAGTCGATGCTGATTGTGCTAGCT",
+          "reverse": "TAGCTGATGCTAGCTGATCATGC",
+          "expected_amplicon_bp": 420
+        }
+      ],
+      "donor": {
+        "donor_type": "ssODN",
+        "sequence": null,
+        "length_nt": null,
+        "asymmetry": "",
+        "strand": "",
+        "introduces_silent_pam_or_seed_mut": true,
+        "hdr_notes": null
+      },
+      "gene": "TIE1",
+      "edit_intent": "SNP-KI",
+      "modification_description": ""
+    }
+  },
+  "files": {
+    "snapshots": [
+      {
+        "step": "lageso_audit",
+        "path": "C:\\Users\\ntelugu\\Desktop\\ASSUREDChain\\data\\projects\\test2\\snapshots\\lageso\\test2_lageso_1762114278_2352f0000271.json",
+        "digest": "2352f0000271a290e70b037b72a94566a96f2192ac6bb2c18665815f43345386",
+        "timestamp": 1762114278
+      },
+      {
+        "step": "design",
+        "path": "C:\\Users\\ntelugu\\Desktop\\ASSUREDChain\\data\\projects\\test2\\snapshots\\design\\TIE1_SNPKI_v1_1762114374_869b6ed2b9ba.json",
+        "digest": "869b6ed2b9ba8fd1344199a8c4934fd6ef2d363742393562fad690ec8e447574",
+        "timestamp": 1762114374
+      },
+      {
+        "step": "design",
+        "path": "C:\\Users\\ntelugu\\Desktop\\ASSUREDChain\\data\\projects\\test2\\snapshots\\design\\TIE1_SNPKI_v1_1762114688_03fece58bcbc.json",
+        "digest": "03fece58bcbcaa4d7a327b560e3102ed07c1759158e6aa8f749403a2ae0452bb",
+        "timestamp": 1762114688
+      }
+    ],
+    "reports": [
+      {
+        "step": "design",
+        "path": "C:\\Users\\ntelugu\\Desktop\\ASSUREDChain\\data\\projects\\test2\\reports\\design\\TIE1-SNPKI-v1-design-1762114688.pdf",
+        "timestamp": 1762114688,
+        "digest": "113c1a20d2c032d02b8c0a315f498885c0624be32ae7c13c40f17507084309ea",
+        "type": "pdf"
+      }
+    ],
+    "uploads": []
+  },
+  "chain": [],
+  "audit": [
+    {
+      "ts": 1762114278,
+      "step": "lageso_audit",
+      "action": "snapshot_saved",
+      "snapshot_path": "C:\\Users\\ntelugu\\Desktop\\ASSUREDChain\\data\\projects\\test2\\snapshots\\lageso\\test2_lageso_1762114278_2352f0000271.json"
+    },
+    {
+      "ts": 1762114374,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "C:\\Users\\ntelugu\\Desktop\\ASSUREDChain\\data\\projects\\test2\\snapshots\\design\\TIE1_SNPKI_v1_1762114374_869b6ed2b9ba.json"
+    },
+    {
+      "ts": 1762114688,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "C:\\Users\\ntelugu\\Desktop\\ASSUREDChain\\data\\projects\\test2\\snapshots\\design\\TIE1_SNPKI_v1_1762114688_03fece58bcbc.json"
+    }
+  ]
+}
