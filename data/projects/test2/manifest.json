@@ -1,7 +1,7 @@
 {
   "meta": {
     "project_name": "",
-    "cell_line": "",
+    "cell_line": "bihi005-A",
     "owner": "",
     "created_at": 1762043367,
     "status": "draft",
@@ -55,7 +55,13 @@
       "gene": "TIE1",
       "edit_intent": "SNP-KI",
       "modification_description": ""
-    }
+    },
+    "objective": "like to knockout the gene which is importnant for heart",
+    "scope": "",
+    "success_criteria": "",
+    "edit_program": "Knockout / Frameshift",
+    "compliance_scope": "Research only",
+    "target_milestone": "2025-11-02"
   },
   "files": {
     "snapshots": [

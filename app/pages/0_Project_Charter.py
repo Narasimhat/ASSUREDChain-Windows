@@ -152,6 +152,17 @@ def main() -> None:
                 category="uploads",
                 context={"step": "charter"},
             )
+            register_file(
+                selected_project,
+                "uploads",
+                {
+                    "step": "charter",
+                    "filename": upload.name,
+                    "path": str(saved_path),
+                    "timestamp": int(time.time()),
+                    "type": Path(upload.name).suffix.lower().lstrip("."),
+                },
+            )
             st.success(f"Uploaded {upload.name}")
 
     manifest = load_manifest(selected_project)
@@ -201,4 +212,3 @@ if __name__ == "__main__":
     main()
 def _sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
-

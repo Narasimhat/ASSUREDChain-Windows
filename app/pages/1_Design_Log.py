@@ -16,11 +16,12 @@ import streamlit as st
 from pydantic import (
     BaseModel,
     Field,
-    FieldValidationInfo,
     ValidationError,
+    ValidationInfo,
     field_validator,
 )
 
+from app.components.assistant_panel import render_assistant
 from app.components.file_utils import build_step_filename, preview_file, save_uploaded_file, snapshot_to_pdf
 from app.components.layout import init_page
 from app.components.project_state import (
@@ -82,7 +83,7 @@ class PrimerPair(BaseModel):
 
     @field_validator("forward", "reverse")
     @classmethod
-    def validate_primer(cls, value: str, info: FieldValidationInfo) -> str:
+    def validate_primer(cls, value: str, info: ValidationInfo) -> str:
         seq = (value or "").strip().upper()
         if not seq:
             raise ValueError(f"{info.field_name.capitalize()} primer sequence is required.")
@@ -210,6 +211,8 @@ if selected_project:
         st.warning("Set the project objective on the Project Charter page.")
 else:
     st.info("Select a project to view its charter objective.")
+
+render_assistant(selected_project, context="design")
 
 st.markdown(
     """
