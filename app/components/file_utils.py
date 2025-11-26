@@ -1,6 +1,7 @@
 import mimetypes
 import re
 import time
+import uuid
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
@@ -39,9 +40,19 @@ def save_uploaded_file(
 ) -> Path:
     dest_dir.mkdir(parents=True, exist_ok=True)
     timestamp = int(time.time() * 1000)
-    safe_name = f"{timestamp}_{upload.name.replace(' ', '_')}"
+    raw_name = getattr(upload, "name", "") or "upload"
+    base_name = raw_name.splitlines()[0][:200]
+    original = Path(base_name)
+    suffix = original.suffix if len(original.suffix) <= 10 else ""
+    unique_slug = uuid.uuid4().hex[:10]
+    safe_name = f"{timestamp}_{unique_slug}{suffix}"
     path = dest_dir / safe_name
-    path.write_bytes(upload.getbuffer())
+    try:
+        path.write_bytes(upload.getbuffer())
+    except OSError:
+        fallback = dest_dir / f"{timestamp}_{uuid.uuid4().hex}"
+        fallback.write_bytes(upload.getbuffer())
+        path = fallback
     if project_id:
         register_file(
             project_id,
@@ -79,7 +90,7 @@ def preview_file(path: Path, label: Optional[str] = None, key_prefix: str = "") 
     mime, _ = mimetypes.guess_type(path.name)
     label = label or path.name
     if mime and mime.startswith("image/"):
-        st.image(str(path), caption=label, use_column_width=True)
+        st.image(str(path), caption=label, use_container_width=True)
     elif mime == "application/pdf":
         with path.open("rb") as handle:
             st.download_button(
@@ -105,7 +116,12 @@ def _format_value(value: Any) -> str:
         return "-"
     if isinstance(value, bool):
         return "Yes" if value else "No"
-    return str(value)
+    text = str(value)
+    # Wrap long unbroken strings (e.g., nucleotide sequences) so they render fully in PDFs
+    if len(text) > 60 and "\n" not in text and not text.startswith("http"):
+        chunks = [text[i : i + 40] for i in range(0, len(text), 40)]
+        text = "<br/>".join(chunks)
+    return text
 
 
 def _collect_file_paths(snapshot: Any) -> List[Tuple[str, Path]]:
@@ -271,24 +287,19 @@ def snapshot_to_pdf(
                     elements.append(Paragraph(f"- {_format_value(item)}", body_style))
                 elements.append(Spacer(1, 8))
             elif all(isinstance(item, dict) for item in value):
-                columns: List[str] = []
-                for item in value:
-                    for key in item.keys():
-                        if key not in columns:
-                            columns.append(key)
-                header_row = [Paragraph(str(col), bold_style) for col in columns]
-                table_data: List[List[Paragraph]] = [header_row]
-                for item in value:
-                    table_data.append(
-                        [
-                            Paragraph(_format_value(item.get(col)), body_style)
-                            for col in columns
-                        ]
-                    )
-                col_count = max(1, len(columns))
-                width = max(120, 500 // col_count)
-                elements.append(_styled_table(table_data, [width] * col_count))
-                elements.append(Spacer(1, 10))
+                for idx, item in enumerate(value, start=1):
+                    elements.append(Paragraph(f"{name} {idx}", heading_styles.get(level + 1, heading_style)))
+                    rows = list(item.items())
+                    table_data: List[List[Paragraph]] = []
+                    for key, val in rows:
+                        table_data.append(
+                            [
+                                Paragraph(str(key), bold_style),
+                                Paragraph(_format_value(val), body_style),
+                            ]
+                        )
+                    elements.append(_styled_table(table_data, [200, 300]))
+                    elements.append(Spacer(1, 8))
             else:
                 for idx, item in enumerate(value, start=1):
                     render_section(f"{name} {idx}", item, level + 1)

@@ -1,7 +1,7 @@
 {
   "project_id": "TIE1_SNPKI_v1",
   "author": "Narasimha Telugu",
-  "timestamp_unix": 1762114688,
+  "timestamp_unix": 1763657362,
   "design_platform": "CRISPOR",
   "cas_variant": "hfCas12Max",
   "pam_rule": "TTTV",
@@ -20,9 +20,9 @@
   "selected_guides": [
     {
       "id": "g1",
-      "sequence": "ATGCTGATCGATCGTACGTA",
-      "pam": "TTTV",
-      "strand": null,
+      "sequence": "TGAGCCACTCAGTCCATTCA",
+      "pam": "AGG",
+      "strand": "-",
       "genomic_locus": null,
       "distance_to_edit_bp": 0,
       "on_target_algo": null,
@@ -35,21 +35,23 @@
   "additional_guides": [],
   "primer_pairs": [
     {
-      "name": "TIE1_ex7_pair1",
-      "forward": "TAGTCGATGCTGATTGTGCTAGCT",
-      "reverse": "TAGCTGATGCTAGCTGATCATGC",
+      "name": "Primer1",
+      "forward": "CCT ATA ACG TTG CTG TGG ACT",
+      "reverse": "GAT TAC AGG CAT GAG CTA CCA",
       "expected_amplicon_bp": 420
     }
   ],
-  "donor": {
-    "donor_type": "ssODN",
-    "sequence": null,
-    "length_nt": null,
-    "asymmetry": "",
-    "strand": "",
-    "introduces_silent_pam_or_seed_mut": true,
-    "hdr_notes": null
-  },
+  "donors": [
+    {
+      "donor_type": "ssODN",
+      "sequence": "CCATTCACTGGAAAGGTCCACTTCGACTCCAGCAGGCATATCTCATTATGATTAGTGCCCTCATGGCCCTGGTGTTTATCAAGTACCTTCCTGAATGGACTGCGTGGCTCATCTTGGCTGTGATTTC",
+      "length_nt": 127,
+      "asymmetry": "Asy",
+      "strand": "non-PAM",
+      "introduces_silent_pam_or_seed_mut": true,
+      "hdr_notes": null
+    }
+  ],
   "off_target_review": null,
   "design_decision": null,
   "attachments": {}

@@ -1,0 +1,16 @@
+{
+  "project_id": "SORCS1_KI_v1",
+  "cell_line": "BIHi005-A-1X (bulk)",
+  "assay_type": "Sanger-Indel",
+  "tool_used": "DECODR",
+  "total_indel_pct": 23.0,
+  "ki_pct": null,
+  "hdr_pct": 14.0,
+  "top_indels": [],
+  "decision": "proceed_to_cloning",
+  "pcr": null,
+  "notes": null,
+  "author": "Narasimha Telugu",
+  "timestamp_unix": 1764173289,
+  "files": {}
+}

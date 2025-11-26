@@ -1,6 +1,7 @@
 import hashlib
 import json
 import os
+import re
 import sys
 import time
 from pathlib import Path
@@ -17,9 +18,11 @@ from app.components.file_utils import build_step_filename, preview_file, save_up
 from app.components.layout import init_page
 from app.components.project_state import (
     append_audit,
+    load_project_meta,
     project_subdir,
     register_chain_tx,
     register_file,
+    update_project_meta,
     use_project,
 )
 from app.components.web3_client import send_log_tx
@@ -48,6 +51,7 @@ class AssessmentSnapshot(BaseModel):
     tool_used: Optional[str] = None
     total_indel_pct: Optional[float] = None
     ki_pct: Optional[float] = None
+    hdr_pct: Optional[float] = None
     top_indels: list[IndelItem] = []
     decision: str = Field(..., description="proceed_to_cloning / repeat_edit / archive")
     pcr: Optional[PCRBands] = None
@@ -96,6 +100,7 @@ def evaluate_assessment_readiness(payload: dict, attachments_map: dict[str, str]
 
 init_page("Step 4 - Assessment (Sanger / PCR)")
 selected_project = use_project("project")
+project_meta = load_project_meta(selected_project) if selected_project else {}
 st.title("Step 4 - Assessment (Sanger / PCR)")
 st.caption(
     "Upload Sanger results (TIDE / ICE / DECODR / SeqScreener / TIDER) or log PCR genotyping. "
@@ -124,6 +129,19 @@ st.markdown(
 attachments: dict[str, str] = {}
 saved_attachment_paths: list[Path] = []
 
+assessment_defaults = project_meta.get("assessment_defaults", {})
+delivery_defaults = project_meta.get("delivery_defaults", {})
+default_cell_line = (
+    assessment_defaults.get("cell_line")
+    or delivery_defaults.get("cell_line")
+    or project_meta.get("cell_line")
+    or "BIHi005-A-1X (bulk)"
+)
+
+assay_options = ["Sanger-Indel", "PCR-Genotyping"]
+default_assay_type = assessment_defaults.get("assay_type", "Sanger-Indel")
+default_assay_index = assay_options.index(default_assay_type) if default_assay_type in assay_options else 0
+
 if selected_project:
     snapshot_dir = project_subdir(selected_project, "snapshots", "assessment")
     upload_dir = project_subdir(selected_project, "uploads", "assessment")
@@ -140,17 +158,31 @@ with st.form("assessment_form"):
         value=selected_project or "SORCS1_KI_v1",
         help="Defaults to the project selected in the sidebar.",
     )
-    cell_line = st.text_input("Cell line / clone (if known)", value="BIHi005-A-1X (bulk)")
-    assay_type = st.selectbox("Assessment type", ["Sanger-Indel", "PCR-Genotyping"])
+    cell_line = st.text_input(
+        "Cell line / clone (if known)",
+        value=default_cell_line,
+    )
+    assay_type = st.selectbox(
+        "Assessment type",
+        assay_options,
+        index=default_assay_index,
+    )
 
     tool_used = None
     total_indel_pct = None
     ki_pct = None
+    hdr_pct = None
     top_indels: list[IndelItem] = []
     pcr_bands: Optional[PCRBands] = None
 
     if assay_type == "Sanger-Indel":
-        tool_used = st.selectbox("Tool used", ["DECODR", "ICE", "TIDE", "SeqScreener", "TIDER"])
+        tool_options = ["DECODR", "ICE", "TIDE", "SeqScreener", "TIDER"]
+        default_tool = assessment_defaults.get("tool_used", tool_options[0])
+        tool_used = st.selectbox(
+            "Tool used",
+            tool_options,
+            index=tool_options.index(default_tool) if default_tool in tool_options else 0,
+        )
         st.markdown("**Provide results** (upload export and/or enter values)")
 
         res_file = st.file_uploader(
@@ -173,36 +205,60 @@ with st.form("assessment_form"):
             min_value=0.0,
             max_value=100.0,
             step=0.1,
-            value=0.0,
+            value=float(assessment_defaults.get("total_indel_pct") or 0.0),
         )
 
         if tool_used == "TIDER":
             ki_pct = st.number_input(
-                "Knock-in % (from TIDER)", min_value=0.0, max_value=100.0, step=0.1
+                "Knock-in % (from TIDER)",
+                min_value=0.0,
+                max_value=100.0,
+                step=0.1,
+                value=float(assessment_defaults.get("ki_pct") or 0.0),
             )
+        hdr_pct = st.number_input(
+            "HDR % (if reported)",
+            min_value=0.0,
+            max_value=100.0,
+            step=0.1,
+            value=float(assessment_defaults.get("hdr_pct") or 0.0),
+        )
 
         st.markdown("Top indels (optional)")
+        default_top_indels = assessment_defaults.get("top_indels", [])
         for idx in range(3):
+            default_indel = default_top_indels[idx] if idx < len(default_top_indels) else {}
             size_value = st.number_input(
                 f"Indel {idx + 1} size (bp, negative=deletion, positive=insertion)",
-                value=0,
-                key=f"indel_size_{idx}",
+                value=int(default_indel.get("size_bp", 0)),
             )
             freq_value = st.number_input(
                 f"Indel {idx + 1} frequency (%)",
                 min_value=0.0,
                 max_value=100.0,
-                value=0.0,
-                key=f"indel_freq_{idx}",
+                value=float(default_indel.get("frequency_pct", 0.0)),
             )
             if freq_value > 0:
                 top_indels.append(IndelItem(size_bp=int(size_value), frequency_pct=float(freq_value)))
 
     else:
         st.markdown("**PCR genotyping**")
-        wt_bp = st.number_input("Expected WT band (bp)", min_value=0, value=0)
-        edited_bp = st.number_input("Expected edited band (bp)", min_value=0, value=0)
-        observed_bands = st.text_input("Observed bands (comma-separated bp)", value="")
+        pcr_defaults = assessment_defaults.get("pcr_defaults", {})
+        wt_bp = st.number_input(
+            "Expected WT band (bp)",
+            min_value=0,
+            value=int(pcr_defaults.get("wt_bp") or 0),
+        )
+        edited_bp = st.number_input(
+            "Expected edited band (bp)",
+            min_value=0,
+            value=int(pcr_defaults.get("edited_bp") or 0),
+        )
+        observed_default = ", ".join(str(v) for v in pcr_defaults.get("observed_bands_bp", []))
+        observed_bands = st.text_input(
+            "Observed bands (comma-separated bp)",
+            value=observed_default,
+        )
         observed_list = [
             int(item.strip()) for item in observed_bands.split(",") if item.strip().isdigit()
         ]
@@ -246,9 +302,21 @@ with st.form("assessment_form"):
             attachments[f"sequencing_data_{existing + idx}"] = str(saved_path)
             saved_attachment_paths.append(saved_path)
 
-    decision = st.selectbox("Decision", ["proceed_to_cloning", "repeat_edit", "archive"])
-    notes = st.text_area("Notes")
-    author = st.text_input("Author", value="Narasimha Telugu")
+    decision_options = ["proceed_to_cloning", "repeat_edit", "archive"]
+    default_decision = assessment_defaults.get("decision", "proceed_to_cloning")
+    decision = st.selectbox(
+        "Decision",
+        decision_options,
+        index=decision_options.index(default_decision) if default_decision in decision_options else 0,
+    )
+    notes = st.text_area(
+        "Notes",
+        value=assessment_defaults.get("notes", ""),
+    )
+    author = st.text_input(
+        "Author",
+        value=assessment_defaults.get("author", "Narasimha Telugu"),
+    )
 
     submitted = st.form_submit_button("Save snapshot & compute hash")
 
@@ -261,6 +329,7 @@ if submitted:
             tool_used=tool_used,
             total_indel_pct=total_indel_pct,
             ki_pct=ki_pct,
+            hdr_pct=hdr_pct,
             top_indels=top_indels,
             decision=decision,
             pcr=pcr_bands if assay_type == "PCR-Genotyping" else None,
@@ -333,13 +402,14 @@ if submitted:
             f"Assessment Snapshot - {snapshot.project_id}",
             image_paths=image_attachments or None,
         )
-        with pdf_path.open("rb") as pdf_file:
-            st.download_button(
-                "Download assessment snapshot as PDF",
-                pdf_file,
-                file_name=pdf_path.name,
-                key="assessment_pdf_download",
-            )
+        pdf_data = pdf_path.read_bytes()
+        st.download_button(
+            "Download assessment snapshot as PDF",
+            pdf_data,
+            file_name=pdf_path.name,
+            mime="application/pdf",
+            key="assessment_pdf_download",
+        )
         st.caption(f"PDF saved: {pdf_path}")
         if selected_project:
             register_file(
@@ -353,6 +423,21 @@ if submitted:
                     "type": "pdf",
                 },
             )
+        if selected_project:
+            defaults_payload = {
+                "cell_line": snapshot.cell_line,
+                "assay_type": snapshot.assay_type,
+                "tool_used": snapshot.tool_used or "",
+                "total_indel_pct": snapshot.total_indel_pct,
+                "ki_pct": snapshot.ki_pct,
+                "hdr_pct": snapshot.hdr_pct,
+                "top_indels": [item.model_dump() for item in top_indels],
+                "pcr_defaults": pcr_bands.model_dump() if pcr_bands else {},
+                "decision": snapshot.decision,
+                "notes": snapshot.notes or "",
+                "author": snapshot.author,
+            }
+            update_project_meta(selected_project, {"assessment_defaults": defaults_payload})
     except ValidationError as exc:
         st.error(exc)
 

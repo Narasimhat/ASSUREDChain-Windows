@@ -1,0 +1,46 @@
+{
+  "project_id": "TIE1_SNPKI_v1",
+  "author": "Narasimha Telugu",
+  "timestamp_unix": 1763564810,
+  "design_platform": "CRISPOR",
+  "cas_variant": "hfCas12Max",
+  "pam_rule": "TTTV",
+  "design_source_url": null,
+  "mutation": {
+    "gene": "TIE1",
+    "transcript": null,
+    "genome_assembly": "GRCh38",
+    "edit_intent": "SNP-KI",
+    "hgvs_c": null,
+    "hgvs_p": null,
+    "region_context": null,
+    "base_editor_window": null,
+    "pegRNA_notes": null
+  },
+  "selected_guides": [],
+  "additional_guides": [],
+  "primer_pairs": [],
+  "donors": [
+    {
+      "donor_type": "ssODN",
+      "sequence": null,
+      "length_nt": null,
+      "asymmetry": null,
+      "strand": null,
+      "introduces_silent_pam_or_seed_mut": true,
+      "hdr_notes": null
+    },
+    {
+      "donor_type": "ssODN",
+      "sequence": null,
+      "length_nt": null,
+      "asymmetry": null,
+      "strand": null,
+      "introduces_silent_pam_or_seed_mut": true,
+      "hdr_notes": null
+    }
+  ],
+  "off_target_review": null,
+  "design_decision": null,
+  "attachments": {}
+}

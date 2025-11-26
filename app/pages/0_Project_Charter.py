@@ -24,6 +24,10 @@ from app.components.project_state import (
 )
 
 
+def _sha256_bytes(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
 def _parse_date(value: Optional[str]) -> date:
     if not value:
         return date.today()
@@ -210,5 +214,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-def _sha256_bytes(data: bytes) -> str:
-    return hashlib.sha256(data).hexdigest()

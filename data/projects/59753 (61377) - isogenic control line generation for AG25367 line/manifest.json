@@ -1,0 +1,1653 @@
+{
+  "meta": {
+    "project_name": "",
+    "cell_line": "AG25367 line",
+    "owner": "Narasimha Telugu, Maria Hofst\u00e4tter",
+    "created_at": 1763558326,
+    "status": "draft",
+    "project_id": "59753 (61377) - isogenic control line generation for AG25367 line",
+    "objective": "PSEN C to A (A246E) in AG25367 line",
+    "scope": "To model the  Alzheimers disease",
+    "success_criteria": "To get 2 homozygous clones without Chromosomal aberrations",
+    "edit_program": "SNP Knock-in",
+    "compliance_scope": "Research only",
+    "target_milestone": "2025-12-31",
+    "compliance": {
+      "guides": [
+        {
+          "id": "PSEN1_A246E_KI_gRNA1",
+          "sequence": "TGAGCCACTCAGTCCATTCA",
+          "pam": "AGG",
+          "strand": "-",
+          "genomic_locus": null,
+          "distance_to_edit_bp": 0,
+          "on_target_algo": null,
+          "on_target_score": null,
+          "off_target_algo": null,
+          "off_target_score": null,
+          "notes": null
+        },
+        {
+          "id": "PSEN1_A246E_KI_gRNA2",
+          "sequence": "ACCTCCCTGAATGGACTGAG",
+          "pam": "TGG",
+          "strand": "+",
+          "genomic_locus": null,
+          "distance_to_edit_bp": 0,
+          "on_target_algo": null,
+          "on_target_score": null,
+          "off_target_algo": null,
+          "off_target_score": null,
+          "notes": null
+        }
+      ],
+      "primers": [
+        {
+          "name": "PSEN1_A246E ",
+          "forward": "CCT ATA ACG TTG CTG TGG ACT",
+          "reverse": "GAT TAC AGG CAT GAG CTA CCA",
+          "expected_amplicon_bp": 412
+        }
+      ],
+      "donors": [
+        {
+          "donor_type": "ssODN",
+          "sequence": "PSEN1_A246E_ssODN2: CCATTCACTGGAAAGGTCCACTTCGACTCCAGCAGGCATATCTCATTATGATTAGTGCCCTCATGGCCCTGGTGTTTATCAAGTACCTTCCTGAATGGACTGCGTGGCTCATCTTGGCTGTGATTTC",
+          "length_nt": 147,
+          "asymmetry": "Assymetric 31/96",
+          "strand": "non-PAM",
+          "introduces_silent_pam_or_seed_mut": true,
+          "hdr_notes": null
+        },
+        {
+          "donor_type": "ssODN",
+          "sequence": "PSEN1_A246E_ssODN2: AAAGAAAACACTCCAGTGGGGCATTCCTGTGACAAACAAATTATCAGTCTTGGGTTTTACCATATACTGAAATCACAGCCAAGATGAGCCACGCTGTCCATTCTGGGAGGTACTTGATAAACACCAG",
+          "length_nt": 147,
+          "asymmetry": "Assymetric 31/96",
+          "strand": "non-PAM strand",
+          "introduces_silent_pam_or_seed_mut": true,
+          "hdr_notes": "Yes"
+        }
+      ],
+      "gene": "PSEN1 (ENSG00000080815)",
+      "edit_intent": "SNP-KI",
+      "modification_description": "Exon7",
+      "design_platform": "Benchling",
+      "cas_variant": "Hi.Fi.Cas9",
+      "pam_rule": "NGG"
+    },
+    "delivery_defaults": {
+      "cell_line": "AG25367",
+      "passage_number": "P27",
+      "delivery_goal": "RNP",
+      "total_cells": 250000,
+      "viability_percent": 92.0,
+      "electroporation_device": "Neon Transfection System",
+      "neon_tip_volume_ul": 10.0,
+      "voltage_v": 1200,
+      "pulse_width_ms": 30.0,
+      "pulse_number": 1,
+      "buffer_system": "Buffer R (Neon kit)",
+      "buffer_notes": "Prepared fresh, kept on ice.",
+      "assembly_notes": "Add components to the cell mix",
+      "incubation_time_minutes": 0,
+      "post_pulse_recovery_medium": "StemFlex and ClonR2",
+      "post_pulse_recovery_volume_ml": 1.0,
+      "recovery_temperature_c": 32.0,
+      "recovery_duration_minutes": 2880.0,
+      "plating_format": "12-well plate",
+      "plating_density_cells_per_well": 150000,
+      "additional_notes": "Deliver 1200 V / 30 ms / 1 pulse per protocol. Immediately transfer to recovery medium.",
+      "author": "Narasimha Telugu",
+      "rnp_components": [
+        {
+          "name": "Cas9 Nuclease",
+          "component_type": "Cas9",
+          "concentration": null,
+          "concentration_units": null,
+          "volume_ul": 0.5,
+          "vendor": null,
+          "lot_number": "IDT"
+        },
+        {
+          "name": "sgRNA 1 and 2",
+          "component_type": "sgRNA",
+          "concentration": null,
+          "concentration_units": null,
+          "volume_ul": 2.0,
+          "vendor": "IDT",
+          "lot_number": null
+        },
+        {
+          "name": "ssODN HDR donor 1 and 2",
+          "component_type": "ssODN",
+          "concentration": null,
+          "concentration_units": "Other",
+          "volume_ul": 3.0,
+          "vendor": null,
+          "lot_number": null
+        }
+      ],
+      "recovery_duration_unit": "hours"
+    },
+    "assessment_defaults": {
+      "cell_line": "AG25367",
+      "assay_type": "Sanger-Indel",
+      "tool_used": "ICE",
+      "total_indel_pct": 23.0,
+      "notes": "32 degrees",
+      "decision": "proceed_to_cloning",
+      "top_indels": [],
+      "pcr_defaults": {},
+      "ki_pct": null,
+      "author": "Narasimha Telugu",
+      "hdr_pct": 14.0
+    }
+  },
+  "files": {
+    "snapshots": [
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764171021_53d815d555a1.json",
+        "digest": "53d815d555a19c48bcc38495da481c8299b1cc21f1e396ffa4e52f044398a496",
+        "timestamp": 1764171021
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764171625_b3b75afc2eed.json",
+        "digest": "b3b75afc2eed163739526350645a1d3d18f4e52bbebcce73771a3ea1fdb87184",
+        "timestamp": 1764171625
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764172103_0905c134584e.json",
+        "digest": "0905c134584e3464887da1b2425debd56794bee17848aa65c6fb4591dd3b3455",
+        "timestamp": 1764172103
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764172205_ec6aefe12194.json",
+        "digest": "ec6aefe12194711ae5074f36649850f1c41acf2e7147c5d0160bba2b055cd69a",
+        "timestamp": 1764172205
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764172298_c0e727c6ec00.json",
+        "digest": "c0e727c6ec00f633a6afdd4348ed23859f75039147420ce0e3717e3a80f2623f",
+        "timestamp": 1764172298
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764172666_23b61cc729a8.json",
+        "digest": "23b61cc729a81def2c573df5a3d4cc09ae1afdcf788d2dd79e6c473718f495f8",
+        "timestamp": 1764172666
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764172825_51325c70a113.json",
+        "digest": "51325c70a113334e8e84ef266f4634110ec8d9d658b0bc6a1c0d618ebb8f9735",
+        "timestamp": 1764172825
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764172905_200b6696dee7.json",
+        "digest": "200b6696dee76a8220d5dbe24db09e1aeb25773ae92278252c20c4ad913c0d4f",
+        "timestamp": 1764172905
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764173184_ca05f13d2a09.json",
+        "digest": "ca05f13d2a095d61708c16acc614877c56e995b0c3d390b5eaf3e57b91f2c437",
+        "timestamp": 1764173184
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764173359_0fc6fa458c1f.json",
+        "digest": "0fc6fa458c1fdd32ca448c23f437c11fc094f068e0f621b546c486cd70e83e55",
+        "timestamp": 1764173359
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764173446_9c1405bf80b2.json",
+        "digest": "9c1405bf80b28d347416cc47c4e77d0ffffe623033c63e2af770a6100ded2949",
+        "timestamp": 1764173446
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764173536_c5cc99b7595d.json",
+        "digest": "c5cc99b7595d57a7b93071c730bb72a7a179041c04f6f361beecb4c7244ef013",
+        "timestamp": 1764173536
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764173538_b0d25d322d2c.json",
+        "digest": "b0d25d322d2c2f9386ec291aac29c4a98bded62f4c54d3fb07f83e864017153c",
+        "timestamp": 1764173538
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764173542_a4e747236ecc.json",
+        "digest": "a4e747236eccc3f68d120e34c2a42d6808f362cce1ed8d67e13f8780c9d3b47a",
+        "timestamp": 1764173542
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764173544_596e6fb4c278.json",
+        "digest": "596e6fb4c278b2ec911f6362198a45035b2ab40290c852d7f97db9a592a948b0",
+        "timestamp": 1764173544
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764173709_b5d8dff194c1.json",
+        "digest": "b5d8dff194c1de1c6b9af3fdce67555b5891e06ef7d1281047e8c8412bb40347",
+        "timestamp": 1764173709
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764174081_108b288b6596.json",
+        "digest": "108b288b65962204d5334a0d582d0e469e161bb994271a030ec1a263d0053154",
+        "timestamp": 1764174081
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764174086_18659f20aa24.json",
+        "digest": "18659f20aa248be86afd9793ff923af0fdfffa424c728d96edcdbc6b2bb35215",
+        "timestamp": 1764174086
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764174176_9f80587371d4.json",
+        "digest": "9f80587371d490cc9d48e154560334812855e024158049925079ae87bca68f25",
+        "timestamp": 1764174176
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764174483_ed3b671be6d8.json",
+        "digest": "ed3b671be6d86c84f5065c1040721afc49f70ec619dfbc20534ad4630072cb7d",
+        "timestamp": 1764174483
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764174646_ff708b5c7ca8.json",
+        "digest": "ff708b5c7ca8f8dd57a9ccd6a2095153ad17ad1d475615a44abc5064712baf5d",
+        "timestamp": 1764174646
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764174801_91895145f177.json",
+        "digest": "91895145f17724ac6d2a8d47337ae32af3e331f05cf17afdaf10c135dc94fc3a",
+        "timestamp": 1764174801
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764174864_5b90b4a47ceb.json",
+        "digest": "5b90b4a47ceb69e7b982ada57c1ac01401795a1a4d123a89be13c84d78ab4812",
+        "timestamp": 1764174864
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764174951_d264b9b97828.json",
+        "digest": "d264b9b9782899d238211c4b7d52a066ef658d2d846e9cbf74a22b684d30ed9e",
+        "timestamp": 1764174951
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764175147_fba7af20a9f1.json",
+        "digest": "fba7af20a9f14d4f486af2e87d188a459898acd75c51d0f128ff10ff5f996b8d",
+        "timestamp": 1764175147
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764175337_8d3124d6922b.json",
+        "digest": "8d3124d6922bbebc30c7ff5965dc0575ec6f5e37b272ccf39012457338598f22",
+        "timestamp": 1764175337
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764175460_b54912f7f2c8.json",
+        "digest": "b54912f7f2c830e383d84b0aca157e45714ae6c1b46ccf97b5e2911d22b9b648",
+        "timestamp": 1764175460
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764175569_6a69b7891241.json",
+        "digest": "6a69b78912417165d4b8e15a85436eaf1fcba53d836e91748bc4b7e2f3c1751d",
+        "timestamp": 1764175569
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764175635_57056d55e54b.json",
+        "digest": "57056d55e54bbeabc9b3e4b1886277fa8f64ebe08764c7473addf94d41d71e93",
+        "timestamp": 1764175635
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764175800_12b54f055b30.json",
+        "digest": "12b54f055b30b4a4b0855722b38871be484ed365cbcebf7f94c4a12a386ec36a",
+        "timestamp": 1764175800
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764176122_46ead5a0f1b9.json",
+        "digest": "46ead5a0f1b93a9ee120165241e4df9c73a41b0d6a22ecaee1ac568f075b982f",
+        "timestamp": 1764176122
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764176257_e2e695e4c803.json",
+        "digest": "e2e695e4c80316adb9b6e32a949bacbcf5aa6f3547174127eee1012550c9312e",
+        "timestamp": 1764176257
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764176422_ecd455406694.json",
+        "digest": "ecd45540669405bfdf96db9220683b748e6d9c5de48ca54091afc56e1fcb091a",
+        "timestamp": 1764176422
+      }
+    ],
+    "reports": [
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764171021.pdf",
+        "timestamp": 1764171021,
+        "digest": "f3cf23b4edd4fb433524b871c581d41e4e9ce0fb0ae54787f8d7c43ec4e3d22d",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764171625.pdf",
+        "timestamp": 1764171625,
+        "digest": "035352474258a1a853058016790ce21e60d983a0545c9c6a53bb1963b90ce564",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764172103.pdf",
+        "timestamp": 1764172103,
+        "digest": "11dbc14cc48d8675b7e617ddd945a0892297ce49e202701979283a4b02abf2df",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764172205.pdf",
+        "timestamp": 1764172205,
+        "digest": "8dc50e0acda62ca6d0b4a8fc341852835964982d5bb6214f9d5f5a79d6ddea21",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764172298.pdf",
+        "timestamp": 1764172298,
+        "digest": "84dfb650f23a6e513500fbad9c7344da9f395cda85469315ce2b52423ee5353f",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764172666.pdf",
+        "timestamp": 1764172666,
+        "digest": "f319865d606aa6c4369323607ac89553e6513282089b5a0fa865b0d1bdb327a1",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764172825.pdf",
+        "timestamp": 1764172825,
+        "digest": "ff8962f8ce2eb3b6639bf741cc43c119ecda4b257454f996d0267337c71aac0c",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764172905.pdf",
+        "timestamp": 1764172905,
+        "digest": "04b696501ea32a54a99acf75fe164eafbe9e9a76ac22a72c80aac82b9ab82624",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764173184.pdf",
+        "timestamp": 1764173184,
+        "digest": "676d8c43b3751c0760d29aafabb6c7ff23327cb25997886b3c35f50786841119",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764173359.pdf",
+        "timestamp": 1764173359,
+        "digest": "8ad175f5374dd71b12e94b5e7d4275f6982007421f6485affabdb85ce0af0ef1",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764173446.pdf",
+        "timestamp": 1764173446,
+        "digest": "1403a0e1ada88de6b7adbf7bd865cf199bb37e2e200605425393d81041526684",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764173536.pdf",
+        "timestamp": 1764173536,
+        "digest": "d11964f15069ed8731117a225bdc79189db6777b8b1299c7d1be973d27656ec3",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764173538.pdf",
+        "timestamp": 1764173538,
+        "digest": "9a124317460642777a845cba9a9b48ae0a1eef93ff87947df28afd2197a93e6c",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764173542.pdf",
+        "timestamp": 1764173542,
+        "digest": "e9dffff8920b625517b97fd069143f49fc323d21669ce5784b18291ca570a419",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764173544.pdf",
+        "timestamp": 1764173544,
+        "digest": "49941523e0ff452576e6cae393fd05017f83dbd0a62e28753329ed5cea2fe41a",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764173709.pdf",
+        "timestamp": 1764173709,
+        "digest": "fcdb64b5540ebfa340c0d226fd5411344d50c0f9de7c0b4a1660575095c28f00",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764174081.pdf",
+        "timestamp": 1764174081,
+        "digest": "25e87e42be2efcaf723a3747c6601dca8bbd79ca17b18e0a746487400d7af102",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764174086.pdf",
+        "timestamp": 1764174086,
+        "digest": "3e1c1b1be94a4e19f3942d1a9dfdef8fab830372536cb681e31a3aba03fb7c1e",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764174176.pdf",
+        "timestamp": 1764174176,
+        "digest": "51eb106929626db7e344a6dba72f852f6ae78bc3492001462c14a8e7bfa9b079",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764174483.pdf",
+        "timestamp": 1764174483,
+        "digest": "732e546c10a605e361521bc2f5f4b5d8339a5bc7ae1f5ebffdfdc6048cb5ee5d",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764174646.pdf",
+        "timestamp": 1764174646,
+        "digest": "1172cf6df423add6b9a221d364d118351baffbee4cc79d18c334a64f9e0d863a",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764174801.pdf",
+        "timestamp": 1764174801,
+        "digest": "46714e34b2c62bc8cbc5335b88897fd4b96e3c562c58e8e042cffd276d67539d",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764174864.pdf",
+        "timestamp": 1764174864,
+        "digest": "c4a11103c382759688ff91d2c762bd81902a6819fd14d0b7c023fabb3277750c",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764174951.pdf",
+        "timestamp": 1764174951,
+        "digest": "6b01ddd29b6a7ea6a06bed80b0e5a71e4df4a2346c6827e78c88ec9627bdb7ca",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764175147.pdf",
+        "timestamp": 1764175147,
+        "digest": "29cfa94f6ce8b1263b011da970e62e346d5a0877b31fe31add06bd90ddeecb8d",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764175337.pdf",
+        "timestamp": 1764175337,
+        "digest": "70099fee0c2afc49de2cb74c32fef81d0cf6c10c16ef6388156dbcae2a988c04",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764175460.pdf",
+        "timestamp": 1764175460,
+        "digest": "b898a492b5acd8de69739a4de175613dc83d76e72660e74579bdedd014a65995",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764175569.pdf",
+        "timestamp": 1764175569,
+        "digest": "5ec9ccb69bc8e16f798d46ef1527cbfbf8bf0aad4004ec8703349d7a4f83e0b9",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764175635.pdf",
+        "timestamp": 1764175635,
+        "digest": "75c2717947f9fc665b49e43d9ddd2b829831a419a128eab0c043a4cc8a996a26",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764175800.pdf",
+        "timestamp": 1764175800,
+        "digest": "819fcf54dfa4a060e3ee37479b4904abaccf70767a0308a3219aa3d97cac3f22",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764176122.pdf",
+        "timestamp": 1764176122,
+        "digest": "ef3f8f2727c21e453e3c340138b0b3e37aa39a2e145a671c1ceefb7fd83d297f",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764176257.pdf",
+        "timestamp": 1764176257,
+        "digest": "00118264d9128a0a5379662a3afd4be19c14fe9e5cdb65fdc9897ef4a2cc392a",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/assessment/59753-61377-isogenic-control-line-generation-for-AG25367-line-assessment-1764176422.pdf",
+        "timestamp": 1764176422,
+        "digest": "61664f2cfd768d2df4121b57a6295f6aa98c4fcc87f9f12e9f6d124487a7b1b7",
+        "type": "pdf"
+      }
+    ],
+    "uploads": [
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764169311980_5ef7bdca96.jpg",
+        "timestamp": 1764169311980,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764169522079_916802cd2c.jpg",
+        "timestamp": 1764169522079,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764169526832_be1101c3c3.jpg",
+        "timestamp": 1764169526832,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764169593166_206fdc84fd.jpg",
+        "timestamp": 1764169593166,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764169596990_20024472fe.jpg",
+        "timestamp": 1764169596990,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764169852983_0f2bc42a14.jpg",
+        "timestamp": 1764169852983,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764169864022_c57f7d2df5.jpg",
+        "timestamp": 1764169864022,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764169905141_446e3c330a.jpg",
+        "timestamp": 1764169905141,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764169911778_1b5ad7c758.jpg",
+        "timestamp": 1764169911778,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764170363555_6aa587da4b.jpg",
+        "timestamp": 1764170363555,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764170371129_02c700b59b.jpg",
+        "timestamp": 1764170371129,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764170573776_6f8aa3abbe.jpg",
+        "timestamp": 1764170573776,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764170582833_ae36e83d23.jpg",
+        "timestamp": 1764170582833,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764171021226_266be65c78.jpg",
+        "timestamp": 1764171021226,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764171025056_92698170cf.jpg",
+        "timestamp": 1764171025056,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764171581540_9073b8b16d.jpg",
+        "timestamp": 1764171581540,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764171625627_f151fe293b.jpg",
+        "timestamp": 1764171625627,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764171631636_dbe521ae0d.jpg",
+        "timestamp": 1764171631636,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764172103906_c2f97d9efa.jpg",
+        "timestamp": 1764172103906,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764172107134_bd06f0c893.jpg",
+        "timestamp": 1764172107134,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764172205949_040f2c8d7f.jpg",
+        "timestamp": 1764172205949,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764172240005_9d920e83dd.jpg",
+        "timestamp": 1764172240005,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764172298001_7d2c1c870f.jpg",
+        "timestamp": 1764172298001,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764172303558_dc6b546018.jpg",
+        "timestamp": 1764172303558,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764172666191_95a2481cbd.jpg",
+        "timestamp": 1764172666191,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764172670791_970cdaa631.jpg",
+        "timestamp": 1764172670791,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764172825709_f155d5f04a.jpg",
+        "timestamp": 1764172825709,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764172829177_d695aa9746.jpg",
+        "timestamp": 1764172829177,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764172905025_8c7a4c1acc.jpg",
+        "timestamp": 1764172905025,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764173184106_5d81dfad62.jpg",
+        "timestamp": 1764173184106,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764173189482_e309e38611.jpg",
+        "timestamp": 1764173189482,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764173265976_de68b67c4a.jpg",
+        "timestamp": 1764173265976,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764173359245_2fa0ab3d2d.jpg",
+        "timestamp": 1764173359245,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764173363054_94113fa9c0.jpg",
+        "timestamp": 1764173363054,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764173442597_4b01466d5e.jpg",
+        "timestamp": 1764173442597,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764173446506_ce370c825f.jpg",
+        "timestamp": 1764173446506,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764173449786_25c174cd70.jpg",
+        "timestamp": 1764173449786,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764173536977_79cb32dc3b.jpg",
+        "timestamp": 1764173536977,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764173538705_f6f84f9dc9.jpg",
+        "timestamp": 1764173538705,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764173542129_51a2d027c5.jpg",
+        "timestamp": 1764173542129,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764173544294_eea9dea4cb.jpg",
+        "timestamp": 1764173544294,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764173546760_4d83e3e024.jpg",
+        "timestamp": 1764173546760,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764173709430_5ab76e9b6d.jpg",
+        "timestamp": 1764173709430,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764173712681_30a5d89b43.jpg",
+        "timestamp": 1764173712681,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764174176371_1738f6d054.jpg",
+        "timestamp": 1764174176371,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764174187337_b6d846394d.jpg",
+        "timestamp": 1764174187337,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764174483906_9f8a7f9065.jpg",
+        "timestamp": 1764174483906,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764174487126_657a2db35d.jpg",
+        "timestamp": 1764174487126,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764174646414_8525cb40d0.jpg",
+        "timestamp": 1764174646414,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764174650268_fcac0d769f.jpg",
+        "timestamp": 1764174650268,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764175147069_fc9beaed3b.jpg",
+        "timestamp": 1764175147069,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764175150988_7a2af3b27e.jpg",
+        "timestamp": 1764175150988,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764175337557_eb87bd0cff.jpg",
+        "timestamp": 1764175337557,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764175341494_a73e282a55.jpg",
+        "timestamp": 1764175341494,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764175569684_ad8b7e9060.jpg",
+        "timestamp": 1764175569684,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764175588562_60b8149db1.jpg",
+        "timestamp": 1764175588562,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764175635656_e89df568e7.jpg",
+        "timestamp": 1764175635656,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764175640868_2f38f400e3.jpg",
+        "timestamp": 1764175640868,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764175800249_3bfd4b9e35.jpg",
+        "timestamp": 1764175800249,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764175804460_3d714f84c9.jpg",
+        "timestamp": 1764175804460,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764176256996_6b8513f18d.jpg",
+        "timestamp": 1764176256996,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764176260312_832189d3bf.jpg",
+        "timestamp": 1764176260312,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764176422630_93cc62590a.jpg",
+        "timestamp": 1764176422630,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation1.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/assessment/1764176426601_58d738321b.jpg",
+        "timestamp": 1764176426601,
+        "step": "assessment",
+        "kind": "tool_result"
+      }
+    ]
+  },
+  "chain": [],
+  "audit": [
+    {
+      "ts": 1763564866,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763564866_207a2fb0d54a.json"
+    },
+    {
+      "ts": 1763565158,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763565158_b2c7f7512b5b.json"
+    },
+    {
+      "ts": 1763654242,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654242_2699207880fd.json"
+    },
+    {
+      "ts": 1763654248,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654248_30e0cfff8930.json"
+    },
+    {
+      "ts": 1763654279,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654279_b9b63b7f666b.json"
+    },
+    {
+      "ts": 1763654303,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654303_cdad11b69e28.json"
+    },
+    {
+      "ts": 1763654321,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654321_62c7acccdb48.json"
+    },
+    {
+      "ts": 1763654330,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654330_6309d99633f1.json"
+    },
+    {
+      "ts": 1763654339,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654339_61d7f263f064.json"
+    },
+    {
+      "ts": 1763654361,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654361_f3e959037ace.json"
+    },
+    {
+      "ts": 1763654363,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654363_ed964722bdef.json"
+    },
+    {
+      "ts": 1763654368,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654368_ed4254bc7dfa.json"
+    },
+    {
+      "ts": 1763654389,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654389_b1feeb90ce06.json"
+    },
+    {
+      "ts": 1763654452,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654452_af6f5c8228ed.json"
+    },
+    {
+      "ts": 1763654469,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654469_426629b82171.json"
+    },
+    {
+      "ts": 1763654482,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654482_b3d828d52ff7.json"
+    },
+    {
+      "ts": 1763654483,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654483_6233133caac7.json"
+    },
+    {
+      "ts": 1763654496,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654496_bb063bdf316b.json"
+    },
+    {
+      "ts": 1763654512,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654512_8fa0334870b8.json"
+    },
+    {
+      "ts": 1763654537,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654537_e907abac8f15.json"
+    },
+    {
+      "ts": 1763654553,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654553_ed0421abcee4.json"
+    },
+    {
+      "ts": 1763654602,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654602_e65c20bb0560.json"
+    },
+    {
+      "ts": 1763654604,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654604_f63c07354d82.json"
+    },
+    {
+      "ts": 1763654605,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654605_82c30bdff785.json"
+    },
+    {
+      "ts": 1763654606,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654606_8db7bdc7721c.json"
+    },
+    {
+      "ts": 1763654658,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654658_bcfda6a91f7a.json"
+    },
+    {
+      "ts": 1763654668,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654668_11523039a525.json"
+    },
+    {
+      "ts": 1763654678,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654678_d8aa14b8889b.json"
+    },
+    {
+      "ts": 1763654715,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654715_0b9acf88bb83.json"
+    },
+    {
+      "ts": 1763654738,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654738_c98b0f0bb65a.json"
+    },
+    {
+      "ts": 1763654741,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654741_ba4f601457e5.json"
+    },
+    {
+      "ts": 1763654748,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654748_a163ad46d6ac.json"
+    },
+    {
+      "ts": 1763654769,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654769_756b1728e833.json"
+    },
+    {
+      "ts": 1763654796,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654796_7c3fd03692de.json"
+    },
+    {
+      "ts": 1763654797,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654797_7d4cc14c809d.json"
+    },
+    {
+      "ts": 1763654799,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654799_e7b3035f600d.json"
+    },
+    {
+      "ts": 1763654811,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654811_76189fae54c8.json"
+    },
+    {
+      "ts": 1763654820,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654820_71b3d30792a7.json"
+    },
+    {
+      "ts": 1763654885,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763654885_c73678586209.json"
+    },
+    {
+      "ts": 1763655060,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763655060_fd1a022b2a9c.json"
+    },
+    {
+      "ts": 1763655066,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763655066_33a20df7220c.json"
+    },
+    {
+      "ts": 1763656091,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763656091_fc88488fe009.json"
+    },
+    {
+      "ts": 1763656119,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763656119_b0abba0ca290.json"
+    },
+    {
+      "ts": 1763656142,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763656142_20a1e67f5a04.json"
+    },
+    {
+      "ts": 1763656190,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763656190_f18f5a6b683b.json"
+    },
+    {
+      "ts": 1763656192,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763656192_f6c133aa2e9a.json"
+    },
+    {
+      "ts": 1763656193,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763656193_3587ee3937b7.json"
+    },
+    {
+      "ts": 1763656201,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763656201_d3881b7dbc44.json"
+    },
+    {
+      "ts": 1763656872,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763656872_a6bf47edaee7.json"
+    },
+    {
+      "ts": 1763656898,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763656898_7c1ec84c8802.json"
+    },
+    {
+      "ts": 1763657386,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763657386_6a9b06f4c317.json"
+    },
+    {
+      "ts": 1763657853,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763657853_aa1ba407d074.json"
+    },
+    {
+      "ts": 1763657963,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1763657963_b5918310fc70.json"
+    },
+    {
+      "ts": 1764149356,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/design/59753 (61377) - isogenic control line generation for AG25367 line_1764149356_c598a4ebe2bc.json"
+    },
+    {
+      "ts": 1764149749,
+      "step": "delivery",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/delivery/59753 (61377) - isogenic control line generation for AG25367 line_1764149749_e48ce22f442e.json"
+    },
+    {
+      "ts": 1764150351,
+      "step": "delivery",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/delivery/59753 (61377) - isogenic control line generation for AG25367 line_1764150351_ded547b50525.json"
+    },
+    {
+      "ts": 1764150945,
+      "step": "delivery",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/delivery/59753 (61377) - isogenic control line generation for AG25367 line_1764150945_0ce5ef1d1691.json"
+    },
+    {
+      "ts": 1764167377,
+      "step": "delivery",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/delivery/59753 (61377) - isogenic control line generation for AG25367 line_1764167377_34cb500a956c.json"
+    },
+    {
+      "ts": 1764167661,
+      "step": "delivery",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/delivery/59753 (61377) - isogenic control line generation for AG25367 line_1764167661_e7d209f5f574.json"
+    },
+    {
+      "ts": 1764167768,
+      "step": "delivery",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/delivery/59753 (61377) - isogenic control line generation for AG25367 line_1764167768_91756d0279ef.json"
+    },
+    {
+      "ts": 1764167791,
+      "step": "delivery",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/delivery/59753 (61377) - isogenic control line generation for AG25367 line_1764167791_7ddc92a681b9.json"
+    },
+    {
+      "ts": 1764167891,
+      "step": "delivery",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/delivery/59753 (61377) - isogenic control line generation for AG25367 line_1764167891_1fd7ae023a13.json"
+    },
+    {
+      "ts": 1764167980,
+      "step": "delivery",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/delivery/59753 (61377) - isogenic control line generation for AG25367 line_1764167980_4872eb775c27.json"
+    },
+    {
+      "ts": 1764169311,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764169311_3eade6dd808b.json"
+    },
+    {
+      "ts": 1764169522,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764169522_529977efe946.json"
+    },
+    {
+      "ts": 1764169593,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764169593_381c1b7a28cd.json"
+    },
+    {
+      "ts": 1764169852,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764169852_e828b2e5fc69.json"
+    },
+    {
+      "ts": 1764169905,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764169905_92a326c3c65f.json"
+    },
+    {
+      "ts": 1764170363,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764170363_de9e3176056f.json"
+    },
+    {
+      "ts": 1764170573,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764170573_d0e8ffd9aa1f.json"
+    },
+    {
+      "ts": 1764171021,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764171021_53d815d555a1.json"
+    },
+    {
+      "ts": 1764171625,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764171625_b3b75afc2eed.json"
+    },
+    {
+      "ts": 1764172103,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764172103_0905c134584e.json"
+    },
+    {
+      "ts": 1764172205,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764172205_ec6aefe12194.json"
+    },
+    {
+      "ts": 1764172298,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764172298_c0e727c6ec00.json"
+    },
+    {
+      "ts": 1764172666,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764172666_23b61cc729a8.json"
+    },
+    {
+      "ts": 1764172825,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764172825_51325c70a113.json"
+    },
+    {
+      "ts": 1764172905,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764172905_200b6696dee7.json"
+    },
+    {
+      "ts": 1764173184,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764173184_ca05f13d2a09.json"
+    },
+    {
+      "ts": 1764173359,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764173359_0fc6fa458c1f.json"
+    },
+    {
+      "ts": 1764173446,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764173446_9c1405bf80b2.json"
+    },
+    {
+      "ts": 1764173536,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764173536_c5cc99b7595d.json"
+    },
+    {
+      "ts": 1764173538,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764173538_b0d25d322d2c.json"
+    },
+    {
+      "ts": 1764173542,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764173542_a4e747236ecc.json"
+    },
+    {
+      "ts": 1764173544,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764173544_596e6fb4c278.json"
+    },
+    {
+      "ts": 1764173709,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764173709_b5d8dff194c1.json"
+    },
+    {
+      "ts": 1764174081,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764174081_108b288b6596.json"
+    },
+    {
+      "ts": 1764174086,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764174086_18659f20aa24.json"
+    },
+    {
+      "ts": 1764174176,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764174176_9f80587371d4.json"
+    },
+    {
+      "ts": 1764174483,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764174483_ed3b671be6d8.json"
+    },
+    {
+      "ts": 1764174646,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764174646_ff708b5c7ca8.json"
+    },
+    {
+      "ts": 1764174801,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764174801_91895145f177.json"
+    },
+    {
+      "ts": 1764174864,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764174864_5b90b4a47ceb.json"
+    },
+    {
+      "ts": 1764174951,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764174951_d264b9b97828.json"
+    },
+    {
+      "ts": 1764175147,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764175147_fba7af20a9f1.json"
+    },
+    {
+      "ts": 1764175337,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764175337_8d3124d6922b.json"
+    },
+    {
+      "ts": 1764175460,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764175460_b54912f7f2c8.json"
+    },
+    {
+      "ts": 1764175569,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764175569_6a69b7891241.json"
+    },
+    {
+      "ts": 1764175635,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764175635_57056d55e54b.json"
+    },
+    {
+      "ts": 1764175800,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764175800_12b54f055b30.json"
+    },
+    {
+      "ts": 1764176122,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764176122_46ead5a0f1b9.json"
+    },
+    {
+      "ts": 1764176257,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764176257_e2e695e4c803.json"
+    },
+    {
+      "ts": 1764176422,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764176422_ecd455406694.json"
+    }
+  ]
+}

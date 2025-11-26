@@ -1,0 +1,56 @@
+{
+  "project_id": "59753 (61377) - isogenic control line generation for AG25367 line",
+  "cell_line": "AG25367",
+  "passage_number": "P27",
+  "delivery_goal": "RNP",
+  "total_cells": 250000,
+  "viability_percent": 92.0,
+  "electroporation_device": "Neon Transfection System",
+  "neon_tip_volume_ul": 10.0,
+  "voltage_v": 1200,
+  "pulse_width_ms": 30.0,
+  "pulse_number": 1,
+  "buffer_system": "Buffer R (Neon kit)",
+  "buffer_notes": "Prepared fresh, kept on ice.",
+  "rnp_components": [
+    {
+      "name": "Cas9 Nuclease",
+      "component_type": "Cas9",
+      "concentration": null,
+      "concentration_units": null,
+      "volume_ul": 0.5,
+      "vendor": null,
+      "lot_number": "IDT"
+    },
+    {
+      "name": "sgRNA 1 and 2",
+      "component_type": "sgRNA",
+      "concentration": null,
+      "concentration_units": null,
+      "volume_ul": 2.0,
+      "vendor": "IDT",
+      "lot_number": null
+    },
+    {
+      "name": "ssODN HDR donor 1 and 2",
+      "component_type": "ssODN",
+      "concentration": null,
+      "concentration_units": "Other",
+      "volume_ul": 3.0,
+      "vendor": null,
+      "lot_number": null
+    }
+  ],
+  "assembly_notes": "Add components to the cell mix",
+  "incubation_time_minutes": 0.0,
+  "post_pulse_recovery_medium": "StemFlex and ClonR2",
+  "post_pulse_recovery_volume_ml": 1.0,
+  "recovery_temperature_c": 32.0,
+  "recovery_duration_minutes": 2880.0,
+  "plating_format": "12-well plate",
+  "plating_density_cells_per_well": 150000,
+  "additional_notes": "Deliver 1200 V / 30 ms / 1 pulse per protocol. Immediately transfer to recovery medium.",
+  "author": "Narasimha Telugu",
+  "timestamp_unix": 1764167980,
+  "attachments": {}
+}

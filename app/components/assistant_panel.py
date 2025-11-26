@@ -7,6 +7,10 @@ from typing import List, Optional
 
 import requests
 import streamlit as st
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 
 ASSISTANT_URL = os.getenv("ASSISTANT_API_URL", "http://127.0.0.1:8000")

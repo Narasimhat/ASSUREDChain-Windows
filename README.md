@@ -13,6 +13,28 @@ pip install -r requirements.txt
 
 Copy `.env.template` to `.env` and populate fields if you want to experiment with Web3 connectivity ahead of Day 2.
 
+### Enable the AI assistant
+
+1. Copy `.env.template` to `.env` if you have not already.
+2. Add your OpenAI key and optional model override:
+
+   ```bash
+   OPENAI_API_KEY="sk-..."
+   OPENAI_MODEL="gpt-4o-mini"  # optional override
+   ASSISTANT_MODE=openai
+   ASSISTANT_API_URL=http://127.0.0.1:8000
+   ```
+
+3. Start the assistant backend (separate terminal):
+
+   ```bash
+   uvicorn assistant.backend.main:app --reload --port 8000
+   ```
+
+4. Launch Streamlit as usual; the assistant sidebar is available on workflow pages like **Design**.
+
+If you prefer a local model, set `ASSISTANT_MODE=local` and point `ASSISTANT_LOCAL_ENDPOINT` / `ASSISTANT_LOCAL_MODEL` to your server.
+
 Populate `.env` with your Sepolia endpoint, deployed contract address, chain ID, and the private key of a test account that holds Sepolia ETH. The repository includes `contracts/AssuredRegistry.abi.json`; replace it with the ABI exported from Remix if you redeploy.
 
 Launch Streamlit:

@@ -10,3 +10,4 @@ PyPDF2>=3.0
 fastapi>=0.111
 uvicorn[standard]>=0.30
 openai>=1.35
+XlsxWriter>=3.1

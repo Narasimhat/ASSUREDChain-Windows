@@ -18,9 +18,11 @@ from app.components.file_utils import build_step_filename, preview_file, save_up
 from app.components.layout import init_page
 from app.components.project_state import (
     append_audit,
+    load_project_meta,
     project_subdir,
     register_chain_tx,
     register_file,
+    update_project_meta,
     use_project,
 )
 from app.components.web3_client import send_log_tx
@@ -116,6 +118,11 @@ def evaluate_delivery_readiness(payload: dict, attachments_map: dict) -> dict:
 
 init_page("Step 2 - Delivery Logger")
 selected_project = use_project("project")
+if selected_project:
+    project_meta = load_project_meta(selected_project)
+else:
+    project_meta = {}
+
 st.title("Step 2 - Delivery Logger")
 st.caption(
     "Capture Neon electroporation metadata (1200 V / 30 ms / 1 pulse) to mirror the Delivery section of the ASSURED protocol."
@@ -133,6 +140,9 @@ else:
     upload_dir = FALLBACK_UPLOAD_DIR
     report_dir = FALLBACK_DATA_DIR
 
+delivery_defaults = project_meta.get("delivery_defaults", {})
+default_components_payload = delivery_defaults.get("rnp_components") or []
+
 
 with st.form("delivery_form"):
     project_id = st.text_input(
@@ -140,117 +150,179 @@ with st.form("delivery_form"):
         value=selected_project or "SORCS1_KI_v1",
         help="Defaults to the project selected in the sidebar.",
     )
-    cell_line = st.text_input("Cell line", value="hiPSC clone 7")
-    passage_number = st.text_input("Passage number", value="P28")
+    cell_line = st.text_input("Cell line", value=delivery_defaults.get("cell_line", "hiPSC clone 7"))
+    passage_number = st.text_input("Passage number", value=delivery_defaults.get("passage_number", "P28"))
+    goal_options = ["RNP", "Plasmid", "mRNA", "Other"]
+    goal_value = delivery_defaults.get("delivery_goal", "RNP")
     delivery_goal = st.selectbox(
-        "Delivery modality", options=["RNP", "Plasmid", "mRNA", "Other"], index=0
+        "Delivery modality", options=goal_options, index=goal_options.index(goal_value) if goal_value in goal_options else 0
     )
     total_cells = int(
-        st.number_input("Total cells prepared", value=250000, min_value=1000, step=10000)
+        st.number_input("Total cells prepared", value=float(delivery_defaults.get("total_cells", 250000)), min_value=1000.0, step=10000.0)
     )
     viability_percent = st.number_input(
-        "Viability (%)", min_value=0.0, max_value=100.0, value=92.0
+        "Viability (%)", min_value=0.0, max_value=100.0, value=float(delivery_defaults.get("viability_percent", 92.0))
     )
 
     st.subheader("Neon Parameters")
     electroporation_device = st.text_input(
-        "Electroporation device", value="Neon Transfection System"
+        "Electroporation device", value=delivery_defaults.get("electroporation_device", "Neon Transfection System")
     )
     neon_tip_volume_ul = st.number_input(
-        "Neon tip volume (uL)", min_value=1.0, max_value=100.0, value=10.0
+        "Neon tip volume (uL)", min_value=1.0, max_value=100.0, value=float(delivery_defaults.get("neon_tip_volume_ul", 10.0))
     )
     voltage_v = int(
-        st.number_input("Voltage (V)", min_value=100.0, max_value=3000.0, value=1200.0)
+        st.number_input("Voltage (V)", min_value=100.0, max_value=3000.0, value=float(delivery_defaults.get("voltage_v", 1200)))
     )
     pulse_width_ms = st.number_input(
-        "Pulse width (ms)", min_value=1.0, max_value=100.0, value=30.0
+        "Pulse width (ms)", min_value=1.0, max_value=100.0, value=float(delivery_defaults.get("pulse_width_ms", 30.0))
     )
     pulse_number = int(
-        st.number_input("Number of pulses", min_value=1.0, max_value=5.0, value=1.0)
+        st.number_input("Number of pulses", min_value=1.0, max_value=5.0, value=float(delivery_defaults.get("pulse_number", 1)))
     )
 
-    buffer_system = st.text_input("Buffer system", value="Buffer R (Neon kit)")
-    buffer_notes = st.text_area("Buffer notes", value="Prepared fresh, kept on ice.")
+    buffer_system = st.text_input("Buffer system", value=delivery_defaults.get("buffer_system", "Buffer R (Neon kit)"))
+    buffer_notes = st.text_area("Buffer notes", value=delivery_defaults.get("buffer_notes", "Prepared fresh, kept on ice."))
 
     st.subheader("RNP / Delivery Mix")
-    components: list[Component] = []
-    default_components = [
-        ("Cas9 Nuclease", "Cas9"),
-        ("sgRNA 1", "sgRNA"),
-        ("ssODN HDR donor", "ssODN"),
+    components_raw: list[dict] = []
+    seed_defaults = [
+        {"name": "Cas9 Nuclease", "component_type": "Cas9"},
+        {"name": "sgRNA 1", "component_type": "sgRNA"},
+        {"name": "ssODN HDR donor", "component_type": "ssODN"},
     ]
-    for i in range(3):
-        label, default_type = default_components[i]
-        with st.expander(f"Component {i + 1}: {label}"):
-            components.append(
-                Component(
-                    name=st.text_input(
-                        f"Component {i + 1} name", value=label, key=f"comp_name_{i}"
-                    ),
-                    component_type=st.selectbox(
-                        "Component type",
-                        options=["Cas9", "sgRNA", "ssODN", "Buffer", "Additive", "Other"],
-                        index=["Cas9", "sgRNA", "ssODN"].index(default_type),
-                        key=f"comp_type_{i}",
-                    ),
-                    concentration=st.number_input(
-                        "Concentration",
-                        min_value=0.0,
-                        value=0.0,
-                        step=0.1,
-                        key=f"comp_conc_{i}",
-                    )
-                    or None,
-                    concentration_units=st.selectbox(
-                        "Concentration units",
-                        options=["", "uM", "mg/mL", "ng/uL", "X", "Other"],
-                        index=0,
-                        key=f"comp_unit_{i}",
-                    )
-                    or None,
-                    volume_ul=st.number_input(
-                        "Volume (uL)", min_value=0.0, value=5.0, step=0.5, key=f"comp_vol_{i}"
-                    )
-                    or None,
-                    vendor=st.text_input("Vendor", key=f"comp_vendor_{i}") or None,
-                    lot_number=st.text_input("Lot number", key=f"comp_lot_{i}") or None,
+    component_type_options = ["Cas9", "sgRNA", "ssODN", "Buffer", "Additive", "Other"]
+    default_component_count = len(default_components_payload)
+    component_count_value = default_component_count if default_component_count else len(seed_defaults)
+    num_components = st.number_input(
+        "Number of components",
+        min_value=1,
+        max_value=10,
+        value=min(max(component_count_value, 1), 10),
+    )
+    for i in range(int(num_components)):
+        if i < len(default_components_payload):
+            defaults = default_components_payload[i]
+        elif i < len(seed_defaults):
+            defaults = seed_defaults[i]
+        else:
+            defaults = {"name": f"Component {i + 1}", "component_type": "Other"}
+        default_type = defaults.get("component_type", "Other")
+        type_index = component_type_options.index(default_type) if default_type in component_type_options else 0
+        with st.expander(f"Component {i + 1}: {defaults.get('name', f'Component {i + 1}')}"):
+            name = st.text_input(
+                f"Component {i + 1} name",
+                value=defaults.get("name", f"Component {i + 1}"),
+                key=f"comp_name_{i}",
+            ).strip()
+            component_type = st.selectbox(
+                "Component type",
+                options=component_type_options,
+                index=type_index,
+                key=f"comp_type_{i}",
+            )
+            concentration = st.number_input(
+                "Concentration",
+                min_value=0.0,
+                value=float(defaults.get("concentration") or 0.0),
+                step=0.1,
+                key=f"comp_conc_{i}",
+            )
+            units_options = ["", "uM", "mg/mL", "ng/uL", "X", "Other"]
+            unit_value = defaults.get("concentration_units", "")
+            concentration_units = st.selectbox(
+                "Concentration units",
+                options=units_options,
+                index=units_options.index(unit_value) if unit_value in units_options else 0,
+                key=f"comp_unit_{i}",
+            )
+            volume_ul = st.number_input(
+                "Volume (uL)",
+                min_value=0.0,
+                value=float(defaults.get("volume_ul") or 0.0),
+                step=0.5,
+                key=f"comp_vol_{i}",
+            )
+            vendor = (
+                st.text_input(
+                    "Vendor",
+                    value=defaults.get("vendor", "") or "",
+                    key=f"comp_vendor_{i}",
                 )
+                or ""
+            ).strip()
+            lot_number = (
+                st.text_input(
+                    "Lot number",
+                    value=defaults.get("lot_number", "") or "",
+                    key=f"comp_lot_{i}",
+                )
+                or ""
+            ).strip()
+
+            components_raw.append(
+                {
+                    "name": name or f"Component {i + 1}",
+                    "component_type": component_type,
+                    "concentration": concentration or None,
+                    "concentration_units": concentration_units or None,
+                    "volume_ul": volume_ul or None,
+                    "vendor": vendor or None,
+                    "lot_number": lot_number or None,
+                }
             )
 
     assembly_notes = st.text_area(
         "Assembly notes",
-        value="Assemble RNP in PBS + 1 mM MgCl2; incubate 10 min at room temperature.",
+        value=delivery_defaults.get("assembly_notes", "Assemble RNP in PBS + 1 mM MgCl2; incubate 10 min at room temperature."),
     )
     incubation_time_minutes = st.number_input(
-        "Incubation prior to electroporation (min)", min_value=0.0, value=10.0
+        "Incubation prior to electroporation (min)", min_value=0.0, value=float(delivery_defaults.get("incubation_time_minutes", 10.0))
     )
 
     st.subheader("Post-pulse Recovery")
     post_pulse_recovery_medium = st.text_input(
-        "Recovery medium", value="mTeSR + 10 uM ROCK inhibitor"
+        "Recovery medium", value=delivery_defaults.get("post_pulse_recovery_medium", "mTeSR + 10 uM ROCK inhibitor")
     )
     post_pulse_recovery_volume_ml = st.number_input(
-        "Recovery medium volume (mL)", min_value=0.1, max_value=5.0, value=0.5
+        "Recovery medium volume (mL)", min_value=0.1, max_value=5.0, value=float(delivery_defaults.get("post_pulse_recovery_volume_ml", 0.5))
     )
     recovery_temperature_c = st.number_input(
-        "Recovery temperature (°C)", min_value=4.0, max_value=45.0, value=37.0
+        "Recovery temperature (°C)", min_value=4.0, max_value=45.0, value=float(delivery_defaults.get("recovery_temperature_c", 37.0))
     )
-    recovery_duration_minutes = st.number_input(
-        "Recovery duration (min)", min_value=1.0, max_value=120.0, value=10.0
+    default_recovery_minutes = float(delivery_defaults.get("recovery_duration_minutes", 10.0))
+    default_recovery_unit = delivery_defaults.get("recovery_duration_unit")
+    if default_recovery_unit == "hours":
+        default_recovery_value = default_recovery_minutes / 60.0
+        default_unit_index = 1
+    else:
+        default_recovery_value = default_recovery_minutes
+        default_unit_index = 0
+    recovery_unit = st.selectbox(
+        "Recovery duration units",
+        options=["minutes", "hours"],
+        index=default_unit_index,
     )
-    plating_format = st.text_input("Plating format", value="24-well plate")
+    recovery_duration_value = st.number_input(
+        "Recovery duration",
+        min_value=0.5,
+        max_value=10080.0 if recovery_unit == "minutes" else 168.0,
+        value=float(default_recovery_value),
+    )
+    recovery_duration_minutes = recovery_duration_value * (60.0 if recovery_unit == "hours" else 1.0)
+    plating_format = st.text_input("Plating format", value=delivery_defaults.get("plating_format", "24-well plate"))
     plating_density_cells_per_well = int(
         st.number_input(
             "Plating density (cells per well)",
             min_value=0.0,
-            value=100000.0,
+            value=float(delivery_defaults.get("plating_density_cells_per_well", 100000)),
             step=50000.0,
         )
     )
 
     additional_notes = st.text_area(
         "Additional notes",
-        value="Deliver 1200 V / 30 ms / 1 pulse per protocol. Immediately transfer to recovery medium.",
+        value=delivery_defaults.get("additional_notes", "Deliver 1200 V / 30 ms / 1 pulse per protocol. Immediately transfer to recovery medium."),
     )
 
     uploads = st.file_uploader(
@@ -269,12 +341,25 @@ with st.form("delivery_form"):
             attachments[upload.name] = str(saved_path)
             saved_attachment_paths.append(saved_path)
 
-    author = st.text_input("Author", value="Narasimha Telugu")
+    author = st.text_input("Author", value=delivery_defaults.get("author", "Narasimha Telugu"))
 
     submitted = st.form_submit_button("Save delivery snapshot & compute hash")
 
 if submitted:
     try:
+        components = [
+            Component(
+                name=raw.get("name", f"Component {idx + 1}"),
+                component_type=raw.get("component_type", "Other"),
+                concentration=raw.get("concentration"),
+                concentration_units=raw.get("concentration_units"),
+                volume_ul=raw.get("volume_ul"),
+                vendor=raw.get("vendor"),
+                lot_number=raw.get("lot_number"),
+            )
+            for idx, raw in enumerate(components_raw)
+        ]
+
         log = DeliveryLog(
             project_id=project_id,
             cell_line=cell_line,
@@ -367,13 +452,14 @@ if submitted:
             f"Delivery Snapshot — {log.project_id}",
             image_paths=image_attachments or None,
         )
-        with pdf_path.open("rb") as pdf_file:
-            st.download_button(
-                "Download delivery snapshot as PDF",
-                pdf_file,
-                file_name=pdf_path.name,
-                key="delivery_pdf_download",
-            )
+        pdf_data = pdf_path.read_bytes()
+        st.download_button(
+            "Download delivery snapshot as PDF",
+            pdf_data,
+            file_name=pdf_path.name,
+            mime="application/pdf",
+            key="delivery_pdf_download",
+        )
         st.caption(f"PDF saved: {pdf_path}")
         if selected_project:
             register_file(
@@ -387,6 +473,34 @@ if submitted:
                     "type": "pdf",
                 },
             )
+        if selected_project:
+            defaults_payload = {
+                "cell_line": log.cell_line,
+                "passage_number": log.passage_number or "",
+                "delivery_goal": log.delivery_goal,
+                "total_cells": log.total_cells,
+                "viability_percent": log.viability_percent,
+                "electroporation_device": log.electroporation_device,
+                "neon_tip_volume_ul": log.neon_tip_volume_ul,
+                "voltage_v": log.voltage_v,
+                "pulse_width_ms": log.pulse_width_ms,
+                "pulse_number": log.pulse_number,
+                "buffer_system": log.buffer_system,
+                "buffer_notes": log.buffer_notes or "",
+                "assembly_notes": log.assembly_notes or "",
+                "incubation_time_minutes": log.incubation_time_minutes or 0,
+                "post_pulse_recovery_medium": log.post_pulse_recovery_medium,
+                "post_pulse_recovery_volume_ml": log.post_pulse_recovery_volume_ml,
+                "recovery_temperature_c": log.recovery_temperature_c,
+                "recovery_duration_minutes": log.recovery_duration_minutes,
+                "recovery_duration_unit": recovery_unit,
+                "plating_format": log.plating_format,
+                "plating_density_cells_per_well": log.plating_density_cells_per_well or 0,
+                "additional_notes": log.additional_notes or "",
+                "author": log.author,
+                "rnp_components": [comp.model_dump() for comp in log.rnp_components],
+            }
+            update_project_meta(selected_project, {"delivery_defaults": defaults_payload})
     except ValidationError as exc:
         st.error(exc)
 
