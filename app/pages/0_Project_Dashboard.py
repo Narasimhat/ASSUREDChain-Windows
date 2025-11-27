@@ -337,6 +337,23 @@ elif st.button("📚 Regenerate binders (all projects)", help="Merge latest step
         skipped = ", ".join(r.get("binder", {}).get("skipped", [])) if status == "ok" else ""
         rows.append({"Project": pid, "Status": status, "Included": included, "Skipped": skipped})
     st.dataframe(rows, use_container_width=True)
+
+    # Show per-project binder download buttons for successful regenerations
+    st.caption("Latest binders:")
+    for r in results:
+        if r.get("status") == "ok":
+            b = r.get("binder", {})
+            path_str = b.get("path")
+            if path_str:
+                p = Path(path_str)
+                if p.exists():
+                    with p.open("rb") as fh:
+                        st.download_button(
+                            label=f"Download binder → {p.name}",
+                            data=fh,
+                            file_name=p.name,
+                            key=f"download_binder_{r.get('project_id','unknown')}_{p.name}",
+                        )
     elif result["status"] == "clean":
         st.info("All PDFs already registered")
     else:
