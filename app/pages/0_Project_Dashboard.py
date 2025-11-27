@@ -28,6 +28,7 @@ from app.components.project_state import (
     use_project,
 )
 from app.components.web3_client import send_log_tx
+from scripts.regenerate_binder import build_binder
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -316,6 +317,18 @@ if st.button("🔧 Scan & repair manifest", help="Find PDFs in reports/ not regi
         for file_info in result.get("files", []):
             st.caption(f"  [{file_info['step']}] {file_info['path']}")
         st.rerun()
+elif st.button("📚 Regenerate binders (all projects)", help="Merge latest step PDFs into binders for all projects"):
+    projects = list_projects()
+    results = []
+    for pid in projects:
+        try:
+            results.append(build_binder(pid))
+        except Exception as e:
+            results.append({"status": "error", "project_id": pid, "error": str(e)})
+    ok = sum(1 for r in results if r.get("status") == "ok")
+    none = sum(1 for r in results if r.get("status") == "no-candidates")
+    st.success(f"Binder regeneration complete: ok={ok}, no-candidates={none}")
+    st.json({"results": results}, expanded=False)
     elif result["status"] == "clean":
         st.info("All PDFs already registered")
     else:
