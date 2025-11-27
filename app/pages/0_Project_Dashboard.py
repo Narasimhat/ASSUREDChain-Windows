@@ -328,7 +328,15 @@ elif st.button("📚 Regenerate binders (all projects)", help="Merge latest step
     ok = sum(1 for r in results if r.get("status") == "ok")
     none = sum(1 for r in results if r.get("status") == "no-candidates")
     st.success(f"Binder regeneration complete: ok={ok}, no-candidates={none}")
-    st.json({"results": results}, expanded=False)
+    # Build quick summary table
+    rows = []
+    for r in results:
+        pid = r.get("project_id", "-")
+        status = r.get("status", "-")
+        included = r.get("binder", {}).get("included_count") if status == "ok" else None
+        skipped = ", ".join(r.get("binder", {}).get("skipped", [])) if status == "ok" else ""
+        rows.append({"Project": pid, "Status": status, "Included": included, "Skipped": skipped})
+    st.dataframe(rows, use_container_width=True)
     elif result["status"] == "clean":
         st.info("All PDFs already registered")
     else:
