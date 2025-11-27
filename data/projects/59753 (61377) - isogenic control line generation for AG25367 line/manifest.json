@@ -927,6 +927,28 @@
           "CoA_BIHi005-A_MB01_1764257071_2.docx"
         ],
         "included_count": 5
+      },
+      {
+        "step": "assured_binder",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/binders/59753-61377-isogenic-control-line-generation-for-AG25367-line-assured-binder-1764263408.pdf",
+        "timestamp": 1764263408,
+        "digest": "18c76d873a08b00607ca8fdec6558eaa01ad636968ab2d90654df6b283484d0f",
+        "type": "pdf",
+        "skipped": [
+          "CoA_BIHi005-A_MB01_1764257071_2.docx"
+        ],
+        "included_count": 5
+      },
+      {
+        "step": "assured_binder",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/binders/59753-61377-isogenic-control-line-generation-for-AG25367-line-assured-binder-1764263483.pdf",
+        "timestamp": 1764263483,
+        "digest": "18c76d873a08b00607ca8fdec6558eaa01ad636968ab2d90654df6b283484d0f",
+        "type": "pdf",
+        "skipped": [
+          "CoA_BIHi005-A_MB01_1764257071_2.docx"
+        ],
+        "included_count": 5
       }
     ],
     "uploads": [

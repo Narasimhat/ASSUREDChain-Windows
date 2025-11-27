@@ -317,7 +317,12 @@ if st.button("🔧 Scan & repair manifest", help="Find PDFs in reports/ not regi
         for file_info in result.get("files", []):
             st.caption(f"  [{file_info['step']}] {file_info['path']}")
         st.rerun()
-elif st.button("📚 Regenerate binders (all projects)", help="Merge latest step PDFs into binders for all projects"):
+    elif result["status"] == "clean":
+        st.info("All PDFs already registered")
+    else:
+        st.warning("Repair check failed")
+
+if st.button("📚 Regenerate binders (all projects)", help="Merge latest step PDFs into binders for all projects"):
     projects = list_projects()
     results = []
     for pid in projects:
@@ -362,10 +367,6 @@ elif st.button("📚 Regenerate binders (all projects)", help="Merge latest step
                     # Copy full path to clipboard
                     st.code(str(p), language="text")
                     st.caption("Copy path above to clipboard if needed.")
-    elif result["status"] == "clean":
-        st.info("All PDFs already registered")
-    else:
-        st.warning("Repair check failed")
 
 bundle_state = st.session_state.setdefault("project_bundles", {})
 summary_state = st.session_state.setdefault("project_summaries", {})
