@@ -727,17 +727,28 @@ if submitted:
                 )
             st.caption(f"PDF saved: {pdf_path}")
             if selected_project:
-                register_file(
-                    selected_project,
-                    "reports",
-                    {
-                        "step": "design",
-                        "path": str(pdf_path),
-                        "timestamp": snapshot.timestamp_unix,
-                        "digest": sha256_bytes(pdf_path.read_bytes()),
-                        "type": "pdf",
-                    },
+                # Check if already registered to avoid duplicates
+                current_manifest = load_project_meta(selected_project)
+                from app.components.project_state import load_manifest
+                full_manifest = load_manifest(selected_project)
+                existing_reports = full_manifest.get("files", {}).get("reports", [])
+                pdf_path_str = str(pdf_path)
+                already_registered = any(
+                    isinstance(e, dict) and e.get("path") == pdf_path_str and e.get("step") == "design"
+                    for e in existing_reports
                 )
+                if not already_registered:
+                    register_file(
+                        selected_project,
+                        "reports",
+                        {
+                            "step": "design",
+                            "path": pdf_path_str,
+                            "timestamp": snapshot.timestamp_unix,
+                            "digest": sha256_bytes(pdf_path.read_bytes()),
+                            "type": "pdf",
+                        },
+                    )
     except ValidationError as exc:
         st.error(exc)
 

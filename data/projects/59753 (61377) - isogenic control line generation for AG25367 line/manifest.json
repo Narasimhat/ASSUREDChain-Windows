@@ -142,6 +142,12 @@
       "ki_pct": null,
       "author": "Narasimha Telugu",
       "hdr_pct": 14.0
+    },
+    "cloning_defaults": {
+      "cell_line": "AG25367 line",
+      "operator": "Narasimha Telugu",
+      "date": "2025-11-27",
+      "notes": ""
     }
   },
   "files": {
@@ -343,6 +349,130 @@
         "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764176422_ecd455406694.json",
         "digest": "ecd45540669405bfdf96db9220683b748e6d9c5de48ca54091afc56e1fcb091a",
         "timestamp": 1764176422
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_AG25367 line_1764240590_9940bd3cfb26.json",
+        "digest": "9940bd3cfb263b4af90c3d0d2f8a5405704a757609ee6325bb3a0d97ccf2da1e",
+        "timestamp": 1764240590
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_AG25367 line_1764240753_56a6ca5ac806.json",
+        "digest": "56a6ca5ac80654249beb50f115582db9947f1fb568b77ce9481506af98c35d03",
+        "timestamp": 1764240753
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_snapshot.json",
+        "digest": "auto_saved",
+        "timestamp": 1764244467
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_snapshot.json",
+        "digest": "auto_saved",
+        "timestamp": 1764244808
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_snapshot.json",
+        "digest": "auto_saved",
+        "timestamp": 1764245143
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_snapshot.json",
+        "digest": "auto_saved",
+        "timestamp": 1764245397
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_snapshot.json",
+        "digest": "auto_saved",
+        "timestamp": 1764245468
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_snapshot.json",
+        "digest": "auto_saved",
+        "timestamp": 1764245542
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_snapshot.json",
+        "digest": "bd9a3014a079e22ac8408a34d0409626fdab180d3c6e83061b33f326a23d7497",
+        "timestamp": 1764245543
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_snapshot.json",
+        "digest": "c82511a45f459953443102303fefd8cd5c3d12ac911825888ef2b3cb2f8fd653",
+        "timestamp": 1764247125
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_snapshot.json",
+        "digest": "9d5d742fad5c0cf030e37995eb8ba09d1e62588778ed22d008a67819691b8d97",
+        "timestamp": 1764247454
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_snapshot.json",
+        "digest": "1858d1e092403cdc0e6d4e4c2cadba438a29f2de9e57b9c154b354d4be5ce69b",
+        "timestamp": 1764247517
+      },
+      {
+        "step": "master_bank_registry",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/master_bank_registry/master_bank_snapshot_1764253205_e77280f6ff81.json",
+        "digest": "e77280f6ff81d778ef15a98910b4af4c729de90c430a7c93c975bebf28399b65",
+        "timestamp": 1764253205
+      },
+      {
+        "step": "master_bank_registry",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/master_bank_registry/master_bank_snapshot_1764253499_fbde2378bfe3.json",
+        "digest": "fbde2378bfe3976896bbf4ef03b7ec746260747a1e0ef3ae8c054c2a2775e692",
+        "timestamp": 1764253499
+      },
+      {
+        "step": "master_bank_registry",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/master_bank_registry/master_bank_snapshot_1764253533_6359b6642273.json",
+        "digest": "6359b664227393161fe5eac751dc5e6428e709522881b84724825d8b5dd52c03",
+        "timestamp": 1764253533
+      },
+      {
+        "step": "master_bank_registry",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/master_bank_registry/master_bank_snapshot_1764254024_fc58d183d8ef.json",
+        "digest": "fc58d183d8ef07719ad3441eca892dee32620f3465cd30e00b4609363fe9d9cd",
+        "timestamp": 1764254024
+      },
+      {
+        "step": "master_bank_registry",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/master_bank_registry/master_bank_snapshot_1764255079_1171be7ed1dc.json",
+        "digest": "1171be7ed1dcd80d745ca66142df947c4e1cbdcab6fa946cfdf6346eefa63fe7",
+        "timestamp": 1764255079
+      },
+      {
+        "step": "master_bank_registry",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/master_bank_registry/master_bank_snapshot_1764255247_fabe24a96d85.json",
+        "digest": "fabe24a96d859682d8643c863e2709daf7358f2487ecb9232cf1e217a8a3f519",
+        "timestamp": 1764255247
+      },
+      {
+        "step": "master_bank_registry",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/master_bank_registry/master_bank_snapshot_1764255734_8e2739afa053.json",
+        "digest": "8e2739afa0531ab81bb6ed78d23f30cd862e224cfe6e77707302cf9868a86d66",
+        "timestamp": 1764255734
+      },
+      {
+        "label": "CoA",
+        "filename": "CoA_BIHi005-A_MB01_1764257071_2.json",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/final_reports/CoA_BIHi005-A_MB01_1764257071_2.json",
+        "sha256": "6a1a1a441d95821177efb20b7e1133371dace63494211c6a453877c8a99b7d2d",
+        "timestamp": 1764257071,
+        "source_report": "CoA_BIHi005-A_MB01_1764257071_2.docx",
+        "bank_id": "MB01",
+        "cell_line": "BIHi005-A"
       }
     ],
     "reports": [
@@ -576,6 +706,227 @@
         "timestamp": 1764176422,
         "digest": "61664f2cfd768d2df4121b57a6295f6aa98c4fcc87f9f12e9f6d124487a7b1b7",
         "type": "pdf"
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/cloning/59753-61377-isogenic-control-line-generation-for-AG25367-line-cloning-1764240590.pdf",
+        "timestamp": 1764240590,
+        "digest": "49abcd90756936a7e6f23f70481ac57d074ede125c3fda8f9923dad38d378cee",
+        "type": "pdf"
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/cloning/59753-61377-isogenic-control-line-generation-for-AG25367-line-cloning-1764240753.pdf",
+        "timestamp": 1764240753,
+        "digest": "92e109edb8f9eade92459dc6680f6086f3556abfe218705eb79fa95f3be8acba",
+        "type": "pdf"
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_report.pdf",
+        "timestamp": 1764244467,
+        "digest": "990727aa3447cb8739082ccf2dd163e4c26774223e4c7fcf0f2574cdab75245f",
+        "type": "pdf"
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_report.pdf",
+        "timestamp": 1764244808,
+        "digest": "86b89c1c9d9607f13fe56bd27b4f34d846ea8a427d7f6f5d50f91c3ab350c3d3",
+        "type": "pdf"
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_report.pdf",
+        "timestamp": 1764245143,
+        "digest": "7df78f3674b531830dfbfb3b4cd4388f681035d4d4fc680e72e62c8dfa00a93d",
+        "type": "pdf"
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_report.pdf",
+        "timestamp": 1764245397,
+        "digest": "59fb04e27224e7b2b4b49d4c5ccb3b63b345b3539d0753373720e4651295a883",
+        "type": "pdf"
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_report.pdf",
+        "timestamp": 1764245468,
+        "digest": "9d7f40da1ed6b2c0b4101c04dca33ef4ccb21c73c7724b7a59ab6ea5a90447b5",
+        "type": "pdf"
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_report.pdf",
+        "timestamp": 1764245542,
+        "digest": "5fbc1df15faa621bcb1ca690d77c0de0af45ffc3d789adc7addd0ff4e9ddc6d3",
+        "type": "pdf"
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_report.pdf",
+        "timestamp": 1764245543,
+        "digest": "7900e2185107c46142e173ba1046b42b62e8822af6b35edc9861a4dd2b3be63e",
+        "type": "pdf"
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_report.pdf",
+        "timestamp": 1764247125,
+        "digest": "71af2d29843910ad7432f0133bc541af6d16a1830780070131f99df01fd7d939",
+        "type": "pdf"
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_report.pdf",
+        "timestamp": 1764247454,
+        "digest": "706f7efde1c5ad43f32ee1e2439451a4c06cb05107227a313b2279723992dfba",
+        "type": "pdf"
+      },
+      {
+        "step": "cloning",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_report.pdf",
+        "timestamp": 1764247517,
+        "digest": "45c5b477ee86cd9be94da16dfb438116f9766a478470d8b5408d3619cf5fb3c7",
+        "type": "pdf"
+      },
+      {
+        "step": "master_bank_registry",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/master_bank_registry/59753-61377-isogenic-control-line-generation-for-AG25367-line-master-bank-1764253533.pdf",
+        "timestamp": 1764253533,
+        "digest": "0ec4dfd6e4a9a53304dce32a5cc27204ecb107100f188e6eaab523fdbccda626",
+        "type": "pdf"
+      },
+      {
+        "step": "master_bank_registry",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/master_bank_registry/59753-61377-isogenic-control-line-generation-for-AG25367-line-master-bank-1764254024.pdf",
+        "timestamp": 1764254024,
+        "digest": "ff9f54c678a5943f7b775fc12a0e93cf1c44c600801b354bdff6c2859162d5e2",
+        "type": "pdf"
+      },
+      {
+        "step": "master_bank_registry",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/master_bank_registry/59753-61377-isogenic-control-line-generation-for-AG25367-line-master-bank-1764254024.pdf",
+        "timestamp": 1764254024,
+        "digest": "ae6180de4aa5330b54f29cc32965483004364342a805b166c15d97b18638ee60",
+        "type": "pdf"
+      },
+      {
+        "step": "master_bank_registry",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/master_bank_registry/59753-61377-isogenic-control-line-generation-for-AG25367-line-master-bank-1764255079.pdf",
+        "timestamp": 1764255079,
+        "digest": "1759298d004f5841a0121b72d57200b8165e76f480a46e147ecf02883f5f1b0d",
+        "type": "pdf"
+      },
+      {
+        "step": "master_bank_registry",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/master_bank_registry/59753-61377-isogenic-control-line-generation-for-AG25367-line-master-bank-1764255079.pdf",
+        "timestamp": 1764255079,
+        "digest": "ebc932a82296afe233ba962f22230b3698a52b9ee815fdd64c85433dbd9a2ce5",
+        "type": "pdf"
+      },
+      {
+        "step": "master_bank_registry",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/master_bank_registry/59753-61377-isogenic-control-line-generation-for-AG25367-line-master-bank-1764255247.pdf",
+        "timestamp": 1764255247,
+        "digest": "8c75791966d47a1237dafca825b6fab6eea8329a377dcf814434aff9ac7d08f9",
+        "type": "pdf"
+      },
+      {
+        "step": "master_bank_registry",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/master_bank_registry/59753-61377-isogenic-control-line-generation-for-AG25367-line-master-bank-1764255247.pdf",
+        "timestamp": 1764255247,
+        "digest": "c5c39c09ec0710e20c03bbfff240594ebac987378ede9d58570975f291e016aa",
+        "type": "pdf"
+      },
+      {
+        "step": "master_bank_registry",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/master_bank_registry/59753-61377-isogenic-control-line-generation-for-AG25367-line-master-bank-1764255247.pdf",
+        "timestamp": 1764255247,
+        "digest": "7e6007b2f223b6efc54d52e249c2f09f42f9a6b622f90d4a03065dc5a10fbf90",
+        "type": "pdf"
+      },
+      {
+        "step": "master_bank_registry",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/master_bank_registry/59753-61377-isogenic-control-line-generation-for-AG25367-line-master-bank-1764255734.pdf",
+        "timestamp": 1764255734,
+        "digest": "a4125fd44d42149f50fff93452930a574b60582a442124d5276949e9133db844",
+        "type": "pdf"
+      },
+      {
+        "step": "master_bank_registry",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/master_bank_registry/59753-61377-isogenic-control-line-generation-for-AG25367-line-master-bank-1764255734.pdf",
+        "timestamp": 1764255734,
+        "digest": "6602d3d4351865f4984c85a5d46f48faa8ea6ba6bef297ad5b5266ed9b24859f",
+        "type": "pdf"
+      },
+      {
+        "label": "CoA",
+        "filename": "CoA_BIHi005-A_MB01_1764257071_2.docx",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/final_reports/CoA_BIHi005-A_MB01_1764257071_2.docx",
+        "sha256": "abdc83a5b56844f18d8808ccff4adeedb073cce15ae90ae4e906619b5c54d7c3",
+        "timestamp": 1764257071,
+        "format": "docx",
+        "bank_id": "MB01",
+        "cell_line": "BIHi005-A"
+      },
+      {
+        "label": "CoA",
+        "timestamp": 1764257071,
+        "filename": "CoA_BIHi005-A_MB01_1764257071_2.pdf",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/final_reports/CoA_BIHi005-A_MB01_1764257071_2.pdf",
+        "sha256": "1388c9ba35179eda9f89b0013707257ea9e16a1795c38ade0e9bae0ee2b58e39",
+        "format": "pdf",
+        "bank_id": "MB01",
+        "cell_line": "BIHi005-A"
+      },
+      {
+        "step": "assured_binder",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/binders/59753-61377-isogenic-control-line-generation-for-AG25367-line-assured-binder-1764260768.pdf",
+        "timestamp": 1764260768,
+        "digest": "07c28172a2b4aec7b443cc752404546d626496886b5957ddb3af1af6e5cb9756",
+        "type": "pdf",
+        "skipped": [
+          "CoA_BIHi005-A_MB01_1764257071_2.docx"
+        ],
+        "included_count": 14
+      },
+      {
+        "step": "assured_binder",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/binders/59753-61377-isogenic-control-line-generation-for-AG25367-line-assured-binder-1764261396.pdf",
+        "timestamp": 1764261396,
+        "digest": "66432a9f8b58de95f7e916b689397ee1f40efe8335d9545b14ecb0d53cb1753b",
+        "type": "pdf",
+        "skipped": [
+          "CoA_BIHi005-A_MB01_1764257071_2.docx"
+        ],
+        "included_count": 3
+      },
+      {
+        "step": "design",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/design/59753-61377-isogenic-control-line-generation-for-AG25367-line-design-1763657963.pdf",
+        "timestamp": 1763657963,
+        "digest": "56610c8c9d48c9ec08662d75f43afdaf7da355ef7f0b08f6ac74f8b72c7f0425",
+        "type": "pdf"
+      },
+      {
+        "step": "delivery",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/delivery/59753-61377-isogenic-control-line-generation-for-AG25367-line-delivery-1764167980.pdf",
+        "timestamp": 1764167980,
+        "digest": "0caf0fc8ebdaf7b2d4f50deb02fc518eafad8351f0434ba4cb686d20da85a8c9",
+        "type": "pdf"
+      },
+      {
+        "step": "assured_binder",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/binders/59753-61377-isogenic-control-line-generation-for-AG25367-line-assured-binder-1764261667.pdf",
+        "timestamp": 1764261667,
+        "digest": "18c76d873a08b00607ca8fdec6558eaa01ad636968ab2d90654df6b283484d0f",
+        "type": "pdf",
+        "skipped": [
+          "CoA_BIHi005-A_MB01_1764257071_2.docx"
+        ],
+        "included_count": 5
       }
     ],
     "uploads": [
@@ -1026,6 +1377,1452 @@
         "timestamp": 1764176426601,
         "step": "assessment",
         "kind": "tool_result"
+      },
+      {
+        "filename": "Presentation2.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764240753657_d8d6094ceb.jpg",
+        "timestamp": 1764240753657,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Presentation3.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764240753666_57a6847c15.jpg",
+        "timestamp": 1764240753666,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Presentation4.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764240753675_62e600ef42.jpg",
+        "timestamp": 1764240753675,
+        "step": "cloning",
+        "task": "ver_seq_analysis"
+      },
+      {
+        "filename": "Presentation2.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764240807671_05e00bb1ed.jpg",
+        "timestamp": 1764240807671,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Presentation3.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764240807698_3dbd784064.jpg",
+        "timestamp": 1764240807698,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Presentation4.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764240807709_097f9b5202.jpg",
+        "timestamp": 1764240807709,
+        "step": "cloning",
+        "task": "ver_seq_analysis"
+      },
+      {
+        "filename": "Presentation2.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764244467907_f61e95d6b2.jpg",
+        "timestamp": 1764244467907,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Presentation3.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764244467920_d704df11eb.jpg",
+        "timestamp": 1764244467920,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Presentation4.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764244467929_be0abef7ed.jpg",
+        "timestamp": 1764244467929,
+        "step": "cloning",
+        "task": "ver_seq_analysis"
+      },
+      {
+        "filename": "Presentation2.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764245143226_078b2b285a.jpg",
+        "timestamp": 1764245143226,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Presentation2.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764245992889_1a07f83e07.jpg",
+        "timestamp": 1764245992889,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Presentation2.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764246885961_74a5868b27.jpg",
+        "timestamp": 1764246885961,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Presentation2.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764246886061_1c18a13dde.jpg",
+        "timestamp": 1764246886061,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Presentation3.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764246998701_d47d70b987.jpg",
+        "timestamp": 1764246998701,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Presentation4.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764246998711_643769003e.jpg",
+        "timestamp": 1764246998711,
+        "step": "cloning",
+        "task": "ver_seq_analysis"
+      },
+      {
+        "filename": "Presentation3.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764246998800_72f0f0b8a8.jpg",
+        "timestamp": 1764246998800,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Presentation4.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764246998814_29312551b9.jpg",
+        "timestamp": 1764246998814,
+        "step": "cloning",
+        "task": "ver_seq_analysis"
+      },
+      {
+        "filename": "Presentation3.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764247054412_7e4254f00a.jpg",
+        "timestamp": 1764247054412,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Presentation4.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764247054426_05d38dd1f8.jpg",
+        "timestamp": 1764247054426,
+        "step": "cloning",
+        "task": "ver_seq_analysis"
+      },
+      {
+        "filename": "Presentation3.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764247054530_5988ae46fc.jpg",
+        "timestamp": 1764247054530,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Presentation4.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764247054541_3dc8b96a90.jpg",
+        "timestamp": 1764247054541,
+        "step": "cloning",
+        "task": "ver_seq_analysis"
+      },
+      {
+        "filename": "Presentation3.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764247094509_613f237c8c.jpg",
+        "timestamp": 1764247094509,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Presentation4.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764247094518_245d6e880d.jpg",
+        "timestamp": 1764247094518,
+        "step": "cloning",
+        "task": "ver_seq_analysis"
+      },
+      {
+        "filename": "Presentation3.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764247094618_875d277024.jpg",
+        "timestamp": 1764247094618,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Presentation4.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764247094628_45f051a6f7.jpg",
+        "timestamp": 1764247094628,
+        "step": "cloning",
+        "task": "ver_seq_analysis"
+      },
+      {
+        "filename": "Presentation2.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764247423854_62b37c3cf3.jpg",
+        "timestamp": 1764247423854,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Presentation2.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764247423943_ebd0623a22.jpg",
+        "timestamp": 1764247423943,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251234594_11c5947063.jpg",
+        "timestamp": 1764251234594,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251244219_90c78a55bb.jpg",
+        "timestamp": 1764251244219,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251244235_4302e40e20.jpg",
+        "timestamp": 1764251244235,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251527418_d648fea3d2.jpg",
+        "timestamp": 1764251527418,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "20240306_GB_BIHi005-A-M_MB01_Sterility (Bacteria, Yeast, Fungi, Mycoplasma).pdf",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251527427_5c26bca8bb.pdf",
+        "timestamp": 1764251527427,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251527445_e0657877b5.jpg",
+        "timestamp": 1764251527445,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251558202_d2dc337530.jpg",
+        "timestamp": 1764251558202,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "BIHi005-A-M MB01_virtual karyotype_20240408.docx",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251558219_f4c4ef240f.docx",
+        "timestamp": 1764251558219,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251558288_10c880e2f4.jpg",
+        "timestamp": 1764251558288,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251712519_8c97726c19.jpg",
+        "timestamp": 1764251712519,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251712557_b06e89d0fb.jpg",
+        "timestamp": 1764251712557,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251726917_75e2d12286.jpg",
+        "timestamp": 1764251726917,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251726955_7dfd6dd36f.jpg",
+        "timestamp": 1764251726955,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251756074_5c18d310b2.jpg",
+        "timestamp": 1764251756074,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "BIHi005-A-M MB01 N=3 BookmarkList.xlsx",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251756091_c54e1102a8.xlsx",
+        "timestamp": 1764251756091,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251756102_36e73c3dce.jpg",
+        "timestamp": 1764251756102,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251767890_fdb23685e3.jpg",
+        "timestamp": 1764251767890,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "BIHi005-A-M MB01 N=3 BookmarkList.xlsx",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251767908_d6fddc0bb3.xlsx",
+        "timestamp": 1764251767908,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251767926_2fb96994c2.jpg",
+        "timestamp": 1764251767926,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251768070_696e9bcc78.jpg",
+        "timestamp": 1764251768070,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251768097_f66a374a53.jpg",
+        "timestamp": 1764251768097,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251822533_7a2b71caf4.jpg",
+        "timestamp": 1764251822533,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "BIHi005-A-M MB01-GenomeViewer.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251822549_9c8be159cb.png",
+        "timestamp": 1764251822549,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251822675_687c5eff7a.jpg",
+        "timestamp": 1764251822675,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "BIHi005-A-M MB01-GenomeViewer.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764251983427_207512c491.png",
+        "timestamp": 1764251983427,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764252798263_190ffa6cea.jpg",
+        "timestamp": 1764252798263,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "BIHi005-A-M MB01-GenomeViewer.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764252798270_ed50c95d3d.png",
+        "timestamp": 1764252798270,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764252798396_117258c781.jpg",
+        "timestamp": 1764252798396,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764252798413_8894b3e7cd.jpg",
+        "timestamp": 1764252798413,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "BIHi005-A-M MB01-GenomeViewer.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764252798426_a99546fabe.png",
+        "timestamp": 1764252798426,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764252798536_4c0efc73f6.jpg",
+        "timestamp": 1764252798536,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764252835382_389e12a9c4.jpg",
+        "timestamp": 1764252835382,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764252845367_dd3201cb2f.jpg",
+        "timestamp": 1764252845367,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764252845391_35f885a570.jpg",
+        "timestamp": 1764252845391,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764252865525_2af7c02821.jpg",
+        "timestamp": 1764252865525,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764252904870_0bce42fac0.jpg",
+        "timestamp": 1764252904870,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764252917899_a2f56aba1a.jpg",
+        "timestamp": 1764252917899,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764252917914_0163790849.jpg",
+        "timestamp": 1764252917914,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "CNV-BIHi005-A-1M MB01 N=3.tiff",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764252982840_eaa6c911cf.tiff",
+        "timestamp": 1764252982840,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764252983002_70d90e2a44.jpg",
+        "timestamp": 1764252983002,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764252983015_beedc60ff9.jpg",
+        "timestamp": 1764252983015,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764252989747_de807e3c47.jpg",
+        "timestamp": 1764252989747,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764252989764_ad91d819e0.jpg",
+        "timestamp": 1764252989764,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253052117_e0ecb52319.jpg",
+        "timestamp": 1764253052117,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253146513_183d4ed55e.jpg",
+        "timestamp": 1764253146513,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253153732_43835a849f.jpg",
+        "timestamp": 1764253153732,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253153752_a17347aaa0.jpg",
+        "timestamp": 1764253153752,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253164824_160e900c71.jpg",
+        "timestamp": 1764253164824,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253164841_f565cca60e.jpg",
+        "timestamp": 1764253164841,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253164857_0644971109.jpg",
+        "timestamp": 1764253164857,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253197044_a874e04646.jpg",
+        "timestamp": 1764253197044,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253197058_4a91c7c1a6.jpg",
+        "timestamp": 1764253197058,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253197075_36379ebbdc.jpg",
+        "timestamp": 1764253197075,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Screenshot 2025-11-26 at 15-56-36 EditCo - CRISPR Analysis Results.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253197092_bc003f572d.png",
+        "timestamp": 1764253197092,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253205004_c189d5c3a5.jpg",
+        "timestamp": 1764253205004,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253205022_5ae49c1532.jpg",
+        "timestamp": 1764253205022,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253205041_8f863db1eb.jpg",
+        "timestamp": 1764253205041,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Screenshot 2025-11-26 at 15-56-36 EditCo - CRISPR Analysis Results.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253205054_bca631fbf0.png",
+        "timestamp": 1764253205054,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253227743_7eb83efa0a.jpg",
+        "timestamp": 1764253227743,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253227758_2a2382782e.jpg",
+        "timestamp": 1764253227758,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253227770_50906f8db5.jpg",
+        "timestamp": 1764253227770,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253487959_9fb11a95eb.jpg",
+        "timestamp": 1764253487959,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253495979_b610bb42f4.jpg",
+        "timestamp": 1764253495979,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253495995_789e0517e7.jpg",
+        "timestamp": 1764253495995,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253499380_3479062507.jpg",
+        "timestamp": 1764253499380,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253499397_e1ebc1da14.jpg",
+        "timestamp": 1764253499397,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253530042_3f69323d28.jpg",
+        "timestamp": 1764253530042,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253533556_d6c135a207.jpg",
+        "timestamp": 1764253533556,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253553843_49f0862dbd.jpg",
+        "timestamp": 1764253553843,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253553862_2832204ae4.jpg",
+        "timestamp": 1764253553862,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253630810_f30d9c4e32.jpg",
+        "timestamp": 1764253630810,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253630823_28d275addb.jpg",
+        "timestamp": 1764253630823,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253630838_acaf1d42d8.jpg",
+        "timestamp": 1764253630838,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Sequencing image"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253636263_a23cad6093.jpg",
+        "timestamp": 1764253636263,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253636280_53f9854c83.jpg",
+        "timestamp": 1764253636280,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253924363_3d3f021352.jpg",
+        "timestamp": 1764253924363,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253933215_af3e738b8a.jpg",
+        "timestamp": 1764253933215,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253933233_332a0cf48a.jpg",
+        "timestamp": 1764253933233,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253951097_c11ab72f4b.jpg",
+        "timestamp": 1764253951097,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253951109_9a5c28f86a.jpg",
+        "timestamp": 1764253951109,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253951125_38252a1f09.jpg",
+        "timestamp": 1764253951125,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253959451_d848d3e884.jpg",
+        "timestamp": 1764253959451,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253959465_653b400050.jpg",
+        "timestamp": 1764253959465,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253959478_f9879e4f86.jpg",
+        "timestamp": 1764253959478,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253959488_a11f877929.jpg",
+        "timestamp": 1764253959488,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253988515_4de9757edb.jpg",
+        "timestamp": 1764253988515,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253988529_6e22d8142a.jpg",
+        "timestamp": 1764253988529,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253988543_680a6d11b0.jpg",
+        "timestamp": 1764253988543,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253988557_62f9d34b75.jpg",
+        "timestamp": 1764253988557,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "CNV-BIHi005-A-1M MB01 N=3.tiff",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253988572_9564e372cc.tiff",
+        "timestamp": 1764253988572,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253991503_48a2741198.jpg",
+        "timestamp": 1764253991503,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253991513_1434130ca0.jpg",
+        "timestamp": 1764253991513,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253991526_c4f144a4ef.jpg",
+        "timestamp": 1764253991526,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764253991534_ff3c749d3b.jpg",
+        "timestamp": 1764253991534,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254000311_57caf2e49d.jpg",
+        "timestamp": 1764254000311,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254000336_939d99fd28.jpg",
+        "timestamp": 1764254000336,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254000350_bff933f7df.jpg",
+        "timestamp": 1764254000350,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254000366_9c88bb6372.jpg",
+        "timestamp": 1764254000366,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "GenomeViewer-BIHi005-A-1M MB01.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254000382_99d727b624.png",
+        "timestamp": 1764254000382,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254017604_4d0537d6cf.jpg",
+        "timestamp": 1764254017604,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254017619_07cd637d26.jpg",
+        "timestamp": 1764254017619,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "GenomeViewer-BIHi005-A-1M MB01.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254017626_e58f3c78a7.png",
+        "timestamp": 1764254017626,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254017731_39a719df4f.jpg",
+        "timestamp": 1764254017731,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254017741_f0e7315974.jpg",
+        "timestamp": 1764254017741,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "GenomeViewer-BIHi005-A-1M MB01.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254017757_fd0b974869.png",
+        "timestamp": 1764254017757,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254024223_770d898c78.jpg",
+        "timestamp": 1764254024223,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254024238_963a273c8a.jpg",
+        "timestamp": 1764254024238,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "GenomeViewer-BIHi005-A-1M MB01.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254024248_5eab8c1165.png",
+        "timestamp": 1764254024248,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254024359_5077ee9b9e.jpg",
+        "timestamp": 1764254024359,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254024367_739291af9f.jpg",
+        "timestamp": 1764254024367,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "GenomeViewer-BIHi005-A-1M MB01.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254024373_173b8bf86d.png",
+        "timestamp": 1764254024373,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254028865_a68e2abe08.jpg",
+        "timestamp": 1764254028865,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254028883_40d5d36c27.jpg",
+        "timestamp": 1764254028883,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "GenomeViewer-BIHi005-A-1M MB01.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254028898_30f13499ec.png",
+        "timestamp": 1764254028898,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254029015_74ff4376fc.jpg",
+        "timestamp": 1764254029015,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254029026_4b7434f2c4.jpg",
+        "timestamp": 1764254029026,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "GenomeViewer-BIHi005-A-1M MB01.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764254029035_dd26cb721e.png",
+        "timestamp": 1764254029035,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255157672_e22cef9f58.jpg",
+        "timestamp": 1764255157672,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255166670_6ab2195aa3.jpg",
+        "timestamp": 1764255166670,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255166692_3f6776d6a1.jpg",
+        "timestamp": 1764255166692,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255195923_d352867471.jpg",
+        "timestamp": 1764255195923,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255195936_75f9496946.jpg",
+        "timestamp": 1764255195936,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "GenomeViewer-BIHi005-A-1M MB01.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255195948_69125b430d.png",
+        "timestamp": 1764255195948,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255211450_9ae87312b0.jpg",
+        "timestamp": 1764255211450,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255211465_0f5043b8c7.jpg",
+        "timestamp": 1764255211465,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "GenomeViewer-BIHi005-A-1M MB01.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255211477_9b896c07fb.png",
+        "timestamp": 1764255211477,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255211586_19e58d5225.jpg",
+        "timestamp": 1764255211586,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255219704_828f0867f8.jpg",
+        "timestamp": 1764255219704,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255219720_a096195f06.jpg",
+        "timestamp": 1764255219720,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "GenomeViewer-BIHi005-A-1M MB01.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255219729_3f44659d23.png",
+        "timestamp": 1764255219729,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255219832_dd7c29cc6e.jpg",
+        "timestamp": 1764255219832,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255219844_96fc9b9923.jpg",
+        "timestamp": 1764255219844,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255242887_f21ed2a203.jpg",
+        "timestamp": 1764255242887,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255242909_f2fc3102c8.jpg",
+        "timestamp": 1764255242909,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "GenomeViewer-BIHi005-A-1M MB01.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255242921_7f868d8b8a.png",
+        "timestamp": 1764255242921,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255243077_e1cbe00b41.jpg",
+        "timestamp": 1764255243077,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255243098_586e3cc572.jpg",
+        "timestamp": 1764255243098,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "GenomeViewer-BIHi005-A-1M MB01.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255243111_4635b4ce5b.png",
+        "timestamp": 1764255243111,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255247300_0cf8ba4d68.jpg",
+        "timestamp": 1764255247300,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255247310_e862cd4006.jpg",
+        "timestamp": 1764255247310,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "GenomeViewer-BIHi005-A-1M MB01.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255247317_26f7b9e085.png",
+        "timestamp": 1764255247317,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255247414_e91ea9961a.jpg",
+        "timestamp": 1764255247414,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255247423_39463a91cd.jpg",
+        "timestamp": 1764255247423,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "GenomeViewer-BIHi005-A-1M MB01.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255247434_981b14e327.png",
+        "timestamp": 1764255247434,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255255626_da3d5bd186.jpg",
+        "timestamp": 1764255255626,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255255646_a18f10e65c.jpg",
+        "timestamp": 1764255255646,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "GenomeViewer-BIHi005-A-1M MB01.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255255657_564d8c31ab.png",
+        "timestamp": 1764255255657,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255255752_c7d4369b03.jpg",
+        "timestamp": 1764255255752,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255255761_df9bebf04c.jpg",
+        "timestamp": 1764255255761,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "GenomeViewer-BIHi005-A-1M MB01.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255255769_812e452bb4.png",
+        "timestamp": 1764255255769,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation5.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255271019_e557fdb452.jpg",
+        "timestamp": 1764255271019,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255271039_e80a2e3db0.jpg",
+        "timestamp": 1764255271039,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "GenomeViewer-BIHi005-A-1M MB01.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255271056_7b4de84b32.png",
+        "timestamp": 1764255271056,
+        "step": "master_bank_registry",
+        "label": "MB1",
+        "field": "SNP / Karyotyping"
+      },
+      {
+        "filename": "Presentation6.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255271214_f111e87103.jpg",
+        "timestamp": 1764255271214,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Morphology"
+      },
+      {
+        "filename": "Presentation7.jpg",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255271236_d256857fe6.jpg",
+        "timestamp": 1764255271236,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "Editing verification"
+      },
+      {
+        "filename": "GenomeViewer-BIHi005-A-1M MB01.png",
+        "stored_as": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/master_bank_registry/1764255271259_78e59d4d07.png",
+        "timestamp": 1764255271259,
+        "step": "master_bank_registry",
+        "label": "MB2",
+        "field": "SNP / Karyotyping"
+      }
+    ],
+    "exports": [
+      {
+        "label": "ProjectSummary",
+        "filename": "59753 (61377) - isogenic control line generation for AG25367 line_summary_1764257394.docx",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/exports/59753 (61377) - isogenic control line generation for AG25367 line_summary_1764257394.docx",
+        "sha256": "e9164ad0952625c0ba11eb1ae08a4780c39273b944cf2080f6c8df6f8ea0b672",
+        "timestamp": 1764257395
       }
     ]
   },
@@ -1648,6 +3445,137 @@
       "step": "assessment",
       "action": "snapshot_saved",
       "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/assessment/59753 (61377) - isogenic control line generation for AG25367 line_1764176422_ecd455406694.json"
+    },
+    {
+      "ts": 1764240590,
+      "step": "cloning",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_AG25367 line_1764240590_9940bd3cfb26.json"
+    },
+    {
+      "ts": 1764240753,
+      "step": "cloning",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_AG25367 line_1764240753_56a6ca5ac806.json"
+    },
+    {
+      "ts": 1764244467,
+      "step": "cloning",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_snapshot.json"
+    },
+    {
+      "ts": 1764244808,
+      "step": "cloning",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_snapshot.json"
+    },
+    {
+      "ts": 1764245143,
+      "step": "cloning",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_snapshot.json"
+    },
+    {
+      "ts": 1764245397,
+      "step": "cloning",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_snapshot.json"
+    },
+    {
+      "ts": 1764245468,
+      "step": "cloning",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_snapshot.json"
+    },
+    {
+      "ts": 1764245542,
+      "step": "cloning",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_snapshot.json"
+    },
+    {
+      "ts": 1764245543,
+      "step": "cloning",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_snapshot.json"
+    },
+    {
+      "ts": 1764247125,
+      "step": "cloning",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_snapshot.json"
+    },
+    {
+      "ts": 1764247454,
+      "step": "cloning",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_snapshot.json"
+    },
+    {
+      "ts": 1764247517,
+      "step": "cloning",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/cloning/59753 (61377) - isogenic control line generation for AG25367 line_cloning_snapshot.json"
+    },
+    {
+      "ts": 1764253205,
+      "step": "master_bank_registry",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/master_bank_registry/master_bank_snapshot_1764253205_e77280f6ff81.json"
+    },
+    {
+      "ts": 1764253499,
+      "step": "master_bank_registry",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/master_bank_registry/master_bank_snapshot_1764253499_fbde2378bfe3.json"
+    },
+    {
+      "ts": 1764253533,
+      "step": "master_bank_registry",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/master_bank_registry/master_bank_snapshot_1764253533_6359b6642273.json"
+    },
+    {
+      "ts": 1764254024,
+      "step": "master_bank_registry",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/master_bank_registry/master_bank_snapshot_1764254024_fc58d183d8ef.json"
+    },
+    {
+      "ts": 1764255079,
+      "step": "master_bank_registry",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/master_bank_registry/master_bank_snapshot_1764255079_1171be7ed1dc.json"
+    },
+    {
+      "ts": 1764255247,
+      "step": "master_bank_registry",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/master_bank_registry/master_bank_snapshot_1764255247_fabe24a96d85.json"
+    },
+    {
+      "ts": 1764255734,
+      "step": "master_bank_registry",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/master_bank_registry/master_bank_snapshot_1764255734_8e2739afa053.json"
+    },
+    {
+      "timestamp": 1764257071,
+      "event": "coa_generated",
+      "file": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/final_reports/CoA_BIHi005-A_MB01_1764257071_2.docx",
+      "snapshot": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/final_reports/CoA_BIHi005-A_MB01_1764257071_2.json",
+      "sha256": "abdc83a5b56844f18d8808ccff4adeedb073cce15ae90ae4e906619b5c54d7c3",
+      "context": {
+        "bank_id": "MB01",
+        "cell_line": "BIHi005-A"
+      }
+    },
+    {
+      "timestamp": 1764257395,
+      "event": "projectsummary_generated",
+      "file": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/exports/59753 (61377) - isogenic control line generation for AG25367 line_summary_1764257394.docx",
+      "sha256": "e9164ad0952625c0ba11eb1ae08a4780c39273b944cf2080f6c8df6f8ea0b672"
     }
   ]
 }

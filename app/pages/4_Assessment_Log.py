@@ -412,17 +412,27 @@ if submitted:
         )
         st.caption(f"PDF saved: {pdf_path}")
         if selected_project:
-            register_file(
-                selected_project,
-                "reports",
-                {
-                    "step": "assessment",
-                    "path": str(pdf_path),
-                    "timestamp": snapshot.timestamp_unix,
-                    "digest": sha256_bytes(pdf_path.read_bytes()),
-                    "type": "pdf",
-                },
+            # Check if already registered to avoid duplicates
+            from app.components.project_state import load_manifest
+            current_manifest = load_manifest(selected_project)
+            existing_reports = current_manifest.get("files", {}).get("reports", [])
+            pdf_path_str = str(pdf_path)
+            already_registered = any(
+                isinstance(e, dict) and e.get("path") == pdf_path_str and e.get("step") == "assessment"
+                for e in existing_reports
             )
+            if not already_registered:
+                register_file(
+                    selected_project,
+                    "reports",
+                    {
+                        "step": "assessment",
+                        "path": pdf_path_str,
+                        "timestamp": snapshot.timestamp_unix,
+                        "digest": sha256_bytes(pdf_path.read_bytes()),
+                        "type": "pdf",
+                    },
+                )
         if selected_project:
             defaults_payload = {
                 "cell_line": snapshot.cell_line,

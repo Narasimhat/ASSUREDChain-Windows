@@ -1,0 +1,89 @@
+{
+  "timestamp_unix": 1764252734,
+  "entries": [
+    {
+      "label": "MB1",
+      "data": {
+        "IRIS_ID": "IRIS001",
+        "edit_Name": "PSEN2-SNP-KI",
+        "HPSCReg_Name": "BIHi005-A-1X",
+        "status": "running",
+        "Reason_ForHold": "",
+        "Banking": "Done",
+        "Morph": "Done",
+        "Flourescence": "Done",
+        "Myco": "Done",
+        "Cellpellet_Max": "Done",
+        "SNP": "Done",
+        "STR": "Done",
+        "Cellpellet_PCR": "Done",
+        "verification": "Done",
+        "g_Banding": "Done",
+        "Pluri_FACS": "",
+        "PluriIF_Staining": "",
+        "Trilineage": "",
+        "COA": "",
+        "CTS": "",
+        "Responsible_Person": "Alice",
+        "MB_type": "",
+        "Bemerkung": "",
+        "LN2_Seedbank": "",
+        "Masterbank_freezing_Date": "2025-10-30",
+        "Bank_size": "24",
+        "LN2_Masterbank": "LIN2, Bix3, 10-50"
+      },
+      "attachments": {
+        "SNP": "/workspaces/ASSUREDChain/data/registry/uploads/1764252734608_4461975542.png",
+        "Morph": "/workspaces/ASSUREDChain/data/registry/uploads/1764252734596_5c0cfc222b.jpg",
+        "sequencing_images": [
+          "/workspaces/ASSUREDChain/data/registry/uploads/1764252727399_3884285699.jpg",
+          "/workspaces/ASSUREDChain/data/registry/uploads/1764252734759_cdf3d1b924.jpg",
+          "/workspaces/ASSUREDChain/data/registry/uploads/1764252734759_cdf3d1b924.jpg"
+        ]
+      }
+    },
+    {
+      "label": "MB2",
+      "data": {
+        "IRIS_ID": "IRIS001",
+        "edit_Name": "PSEN2-SNP-KI",
+        "HPSCReg_Name": "BIHi005-A-1Y",
+        "status": "running",
+        "Reason_ForHold": "",
+        "Banking": "Done",
+        "Morph": "Done",
+        "Flourescence": "Done",
+        "Myco": "Done",
+        "Cellpellet_Max": "Done",
+        "SNP": "Done",
+        "STR": "Done",
+        "Cellpellet_PCR": "Done",
+        "verification": "Done",
+        "g_Banding": "Done",
+        "Pluri_FACS": "",
+        "PluriIF_Staining": "",
+        "Trilineage": "",
+        "COA": "",
+        "CTS": "",
+        "Responsible_Person": "Alice",
+        "MB_type": "",
+        "Bemerkung": "",
+        "LN2_Seedbank": "",
+        "Masterbank_freezing_Date": "2025-10-30",
+        "Bank_size": "24",
+        "LN2_Masterbank": "LIN2, Bix3, 10-50"
+      },
+      "attachments": {
+        "SNP": "/workspaces/ASSUREDChain/data/registry/uploads/1764252734783_37b24776d1.png",
+        "Morph": "/workspaces/ASSUREDChain/data/registry/uploads/1764252734771_147dbd320a.jpg",
+        "sequencing_images": [
+          "/workspaces/ASSUREDChain/data/registry/uploads/1764252716096_f8a8d88d31.jpg",
+          "/workspaces/ASSUREDChain/data/registry/uploads/1764252727500_5f19fae5fb.jpg",
+          "/workspaces/ASSUREDChain/data/registry/uploads/1764252727500_5f19fae5fb.jpg",
+          "/workspaces/ASSUREDChain/data/registry/uploads/1764252734953_dc80a09027.jpg",
+          "/workspaces/ASSUREDChain/data/registry/uploads/1764252734953_dc80a09027.jpg"
+        ]
+      }
+    }
+  ]
+}

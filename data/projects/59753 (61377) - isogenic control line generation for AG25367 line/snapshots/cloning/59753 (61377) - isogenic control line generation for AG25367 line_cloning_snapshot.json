@@ -1,0 +1,101 @@
+{
+  "project_id": "59753 (61377) - isogenic control line generation for AG25367 line",
+  "cell_line": "AG25367 line",
+  "operator": "Narasimha Telugu",
+  "date": "2025-11-27",
+  "development": {
+    "thaw_plate": {
+      "done": true,
+      "notes": null,
+      "file_path": null
+    },
+    "plate_on_iota": {
+      "done": true,
+      "notes": null,
+      "file_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764247423854_62b37c3cf3.jpg"
+    },
+    "extract_clones": {
+      "done": true,
+      "notes": null,
+      "file_path": null
+    },
+    "isolate_dna": {
+      "done": true,
+      "notes": null,
+      "file_path": null
+    },
+    "feed_plate1": {
+      "done": true,
+      "notes": null,
+      "file_path": null
+    },
+    "feed_plate2": {
+      "done": true,
+      "notes": null,
+      "file_path": null
+    }
+  },
+  "verification": {
+    "pcr_seq": {
+      "done": true,
+      "notes": null,
+      "file_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764246998701_d47d70b987.jpg"
+    },
+    "seq_analysis": {
+      "done": true,
+      "notes": null,
+      "file_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764246998711_643769003e.jpg"
+    },
+    "split_positive": {
+      "done": true,
+      "notes": "Positive clones; CL-18, 15, 16, 22, 17, 19, 2, 4,    Control lines: Cl-1, 14, 20, and 24 (Unedited Control single cell clones, freeze two clones) ",
+      "file_path": null
+    },
+    "report": {
+      "done": true,
+      "notes": null,
+      "file_path": null
+    }
+  },
+  "seedbank": {
+    "split_positive": {
+      "done": true,
+      "notes": null,
+      "file_path": null
+    },
+    "produce_seedbank": {
+      "done": true,
+      "notes": "Stored at LIN Box2",
+      "file_path": null
+    },
+    "prepare_gdna": {
+      "done": true,
+      "notes": "Stored at -20",
+      "file_path": null
+    },
+    "transfer_validation": {
+      "done": true,
+      "notes": "Given three clones to gropu",
+      "file_path": null
+    }
+  },
+  "karyo": {
+    "submit_samples": {
+      "done": true,
+      "notes": null,
+      "file_path": null
+    },
+    "analyze_and_establish_master": {
+      "done": true,
+      "notes": "Bonn karyotyping",
+      "file_path": null
+    }
+  },
+  "notes": null,
+  "attachments": {
+    "deve_plate_on_iota": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764247423854_62b37c3cf3.jpg",
+    "veri_pcr_seq": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764246998701_d47d70b987.jpg",
+    "veri_seq_analysis": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/uploads/cloning/1764246998711_643769003e.jpg"
+  },
+  "timestamp_unix": 1764247517
+}

@@ -2,7 +2,7 @@ import json
 import sys
 import time
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 import pandas as pd
 import streamlit as st
@@ -26,7 +26,9 @@ from app.components.web3_client import send_log_tx
 DATA_DIR = ROOT / "data" / "registry"
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 REG_PATH = DATA_DIR / "master_bank_registry.csv"
+MASTER_EXCEL_PATH = DATA_DIR / "master_bank_registry_all_projects.xlsx"
 
+# Columns for individual project CSV (no Project_ID/Project_Name)
 COLUMNS = [
     "IRIS_ID",
     "edit_Name",
@@ -65,7 +67,7 @@ SUMMARY_FIELDS = [
     ("STR", "STR profiling"),
 ]
 
-ATTACHMENT_FIELDS = SUMMARY_FIELDS
+ATTACHMENT_FIELDS = SUMMARY_FIELDS + [("general_files", "General evidence"), ("images", "Images (PNG/JPG)")]
 
 FALLBACK_UPLOAD_DIR = DATA_DIR / "uploads"
 FALLBACK_UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
@@ -98,6 +100,39 @@ def slugify(value: str) -> str:
     while "__" in cleaned:
         cleaned = cleaned.replace("__", "_")
     return cleaned.strip("_") or "item"
+
+
+def append_to_master_excel(entries: List[Dict[str, str]], project_id: str, project_name: str) -> None:
+    """Append master bank entries to the consolidated Excel file for all projects."""
+    # Add project information to each entry
+    enriched_entries = []
+    for entry in entries:
+        enriched = {"Project_ID": project_id, "Project_Name": project_name}
+        enriched.update(entry)
+        enriched_entries.append(enriched)
+    
+    new_df = pd.DataFrame(enriched_entries)
+    
+    # Load existing master Excel or create new one
+    if MASTER_EXCEL_PATH.exists():
+        try:
+            existing_df = pd.read_excel(MASTER_EXCEL_PATH, dtype=str)
+            existing_df = existing_df.fillna("")
+            
+            # Remove old entries for this project (to avoid duplicates on re-save)
+            existing_df = existing_df[existing_df["Project_ID"] != project_id]
+            
+            # Append new entries
+            combined_df = pd.concat([existing_df, new_df], ignore_index=True)
+        except Exception:
+            combined_df = new_df
+    else:
+        combined_df = new_df
+    
+    # Save to Excel
+    combined_df = combined_df.fillna("")
+    combined_df.to_excel(MASTER_EXCEL_PATH, index=False, sheet_name="Master Bank Registry")
+    return combined_df
 
 
 def ensure_registry_file() -> None:
@@ -144,6 +179,15 @@ st.title("Step 7 - Master Bank & QC Registry")
 st.caption("Review and maintain master bank entries; anchor finalised records on-chain.")
 
 selected_project = use_project("project")
+
+# Clear uploads state when project changes
+if "last_mb_project" not in st.session_state:
+    st.session_state["last_mb_project"] = selected_project
+elif st.session_state["last_mb_project"] != selected_project:
+    st.session_state["mb_registry_uploads"] = {}
+    st.session_state.pop("mb_registry_snapshot_loaded", None)
+    st.session_state["last_mb_project"] = selected_project
+
 if selected_project:
     upload_dir = project_subdir(selected_project, "uploads", "master_bank_registry")
     snapshot_dir = project_subdir(selected_project, "snapshots", "master_bank_registry")
@@ -153,6 +197,16 @@ else:
     snapshot_dir = FALLBACK_SNAPSHOT_DIR
     report_dir = FALLBACK_REPORT_DIR
 
+# Load existing attachments from the latest snapshot
+latest_snapshot_data = {}
+if snapshot_dir.exists():
+    snapshot_files = sorted(snapshot_dir.glob("master_bank_snapshot_*.json"), key=lambda p: p.stat().st_mtime)
+    if snapshot_files:
+        try:
+            latest_snapshot_path = snapshot_files[-1]
+            latest_snapshot_data = json.loads(latest_snapshot_path.read_text())
+        except Exception:
+            pass
 
 def save_registry_upload(upload, label: str, field_label: str) -> Optional[str]:
     if not upload:
@@ -226,6 +280,23 @@ for idx, display_label in enumerate(display_labels):
     row = working.loc[idx, COLUMNS] if idx < len(working) else pd.Series({col: "" for col in COLUMNS})
     vertical_editor[display_label] = [row.get(col, "") for col in COLUMNS]
 
+editor_state_key = "mb_registry_editor_data"
+stored_editor_df = st.session_state.get(editor_state_key)
+if stored_editor_df is not None and set(display_labels).issubset(stored_editor_df.columns):
+    vertical_editor = stored_editor_df.copy()
+
+col_copy, _ = st.columns([1, 4])
+with col_copy:
+    copy_clicked = st.button(
+        "📋 Copy MB1 → MB2",
+        help="Copy all MB1 values into MB2 so you only tweak differences.",
+    )
+
+if copy_clicked and "MB1" in vertical_editor.columns and "MB2" in vertical_editor.columns:
+    vertical_editor["MB2"] = vertical_editor["MB1"].copy()
+    st.session_state[editor_state_key] = vertical_editor.copy()
+    st.success("✅ Copied MB1 data to MB2! You can now adjust MB2's unique fields.")
+
 editor_result = st.data_editor(
     vertical_editor,
     column_config={
@@ -237,6 +308,8 @@ editor_result = st.data_editor(
     hide_index=True,
 )
 
+st.session_state[editor_state_key] = editor_result.copy()
+
 table_result = editor_result.set_index("Field")
 edited_entries: List[Dict[str, str]] = []
 for display_label in display_labels:
@@ -247,17 +320,49 @@ for display_label in display_labels:
     edited_entries.append(entry)
 
 uploads_state = st.session_state.setdefault("mb_registry_uploads", {})
-attachments_result: Dict[str, Dict[str, str]] = {}
+
+# Initialize uploads_state from latest snapshot if not already loaded
+if "mb_registry_snapshot_loaded" not in st.session_state and latest_snapshot_data:
+    for entry in latest_snapshot_data.get("entries", []):
+        label = entry.get("label", "")
+        attachments = entry.get("attachments", {})
+        if label and attachments:
+            # Flatten any nested lists in attachments (e.g., sequencing_data)
+            flattened_attachments = {}
+            for key, value in attachments.items():
+                if isinstance(value, list):
+                    # Flatten nested lists
+                    flat_list = []
+                    for item in value:
+                        if isinstance(item, list):
+                            flat_list.extend(item)
+                        else:
+                            flat_list.append(item)
+                    flattened_attachments[key] = flat_list
+                else:
+                    flattened_attachments[key] = value
+            uploads_state[label] = flattened_attachments
+    st.session_state["mb_registry_snapshot_loaded"] = True
+
+attachments_result: Dict[str, Dict[str, Any]] = {}
 for display_label in display_labels:
-    attachments_result[display_label] = uploads_state.get(display_label, {}).copy()
+    attachments = uploads_state.get(display_label, {}).copy()
+    # Clean up deprecated sequencing image entries so they no longer appear.
+    if "sequencing_images" in attachments:
+        attachments.pop("sequencing_images", None)
+        if display_label in uploads_state:
+            uploads_state[display_label].pop("sequencing_images", None)
+    attachments_result[display_label] = attachments
 
 if st.button("Save changes", disabled=len(edited_entries) == 0, key="registry_save_changes"):
     updated_df = df.copy()
+    valid_entries = []
     for idx, entry in enumerate(edited_entries):
         assignment = {col: normalize_value(entry.get(col, "")) for col in updated_df.columns}
         has_content = any(value.strip() for value in assignment.values())
         if not has_content:
             continue
+        valid_entries.append(entry)
         target_index = working_indices[idx] if idx < len(working_indices) else None
         if target_index is not None and target_index in updated_df.index:
             for col, value in assignment.items():
@@ -267,7 +372,20 @@ if st.button("Save changes", disabled=len(edited_entries) == 0, key="registry_sa
     updated_df = updated_df.fillna("")
     updated_df.to_csv(REG_PATH, index=False)
     df = updated_df
-    st.success("Registry saved.")
+    
+    # Also append to master Excel for all projects
+    if selected_project and valid_entries:
+        try:
+            from app.components.project_state import load_project_metadata
+            project_meta = load_project_metadata(selected_project)
+            project_name = project_meta.get("name", selected_project)
+            master_df = append_to_master_excel(valid_entries, selected_project, project_name)
+            st.success(f"Registry saved. Master Excel updated with {len(valid_entries)} entries (Total: {len(master_df)} entries across all projects).")
+        except Exception as e:
+            st.success("Registry saved.")
+            st.warning(f"Could not update master Excel: {e}")
+    else:
+        st.success("Registry saved.")
 
 st.markdown("### Summary")
 if not edited_entries:
@@ -285,10 +403,10 @@ else:
 
 if display_labels:
     st.markdown("### Upload evidence")
-for display_label, entry_data in zip(display_labels, edited_entries):
+for idx, (display_label, entry_data) in enumerate(zip(display_labels, edited_entries)):
     st.subheader(display_label)
-    for field_key, field_label in ATTACHMENT_FIELDS:
-        uploader_key = f"upload_{slugify(display_label)}_{slugify(field_label)}"
+    for field_key, field_label in SUMMARY_FIELDS:
+        uploader_key = f"upload_{idx}_{slugify(display_label)}_{slugify(field_label)}"
         uploaded_file = st.file_uploader(f"{field_label} data ({display_label})", key=uploader_key)
         if uploaded_file:
             saved_path = save_registry_upload(uploaded_file, display_label, field_label)
@@ -298,39 +416,50 @@ for display_label, entry_data in zip(display_labels, edited_entries):
                 st.success(f"Stored file at {saved_path}")
         existing = attachments_result[display_label].get(field_key)
         if existing:
-            preview_file(
-                Path(existing),
-                label=Path(existing).name,
-                key_prefix=f"{slugify(display_label)}_{field_key}",
-            )
+            file_path = Path(existing)
+            if file_path.exists():
+                preview_file(
+                    file_path,
+                    label=file_path.name,
+                    key_prefix=f"{idx}_{slugify(display_label)}_{field_key}",
+                )
+            else:
+                st.caption(f"⚠️ File not found: {file_path.name}")
 
-    seq_uploader_key = f"upload_{slugify(display_label)}_sequencing"
+    seq_data_key = f"upload_{idx}_{slugify(display_label)}_sequencing"
     seq_files = st.file_uploader(
         f"Sequencing data ({display_label})",
         type=["ab1", "abi", "fastq", "fq", "gz", "zip"],
         accept_multiple_files=True,
-        key=seq_uploader_key,
-        help="Upload raw traces or processed sequencing archives used during release verification.",
+        key=seq_data_key,
+        help="Upload traces or processed sequencing archives used during release verification.",
     )
+
     if seq_files:
         seq_list = attachments_result[display_label].setdefault("sequencing_data", [])
         state_list = uploads_state.setdefault(display_label, {}).setdefault("sequencing_data", [])
         for seq_file in seq_files:
             saved_path = save_registry_upload(seq_file, display_label, "Sequencing data")
-            if saved_path:
+            if saved_path and saved_path not in seq_list:
                 seq_list.append(saved_path)
                 state_list.append(saved_path)
                 st.success(f"Stored sequencing file at {saved_path}")
 
     existing_seq = attachments_result[display_label].get("sequencing_data", [])
-    if existing_seq:
+    if existing_seq and isinstance(existing_seq, list):
         st.caption("Sequencing data")
-        for idx, seq_path in enumerate(existing_seq):
-            preview_file(
-                Path(seq_path),
-                label=Path(seq_path).name,
-                key_prefix=f"{slugify(display_label)}_seq_{idx}",
-            )
+        for seq_idx, seq_path in enumerate(existing_seq):
+            if seq_path:  # Skip empty entries
+                file_path = Path(seq_path) if isinstance(seq_path, str) else seq_path
+                if file_path.exists():
+                    preview_file(
+                        file_path,
+                        label=file_path.name,
+                        key_prefix=f"{idx}_{slugify(display_label)}_seq_{seq_idx}",
+                    )
+                else:
+                    st.caption(f"⚠️ File not found: {file_path.name}")
+
 
     uploads_state[display_label] = attachments_result.get(display_label, {})
 
@@ -399,10 +528,11 @@ if st.button("Save snapshot & compute hash", disabled=len(edited_entries) == 0, 
 
 snapshot_state = st.session_state.get("mb_registry_snapshot")
 
-export_col_csv, export_col_xlsx = st.columns(2)
+st.markdown("### Export options")
+export_col_csv, export_col_xlsx, export_col_master = st.columns(3)
 with export_col_csv:
     st.download_button(
-        "Download CSV",
+        "Download CSV (Current Project)",
         data=df.to_csv(index=False).encode("utf-8"),
         file_name="master_bank_registry.csv",
         mime="text/csv",
@@ -412,21 +542,45 @@ with export_col_xlsx:
     with pd.ExcelWriter(export_path, engine="xlsxwriter") as buffer:
         df.to_excel(buffer, index=False, sheet_name="Registry")
     st.download_button(
-        "Download Excel",
+        "Download Excel (Current Project)",
         data=export_path.read_bytes(),
         file_name="master_bank_registry.xlsx",
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     )
     export_path.unlink(missing_ok=True)
+with export_col_master:
+    if MASTER_EXCEL_PATH.exists():
+        st.download_button(
+            "📊 Download Master Excel (All Projects)",
+            data=MASTER_EXCEL_PATH.read_bytes(),
+            file_name="master_bank_registry_all_projects.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            help="Download consolidated registry with entries from all projects",
+        )
+    else:
+        st.info("No master Excel file yet. Save entries from any project to create it.")
 
 if snapshot_state:
     st.markdown("### Snapshot PDF")
     image_paths = []
     for label_dict in attachments_result.values():
-        for path_str in label_dict.values():
-            p = Path(path_str)
-            if p.suffix.lower() in {".png", ".jpg", ".jpeg"}:
-                image_paths.append(p)
+        for raw_value in label_dict.values():
+            candidates = raw_value if isinstance(raw_value, list) else [raw_value]
+            for path_value in candidates:
+                if not path_value:
+                    continue
+                # Skip if path_value is still a list (nested lists)
+                if isinstance(path_value, list):
+                    continue
+                if isinstance(path_value, Path):
+                    p = path_value
+                else:
+                    try:
+                        p = Path(path_value)
+                    except (TypeError, ValueError):
+                        continue
+                if p.suffix.lower() in {".png", ".jpg", ".jpeg"}:
+                    image_paths.append(p)
     pdf_timestamp = snapshot_state["payload"].get("timestamp_unix", int(time.time()))
     pdf_filename = build_step_filename(selected_project, "master-bank", pdf_timestamp)
     pdf_path = report_dir / pdf_filename

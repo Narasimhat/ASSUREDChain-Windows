@@ -8,6 +8,10 @@ from typing import Dict, List, Optional
 
 import streamlit as st
 from docx import Document
+try:
+    from PyPDF2 import PdfReader  # for validating PDFs before merge
+except Exception:  # pragma: no cover
+    PdfReader = None
 
 from app.components.file_utils import build_step_filename, merge_pdfs
 from app.components.layout import init_page
@@ -37,13 +41,9 @@ ASSURED_STEP_ORDER: List[tuple[str, str]] = [
     ("delivery", "Delivery"),
     ("assessment", "Assessment"),
     ("cloning", "Cloning"),
-    ("screening", "Screening"),
+    # Removed obsolete steps (screening, form_z, gentaaufzv, lageso-*); keep only active workflow steps.
     ("seed_bank", "Seed Bank"),
     ("master_bank_registry", "Master Bank Registry"),
-    ("form_z", "Form Z Snapshot"),
-    ("gentaaufzv", "GenTAufzV Work Record"),
-    ("lageso-compliance", "LAGESO Compliance"),
-    ("lageso-audit", "LAGESO Audit Documentation"),
 ]
 STEP_LABEL_LOOKUP = {step: label for step, label in ASSURED_STEP_ORDER}
 
@@ -305,6 +305,22 @@ else:
     st.json(audit_entries, expanded=False)
 
 st.subheader("Close-out toolkit")
+
+# Auto-repair manifests: scan for orphaned PDFs
+if st.button("🔧 Scan & repair manifest", help="Find PDFs in reports/ not registered in manifest"):
+    sys.path.append(str(ROOT))
+    from scripts.repair_manifests import repair_manifest
+    result = repair_manifest(selected_project, dry_run=False)
+    if result["status"] == "repaired":
+        st.success(f"✅ Registered {result['added']} orphaned PDF(s)")
+        for file_info in result.get("files", []):
+            st.caption(f"  [{file_info['step']}] {file_info['path']}")
+        st.rerun()
+    elif result["status"] == "clean":
+        st.info("All PDFs already registered")
+    else:
+        st.warning("Repair check failed")
+
 bundle_state = st.session_state.setdefault("project_bundles", {})
 summary_state = st.session_state.setdefault("project_summaries", {})
 bundle_info = bundle_state.get(selected_project)
@@ -370,7 +386,9 @@ with col_summary:
 
 st.subheader("ASSURED binder (merged PDF)")
 pdf_entries_ordered = _ordered_pdf_entries(manifest)
-binder_candidates: List[Dict[str, object]] = []
+
+# De-duplicate: keep only latest PDF per step (by highest timestamp)
+latest_per_step: Dict[str, Dict[str, object]] = {}
 for entry in pdf_entries_ordered:
     if entry.get("step") == "assured_binder":
         continue
@@ -378,15 +396,26 @@ for entry in pdf_entries_ordered:
     if not resolved:
         continue
     step_id = entry.get("step") or "misc"
-    label = STEP_LABEL_LOOKUP.get(step_id, step_id.replace("_", " ").replace("-", " ").title())
-    binder_candidates.append(
-        {
+    timestamp = entry.get("timestamp", 0)
+    # Keep only the latest entry per step
+    if step_id not in latest_per_step or timestamp > latest_per_step[step_id].get("timestamp", 0):
+        label = STEP_LABEL_LOOKUP.get(step_id, step_id.replace("_", " ").replace("-", " ").title())
+        latest_per_step[step_id] = {
             "step": step_id,
             "label": label,
             "path": resolved,
-            "timestamp": entry.get("timestamp", 0),
+            "timestamp": timestamp,
         }
-    )
+
+# Build binder candidates from de-duplicated entries, preserving step order
+binder_candidates: List[Dict[str, object]] = []
+for step, _ in ASSURED_STEP_ORDER:
+    if step in latest_per_step:
+        binder_candidates.append(latest_per_step[step])
+# Add any remaining steps not in ASSURED_STEP_ORDER
+for step_id, entry in latest_per_step.items():
+    if not any(s == step_id for s, _ in ASSURED_STEP_ORDER):
+        binder_candidates.append(entry)
 
 if binder_candidates:
     st.caption("Included PDFs (in merge order):")
@@ -414,23 +443,50 @@ if st.button(
     disabled=not binder_candidates,
 ):
     try:
-        binder_dir = project_subdir(selected_project, "reports", "binders")
-        timestamp_now = int(time.time())
-        binder_filename = build_step_filename(selected_project, "assured-binder", timestamp_now)
-        binder_path = binder_dir / binder_filename
-        merge_pdfs([item["path"] for item in binder_candidates], binder_path)
-        binder_digest = sha256_bytes(binder_path.read_bytes())
-        binder_payload = {
-            "step": "assured_binder",
-            "path": str(binder_path),
-            "timestamp": timestamp_now,
-            "digest": binder_digest,
-            "type": "pdf",
-        }
-        register_file(selected_project, "reports", binder_payload)
-        manifest.setdefault("files", {}).setdefault("reports", []).append(binder_payload)
-        latest_binder_entry = binder_payload
-        st.success(f"ASSURED binder created: {binder_filename}")
+        candidate_paths = [item["path"] for item in binder_candidates]
+        valid_paths: List[Path] = []
+        skipped: List[Path] = []  # Paths missing or failing PDF parse
+        for p in candidate_paths:
+            if not p.exists():
+                skipped.append(p)
+                continue
+            if PdfReader is not None:
+                try:
+                    # Attempt to parse; will raise if truncated/corrupt.
+                    with p.open("rb") as fh:
+                        PdfReader(fh)
+                    valid_paths.append(p)
+                except Exception:
+                    skipped.append(p)
+            else:
+                valid_paths.append(p)  # cannot validate without PyPDF2
+        if not valid_paths:
+            st.error("No valid PDF files to merge. All candidates were missing or invalid.")
+        else:
+            binder_dir = project_subdir(selected_project, "reports", "binders")
+            timestamp_now = int(time.time())
+            binder_filename = build_step_filename(selected_project, "assured-binder", timestamp_now)
+            binder_path = binder_dir / binder_filename
+            merge_pdfs(valid_paths, binder_path)
+            binder_digest = sha256_bytes(binder_path.read_bytes())
+            binder_payload = {
+                "step": "assured_binder",
+                "path": str(binder_path),
+                "timestamp": timestamp_now,
+                "digest": binder_digest,
+                "type": "pdf",
+                "skipped": [p.name for p in skipped],
+                "included_count": len(valid_paths),
+            }
+            register_file(selected_project, "reports", binder_payload)
+            manifest.setdefault("files", {}).setdefault("reports", []).append(binder_payload)
+            latest_binder_entry = binder_payload
+            st.success(f"ASSURED binder created: {binder_filename}")
+            if skipped:
+                st.warning(
+                    f"Skipped {len(skipped)} invalid/missing PDF(s): "
+                    + ", ".join(s.name for s in skipped)
+                )
     except RuntimeError as err:
         st.error(str(err))
     except ValueError:
@@ -447,6 +503,9 @@ if latest_binder_entry:
                 key=f"assured_binder_download_{selected_project}",
             )
         st.caption(f"Merged binder saved: {binder_path}")
+        skipped_list = latest_binder_entry.get("skipped") or []
+        if skipped_list:
+            st.caption("Skipped in last merge: " + ", ".join(skipped_list))
 
 st.subheader("LAGESO documentation")
 files_manifest = manifest.get("files", {})

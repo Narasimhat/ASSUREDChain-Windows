@@ -254,30 +254,71 @@ def snapshot_to_pdf(
         elements.append(_styled_table(table_data, [190, 310]))
         elements.append(Spacer(1, 12))
 
+    def _column_widths(pair_count: int) -> List[int]:
+        if pair_count <= 1:
+            return [190, 310]
+        return [120, 140, 120, 140]
+
+    def _grid_table(items: List[Tuple[str, Any]], pair_count: int) -> List[List[Paragraph]]:
+        pair_count = max(1, pair_count)
+        header: List[Paragraph] = []
+        for _ in range(pair_count):
+            header.append(Paragraph("Field", bold_style))
+            header.append(Paragraph("Value", bold_style))
+        table_rows: List[List[Paragraph]] = [header]
+        for idx in range(0, len(items), pair_count):
+            chunk = items[idx : idx + pair_count]
+            row: List[Paragraph] = []
+            for key, value in chunk:
+                row.append(Paragraph(str(key), bold_style))
+                row.append(Paragraph(_format_value(value), body_style))
+            while len(chunk) < pair_count:
+                row.append(Paragraph("", bold_style))
+                row.append(Paragraph("", body_style))
+                chunk += [("", "")]
+            table_rows.append(row)
+        return table_rows
+
+    def render_dict_block(title: Optional[str], mapping: Dict[str, Any], level: int) -> None:
+        if title:
+            heading_style = heading_styles.get(level, styles["Heading5"])
+            elements.append(Paragraph(title, heading_style))
+        scalar_items: List[Tuple[str, Any]] = []
+        nested_items: List[Tuple[str, Any]] = []
+        for key, val in mapping.items():
+            if isinstance(val, (dict, list)):
+                nested_items.append((key, val))
+            else:
+                scalar_items.append((key, val))
+        if scalar_items:
+            pair_count = 2 if len(scalar_items) >= 6 else 1
+            table_rows = _grid_table(scalar_items, pair_count)
+            elements.append(_styled_table(table_rows, _column_widths(pair_count)))
+            elements.append(Spacer(1, 8))
+        for key, val in nested_items:
+            render_section(key, val, level + 1)
+
     def render_section(name: str, value: Any, level: int = 1) -> None:
         heading_style = heading_styles.get(level, styles["Heading5"])
         if isinstance(value, dict):
-            elements.append(Paragraph(name, heading_style))
-            table_rows: List[List[Paragraph]] = [
-                [Paragraph("Field", bold_style), Paragraph("Value", bold_style)]
-            ]
-            deferred: List[Tuple[str, Any]] = []
-            for key, val in value.items():
-                if isinstance(val, (dict, list)):
-                    deferred.append((key, val))
-                else:
-                    table_rows.append(
-                        [
-                            Paragraph(str(key), bold_style),
-                            Paragraph(_format_value(val), body_style),
-                        ]
-                    )
-            if len(table_rows) > 1:
-                elements.append(_styled_table(table_rows, [190, 310]))
-                elements.append(Spacer(1, 10))
-            for key, val in deferred:
-                render_section(key, val, level + 1)
+            render_dict_block(name, value, level)
         elif isinstance(value, list):
+            if name.lower() == "entries" and all(isinstance(item, dict) for item in value):
+                elements.append(Paragraph(name, heading_style))
+                for idx, item in enumerate(value, start=1):
+                    label = item.get("label") or f"Entry {idx}"
+                    elements.append(Paragraph(label, heading_styles.get(level + 1, heading_style)))
+                    data_block = item.get("data")
+                    if isinstance(data_block, dict):
+                        render_dict_block(None, data_block, level + 2)
+                    attachments_block = item.get("attachments")
+                    if isinstance(attachments_block, dict) and attachments_block:
+                        render_dict_block("Attachments", attachments_block, level + 2)
+                    other_items = {k: v for k, v in item.items() if k not in {"label", "data", "attachments"}}
+                    for key, val in other_items.items():
+                        render_section(key, val, level + 2)
+                    elements.append(Spacer(1, 6))
+                return
             elements.append(Paragraph(name, heading_style))
             if not value:
                 elements.append(Paragraph("No entries", body_style))
@@ -289,16 +330,10 @@ def snapshot_to_pdf(
             elif all(isinstance(item, dict) for item in value):
                 for idx, item in enumerate(value, start=1):
                     elements.append(Paragraph(f"{name} {idx}", heading_styles.get(level + 1, heading_style)))
-                    rows = list(item.items())
-                    table_data: List[List[Paragraph]] = []
-                    for key, val in rows:
-                        table_data.append(
-                            [
-                                Paragraph(str(key), bold_style),
-                                Paragraph(_format_value(val), body_style),
-                            ]
-                        )
-                    elements.append(_styled_table(table_data, [200, 300]))
+                    if isinstance(item, dict):
+                        render_dict_block(None, item, level + 2)
+                    else:
+                        render_section(f"{name} {idx}", item, level + 1)
                     elements.append(Spacer(1, 8))
             else:
                 for idx, item in enumerate(value, start=1):
@@ -392,9 +427,16 @@ def merge_pdfs(pdf_paths: Iterable[Path], output_path: Path) -> Path:
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     merger = PdfMerger()
+    skipped: List[str] = []
     try:
         for path in normalized:
-            merger.append(str(path))
+            try:
+                merger.append(str(path))
+            except Exception:  # Corrupt / unreadable PDF; skip
+                skipped.append(path.name)
+        if len(merger.pages) == 0:
+            merger.close()
+            raise ValueError("All candidate PDFs were invalid or unreadable. Skipped: " + ", ".join(skipped))
         with output_path.open("wb") as handle:
             merger.write(handle)
     finally:
