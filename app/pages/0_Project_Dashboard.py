@@ -359,6 +359,9 @@ elif st.button("📚 Regenerate binders (all projects)", help="Merge latest step
                         f"Open folder: [" + str(p.parent) + "](\"" + p.parent.as_uri() + "\")",
                         help="Opens the local folder if supported by your environment",
                     )
+                    # Copy full path to clipboard
+                    st.code(str(p), language="text")
+                    st.caption("Copy path above to clipboard if needed.")
     elif result["status"] == "clean":
         st.info("All PDFs already registered")
     else:
