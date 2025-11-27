@@ -354,6 +354,11 @@ elif st.button("📚 Regenerate binders (all projects)", help="Merge latest step
                             file_name=p.name,
                             key=f"download_binder_{r.get('project_id','unknown')}_{p.name}",
                         )
+                    # Provide a quick link to the containing folder (local file URI)
+                    st.markdown(
+                        f"Open folder: [" + str(p.parent) + "](\"" + p.parent.as_uri() + "\")",
+                        help="Opens the local folder if supported by your environment",
+                    )
     elif result["status"] == "clean":
         st.info("All PDFs already registered")
     else:
