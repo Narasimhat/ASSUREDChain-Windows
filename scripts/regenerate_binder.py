@@ -6,8 +6,10 @@ into a single binder PDF, registers the artifact in the manifest, and prints
 JSON summary to stdout.
 
 Usage:
-  python scripts/regenerate_binder.py --project <project_id>
-If --project is omitted, the first project found will be used.
+    python scripts/regenerate_binder.py --project <project_id>
+    python scripts/regenerate_binder.py --all
+If --project is omitted, the first project found will be used. Use --all to
+regenerate binders for all projects and print a JSON summary.
 """
 from __future__ import annotations
 import argparse
@@ -138,9 +140,24 @@ def build_binder(project_id: str) -> Dict[str, object]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Regenerate ASSURED binder for a project.")
+    parser = argparse.ArgumentParser(description="Regenerate ASSURED binder for a project or all projects.")
     parser.add_argument("--project", dest="project", help="Project ID")
+    parser.add_argument("--all", dest="all", action="store_true", help="Regenerate binders for all projects")
     args = parser.parse_args()
+
+    if args.all:
+        projects = list_projects()
+        if not projects:
+            print(json.dumps({"status": "no-projects", "results": []}))
+            return
+        results = []
+        for pid in projects:
+            try:
+                results.append(build_binder(pid))
+            except Exception as e:
+                results.append({"status": "error", "project_id": pid, "error": str(e)})
+        print(json.dumps({"status": "ok", "count": len(projects), "results": results}, indent=2))
+        return
 
     project_id = args.project
     if not project_id:
