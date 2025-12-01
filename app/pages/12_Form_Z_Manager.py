@@ -40,20 +40,23 @@ def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+# Column mapping for Form Z template (based on BIHi275 example)
+# Data starts at row 4, columns 1-14
 COLUMNS = [
-    "Lfd. Nr. in Anlage 13/15 Project S2",
-    "Spender — Bezeichnung (Description)",
-    "Spender — RG",
-    "Empfänger — Bezeichnung (Description)",
-    "Empfänger — RG",
-    "Vektor — Bezeichnung (Description)",
-    "übertragene Nukleinsäure vorhanden?",
-    "übertragene Nukleinsäure — Bezeichnung (Description)",
-    "Gefährdungspotential (Hazard potential)",
-    "GVO — Bezeichnung (Description)",
-    "GVO — RG",
-    "GVO — erzeugt oder entsorgt am",
-    "GVO — erhalten am",
+    "Lfd. Nr.",                                    # Col 1
+    "Spender — Bezeichnung (Species)",             # Col 2
+    "Spender — RG",                                # Col 3
+    "Empfänger — Bezeichnung (Parental_cellline)", # Col 4
+    "Empfänger — RG",                              # Col 5
+    "Vektor — Bezeichnung (CRISPR-Cas9)",          # Col 6
+    "Vektor — Bezeichnung (sgRNA_Sequence)",       # Col 7
+    "übertragene Nukleinsäure — Bezeichnung (Gene_Name)",  # Col 8
+    "übertragene Nukleinsäure — Bezeichnung (Donor Sequence)",  # Col 9
+    "Gefährdungspotential (Hazard potential)",     # Col 10
+    "GVO — Bezeichnung (Edited_CellLine)",         # Col 11
+    "GVO — RG",                                    # Col 12
+    "GVO — erzeugt oder erhalten am",              # Col 13
+    "GVO — entsorgt am",                           # Col 14
 ]
 
 
@@ -61,13 +64,13 @@ def evaluate_readiness(rows: List[Dict[str, str]]) -> Dict[str, List[str] | bool
     issues: List[str] = []
     warnings: List[str] = []
     required = [
-        "Lfd. Nr. in Anlage 13/15 Project S2",
-        "Spender — Bezeichnung (Description)",
-        "Empfänger — Bezeichnung (Description)",
-        "Vektor — Bezeichnung (Description)",
-        "übertragene Nukleinsäure — Bezeichnung (Description)",
-        "GVO — Bezeichnung (Description)",
-        "GVO — erzeugt oder entsorgt am",
+        "Lfd. Nr.",
+        "Spender — Bezeichnung (Species)",
+        "Empfänger — Bezeichnung (Parental_cellline)",
+        "Vektor — Bezeichnung (CRISPR-Cas9)",
+        "übertragene Nukleinsäure — Bezeichnung (Gene_Name)",
+        "GVO — Bezeichnung (Edited_CellLine)",
+        "GVO — erzeugt oder erhalten am",
     ]
     for idx, row in enumerate(rows, start=1):
         for field in required:
@@ -79,8 +82,6 @@ def evaluate_readiness(rows: List[Dict[str, str]]) -> Dict[str, List[str] | bool
             warnings.append(f"Row {idx}: Empfänger RG missing.")
         if not (row.get("GVO — RG") or "").strip():
             warnings.append(f"Row {idx}: GVO RG missing.")
-        if not (row.get("übertragene Nukleinsäure vorhanden?") or "").strip():
-            warnings.append(f"Row {idx}: Please specify if nucleic acid is present.")
     return {"ready": not issues, "issues": issues, "warnings": warnings}
 
 init_page("Step 12 - Form Z Manager")
@@ -145,7 +146,7 @@ else:
     excel_template_path = Path(
         st.text_input(
             "Form Z Excel template (.xlsm)",
-            str(excel_template_saved or templates_dir / "Form_Z.xlsm"),
+            str(excel_template_saved or templates_dir / "Z-Form_ BIHi275-A1-A2.xlsx"),
         )
     )
 
@@ -187,9 +188,10 @@ def latest_json(folder: Path) -> Dict:
 charter = latest_json(snapshots_root / "charter")
 design = latest_json(snapshots_root / "design")
 master_bank = latest_json(snapshots_root / "master_bank_registry")
+lageso_compliance = latest_json(snapshots_root / "lageso_compliance")
 
 # Extract charter information
-primary_cell_line = charter.get("primary_cell_line", meta.get("parental_line", ""))
+primary_cell_line = charter.get("cell_line", meta.get("cell_line", ""))
 target_gene = charter.get("target_gene", meta.get("target_gene", ""))
 gene_symbol = charter.get("gene_symbol", meta.get("gene_symbol", ""))
 modification_type = charter.get("modification_type", meta.get("modification_type", ""))
@@ -197,11 +199,24 @@ modification_description = charter.get("modification_description", meta.get("mod
 
 # Extract design information
 design_guides = design.get("selected_guides") or []
-sgrna_sequences = ", ".join([g.get("sequence", "") for g in design_guides if g.get("sequence")])
+additional_guides = design.get("additional_guides") or []
+all_guides = design_guides + additional_guides
+sgrna_sequences = ", ".join([g.get("sequence", "") for g in all_guides if g.get("sequence")])
 primary_guide = d(design_guides, 0, "sequence", default="")
-donor_data = design.get("donor") or {}
-donor_sequence = donor_data.get("sequence", "")
-vector_name = design.get("vector_name", donor_data.get("name", ""))
+
+# Get mutation info from design
+mutation_info = design.get("mutation", {})
+gene_symbol = mutation_info.get("gene", gene_symbol)
+
+# Get donor information
+donors = design.get("donors", [])
+donor_sequence = ""
+vector_name = ""
+if donors:
+    donor_sequence = "; ".join([d.get("sequence", "") for d in donors if d.get("sequence")])
+    donor_types = [d.get("donor_type", "") for d in donors if d.get("donor_type")]
+    if donor_types:
+        vector_name = ", ".join(set(donor_types))
 
 # Extract master bank data - get all cell lines registered
 mb_entries = master_bank.get("entries", [])
@@ -209,34 +224,88 @@ cell_line_names = []
 gvo_dates = []
 for entry in mb_entries:
     mb_data = entry.get("data", {})
-    iris_id = mb_data.get("IRIS_ID", "")
-    if iris_id:
-        cell_line_names.append(iris_id)
+    hpscreg_name = mb_data.get("HPSCReg_Name", "")
+    if hpscreg_name:
+        cell_line_names.append(hpscreg_name)
     date_field = mb_data.get("Date_Registered") or mb_data.get("date_registered", "")
     if date_field:
         gvo_dates.append(str(date_field))
 
 # Get first entry data for defaults
 mb_data = mb_entries[0].get("data", {}) if mb_entries else {}
-first_cell_line = cell_line_names[0] if cell_line_names else mb_data.get("IRIS_ID", "")
+first_cell_line = cell_line_names[0] if cell_line_names else mb_data.get("HPSCReg_Name", "")
 first_date = gvo_dates[0] if gvo_dates else ""
 
-# Build default row with comprehensive auto-fill
-default_row = {
-    "Lfd. Nr. in Anlage 13/15 Project S2": compliance.get("form_z_number", "1"),
-    "Spender — Bezeichnung (Description)": gene_symbol or target_gene,
-    "Spender — RG": compliance.get("spender_rg", "1"),
-    "Empfänger — Bezeichnung (Description)": primary_cell_line,
-    "Empfänger — RG": compliance.get("empfaenger_rg", "1"),
-    "Vektor — Bezeichnung (Description)": vector_name or donor_sequence[:50] if donor_sequence else "",
-    "übertragene Nukleinsäure vorhanden?": "Ja" if donor_sequence else "Nein",
-    "übertragene Nukleinsäure — Bezeichnung (Description)": donor_sequence,
-    "Gefährdungspotential (Hazard potential)": compliance.get("hazard_potential", ""),
-    "GVO — Bezeichnung (Description)": first_cell_line or project_id,
-    "GVO — RG": compliance.get("gvo_rg", "1"),
-    "GVO — erzeugt oder entsorgt am": first_date,
-    "GVO — erhalten am": compliance.get("gvo_received_on", ""),
-}
+# Extract LAGESO Compliance data
+lageso_rows = lageso_compliance.get("rows", [])
+lageso_first = lageso_rows[0] if lageso_rows else {}
+
+# Use LAGESO compliance data if available, otherwise use defaults
+parental_from_lageso = lageso_first.get("Parental cell line", primary_cell_line)
+gene_from_lageso = lageso_first.get("Gene symbol (NCBI ID)", gene_symbol)
+donor_from_lageso = lageso_first.get("Donor/Vector (ssODN seq / Addgene cat. number)", "")
+modification_desc_from_lageso = lageso_first.get("Modification description", modification_description)
+modification_type_lageso = lageso_first.get("Modification Type", modification_type)
+rg_from_lageso = lageso_first.get("RG", "1")
+edit_intent = mutation_info.get("edit_intent", "")
+
+# Format gene name with Ensembl ID and modification type (like: SORT1 (ENSG00000134243)_Knockout)
+gene_name_formatted = f"{gene_from_lageso}_{modification_type_lageso or edit_intent}" if gene_from_lageso else ""
+
+# Format sgRNA sequences with guide IDs and 5'-3' notation 
+# (like: PSEN1_A246E_KI_gRNA1: 5'-TGAGCCACTCAGTCCATTCA-3'; PSEN1_A246E_KI_gRNA2: 5'-ACCTCCCTGAATGGACTGAG-3')
+guide_seqs_formatted = []
+for guide in all_guides:
+    guide_id = guide.get("id", "")
+    guide_seq = guide.get("sequence", "")
+    if guide_seq:
+        if guide_id:
+            guide_seqs_formatted.append(f"{guide_id}: 5'-{guide_seq}-3'")
+        else:
+            guide_seqs_formatted.append(f"5'-{guide_seq}-3'")
+sgrna_formatted = "; ".join(guide_seqs_formatted) if guide_seqs_formatted else ""
+
+# Build default rows - one per cell line from Master Bank (like BIHi275 example has rows 4 and 5)
+default_rows = []
+for idx, cell_line_name in enumerate(cell_line_names if cell_line_names else [first_cell_line or project_id]):
+    row_date = gvo_dates[idx] if idx < len(gvo_dates) else first_date
+    
+    default_row = {
+        "Lfd. Nr.": str(idx + 1),
+        "Spender — Bezeichnung (Species)": "Human",
+        "Spender — RG": rg_from_lageso,
+        "Empfänger — Bezeichnung (Parental_cellline)": f"Human ({parental_from_lageso})" if parental_from_lageso else "Human",
+        "Empfänger — RG": rg_from_lageso,
+        "Vektor — Bezeichnung (CRISPR-Cas9)": f"RNP complex (HiFi-Cas9+{gene_from_lageso}_sgRNA)" if gene_from_lageso else "RNP complex",
+        "Vektor — Bezeichnung (sgRNA_Sequence)": sgrna_formatted,
+        "übertragene Nukleinsäure — Bezeichnung (Gene_Name)": gene_name_formatted,
+        "übertragene Nukleinsäure — Bezeichnung (Donor Sequence)": donor_from_lageso or donor_sequence,
+        "Gefährdungspotential (Hazard potential)": compliance.get("hazard_potential", "Nein; weil: kein onko- / toxingene"),
+        "GVO — Bezeichnung (Edited_CellLine)": cell_line_name,
+        "GVO — RG": rg_from_lageso,
+        "GVO — erzeugt oder erhalten am": row_date,
+        "GVO — entsorgt am": "",
+    }
+    default_rows.append(default_row)
+
+# Use first row as default if no cell lines
+if not default_rows:
+    default_rows = [{
+        "Lfd. Nr.": "1",
+        "Spender — Bezeichnung (Species)": "Human",
+        "Spender — RG": rg_from_lageso,
+        "Empfänger — Bezeichnung (Parental_cellline)": f"Human ({parental_from_lageso})" if parental_from_lageso else "Human",
+        "Empfänger — RG": rg_from_lageso,
+        "Vektor — Bezeichnung (CRISPR-Cas9)": "RNP complex",
+        "Vektor — Bezeichnung (sgRNA_Sequence)": sgrna_formatted,
+        "übertragene Nukleinsäure — Bezeichnung (Gene_Name)": gene_name_formatted,
+        "übertragene Nukleinsäure — Bezeichnung (Donor Sequence)": donor_from_lageso or donor_sequence,
+        "Gefährdungspotential (Hazard potential)": compliance.get("hazard_potential", "Nein; weil: kein onko- / toxingene"),
+        "GVO — Bezeichnung (Edited_CellLine)": first_cell_line or project_id,
+        "GVO — RG": rg_from_lageso,
+        "GVO — erzeugt oder erhalten am": first_date,
+        "GVO — entsorgt am": "",
+    }]
 
 # Store auto-filled metadata in session for SD template export
 if "form_z_autofill" not in st.session_state:
@@ -252,26 +321,45 @@ if "form_z_autofill" not in st.session_state:
         "project_id": project_id,
     }
 
-existing_rows = compliance.get("form_z_rows") or [default_row]
+existing_rows = compliance.get("form_z_rows") or default_rows
 
 st.markdown("### Form Z entries")
+
+# Add refresh button to reload data from latest snapshots
+col_refresh, col_info = st.columns([1, 3])
+with col_refresh:
+    if st.button("🔄 Refresh from latest data", help="Reload table with latest data from Charter, Design, and Master Bank"):
+        # Force refresh by clearing old data and using default_rows
+        existing_rows = default_rows
+        # Update compliance to save the refreshed data
+        update_project_meta(project_id, {"compliance": {**compliance, "form_z_rows": default_rows}})
+        st.success("✅ Table refreshed with latest project data")
+        st.rerun()
+
+with col_info:
+    st.caption("💡 Click 'Refresh from latest data' to update the table with current LAGESO Compliance, Charter, Design, and Master Bank information")
 
 # Show auto-fill info
 with st.expander("📋 Auto-filled data from project"):
     col1, col2 = st.columns(2)
     with col1:
+        st.caption("**From LAGESO Compliance:**")
+        st.write(f"- Lfd.Nr.: `{lageso_first.get('Lfd.Nr.', 'N/A')}`")
+        st.write(f"- Parental cell line: `{parental_from_lageso or 'N/A'}`")
+        st.write(f"- Gene symbol: `{gene_from_lageso or 'N/A'}`")
+        st.write(f"- Donor/Vector: `{donor_from_lageso[:50] + '...' if len(donor_from_lageso) > 50 else donor_from_lageso or 'N/A'}`")
+        st.write(f"- RG: `{rg_from_lageso or 'N/A'}`")
         st.caption("**From Project Charter:**")
         st.write(f"- Primary cell line: `{primary_cell_line or 'N/A'}`")
-        st.write(f"- Target gene: `{target_gene or 'N/A'}`")
-        st.write(f"- Gene symbol: `{gene_symbol or 'N/A'}`")
         st.write(f"- Modification type: `{modification_type or 'N/A'}`")
     with col2:
         st.caption("**From Design Log:**")
-        st.write(f"- sgRNA sequences: `{sgrna_sequences or 'N/A'}`")
-        st.write(f"- Donor/Vector: `{vector_name or 'N/A'}`")
+        st.write(f"- sgRNA sequences: `{sgrna_sequences[:50] + '...' if len(sgrna_sequences) > 50 else sgrna_sequences or 'N/A'}`")
+        st.write(f"- Vector name: `{vector_name or 'N/A'}`")
         st.caption("**From Master Bank Registry:**")
         if cell_line_names:
             st.write(f"- Cell lines: `{', '.join(cell_line_names)}`")
+            st.write(f"- First date: `{first_date or 'N/A'}`")
         else:
             st.write("- No cell lines registered yet")
 
@@ -284,7 +372,7 @@ table_editor = st.data_editor(
 )
 table_rows = table_editor.to_dict("records") if hasattr(table_editor, "to_dict") else list(table_editor)
 
-readiness = evaluate_readiness(table_rows or [default_row])
+readiness = evaluate_readiness(table_rows or default_rows)
 
 
 def save_form_z_snapshot(rows: List[Dict[str, str]]):
@@ -363,21 +451,85 @@ def generate_excel(rows: List[Dict[str, str]]):
     if load_workbook is None:
         st.error("openpyxl is required (`pip install openpyxl`).")
         return
-    if not excel_template_path.exists():
-        st.error(f"Excel template not found: {excel_template_path}")
-        return
+    # Resolve a safe Excel template path. Guard against OSError on exists() for bad inputs.
+    template_path = excel_template_path
+    try:
+        exists = False
+        try:
+            exists = template_path.exists()
+        except OSError:
+            exists = False
+        if not exists:
+            fallback = templates_dir / "Z-Form_ BIHi275-A1-A2.xlsx"
+            if fallback.exists():
+                template_path = fallback
+            else:
+                # Any .xlsx/.xlsm in templates dir as last resort
+                candidates = sorted(list(templates_dir.glob("*.xlsm")) + list(templates_dir.glob("*.xlsx")))
+                if candidates:
+                    template_path = candidates[0]
+                else:
+                    st.error("No Excel template found. Please upload a Form Z template in the Templates section.")
+                    return
+    except Exception as exc:
+        st.warning(f"Invalid template path. Falling back to default. Details: {exc}")
+        fallback = templates_dir / "Z-Form_ BIHi275-A1-A2.xlsx"
+        if fallback.exists():
+            template_path = fallback
+        else:
+            candidates = sorted(list(templates_dir.glob("*.xlsm")) + list(templates_dir.glob("*.xlsx")))
+            if candidates:
+                template_path = candidates[0]
+            else:
+                st.error("No Excel template found. Please upload a Form Z template in the Templates section.")
+                return
 
-    wb = load_workbook(excel_template_path, keep_vba=True)
+    wb = load_workbook(template_path, keep_vba=True)
     sheet_name = wb.sheetnames[0]
     ws = wb[sheet_name]
 
+    # Get cell line names from Master Bank Registry
+    autofill = st.session_state.get("form_z_autofill", {})
+    cell_line_names = autofill.get("cell_line_names", [])
+    
+    # Write all rows to Excel
     for offset, row in enumerate(rows or [default_row]):
         for col_idx, header in enumerate(COLUMNS, start=1):
             ws.cell(row=start_row + offset, column=col_idx, value=row.get(header, ""))
 
     timestamp = int(time.time())
-    out_path = reports_dir / f"{project_id}_FormZ_{timestamp}.xlsm"
+    
+    # Create filename with all cell line names: Z-Form_ BIHi275-A1-A2.xlsx
+    # Extract just the cell line identifiers (like BIHi005-A-1X) and combine with hyphens
+    def _safe_filename_component(s: str) -> str:
+        s = (s or "").strip()
+        # Allow letters, numbers, dash and underscore; replace others with '-'
+        s = s.replace(" ", "-").replace("/", "-").replace("\\", "-")
+        # Collapse multiple dashes
+        while "--" in s:
+            s = s.replace("--", "-")
+        # Cap component length to 40 chars to keep overall filename reasonable
+        return s[:40]
+
+    if cell_line_names:
+        formatted_names = [_safe_filename_component(name) for name in cell_line_names]
+        combined_name = "-".join(formatted_names)
+        # Final safety cap: ensure entire filename (without path) stays < 120 chars
+        base_name = f"Z-Form_ {combined_name}.xlsx"
+        if len(base_name) > 120:
+            # Trim the combined part conservatively
+            keep_len = max(1, 120 - len("Z-Form_ .xlsx"))
+            combined_name = combined_name[:keep_len]
+            base_name = f"Z-Form_ {combined_name}.xlsx"
+        out_path = reports_dir / base_name
+    else:
+        # Fallback if no cell lines found
+        out_path = reports_dir / f"{project_id}_FormZ_{timestamp}.xlsx"
+        out_path = reports_dir / f"{project_id}_FormZ_{timestamp}.xlsx"
+    
     wb.save(out_path)
+    wb.close()
+    
     register_file(
         project_id,
         "reports",
@@ -385,13 +537,14 @@ def generate_excel(rows: List[Dict[str, str]]):
             "step": "form_z",
             "path": str(out_path),
             "timestamp": timestamp,
-            "type": "xlsm",
+            "type": "xlsx",
             "label": "Form Z Excel",
+            "cell_lines": cell_line_names,
         },
     )
-    st.success(f"Form Z Excel generated: {out_path.name}")
+    st.success(f"✅ Form Z Excel generated: {out_path.name}")
     with out_path.open("rb") as handle:
-        st.download_button("Download Form Z Excel", handle, file_name=out_path.name)
+        st.download_button("Download Form Z Excel", handle, file_name=out_path.name, key=f"formz_excel_{timestamp}")
 
 
 def generate_word(rows: List[Dict[str, str]]):

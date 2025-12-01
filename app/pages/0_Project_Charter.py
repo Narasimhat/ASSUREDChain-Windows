@@ -47,6 +47,7 @@ def _render_charter_summary(meta: Dict[str, object]) -> Dict[str, object]:
         "compliance_scope": meta.get("compliance_scope", ""),
         "target_milestone": meta.get("target_milestone", ""),
         "owner": meta.get("owner", ""),
+        "disease_relevance": meta.get("disease_relevance", ""),
     }
 
 
@@ -73,6 +74,7 @@ def main() -> None:
     default_compliance = meta.get("compliance_scope", "Research only")
     default_owner = meta.get("owner", "")
     default_milestone = _parse_date(meta.get("target_milestone"))
+    default_disease = meta.get("disease_relevance", "")
 
     with st.form("project_charter_form"):
         objective = st.text_area(
@@ -96,6 +98,7 @@ def main() -> None:
             )
             cell_line = st.text_input("Primary cell line", value=default_cell_line)
             owner = st.text_input("Project owner / lead scientist", value=default_owner)
+            disease_relevance = st.text_input("Disease relevance", value=default_disease, placeholder="e.g., Alzheimer's disease, Cancer")
         with col2:
             compliance_scope = st.selectbox(
                 "Compliance scope",
@@ -132,10 +135,35 @@ def main() -> None:
             "compliance_scope": compliance_scope,
             "owner": owner.strip(),
             "target_milestone": target_milestone.isoformat(),
+            "disease_relevance": disease_relevance.strip(),
         }
         update_project_meta(selected_project, updates)
         meta = load_project_meta(selected_project)
-        st.success("Project charter updated.")
+        
+        # Create charter snapshot as JSON
+        charter_snapshots_dir = project_subdir(selected_project, "snapshots", "charter")
+        timestamp = int(time.time())
+        snapshot_payload = {
+            "project_id": selected_project,
+            "timestamp_unix": timestamp,
+            **updates
+        }
+        snapshot_filename = f"{selected_project}_{timestamp}_{_sha256_bytes(json.dumps(snapshot_payload).encode())[:12]}.json"
+        snapshot_path = charter_snapshots_dir / snapshot_filename
+        snapshot_path.write_text(json.dumps(snapshot_payload, indent=2), encoding="utf-8")
+        
+        register_file(
+            selected_project,
+            "snapshots",
+            {
+                "step": "charter",
+                "path": str(snapshot_path),
+                "timestamp": timestamp,
+                "digest": _sha256_bytes(snapshot_path.read_bytes()),
+            },
+        )
+        
+        st.success("Project charter updated and snapshot saved.")
 
     st.subheader("Charter summary")
     summary_payload = _render_charter_summary(meta)

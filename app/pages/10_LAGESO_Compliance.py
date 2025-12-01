@@ -133,26 +133,106 @@ def latest_json(folder: Path) -> Dict:
     return {}
 
 
+# Check if force refresh is requested
+force_refresh = st.session_state.get("lageso_force_refresh", False)
+if force_refresh:
+    st.session_state.lageso_force_refresh = False
+
+# Always start fresh - clear saved rows unless user explicitly saved this session
+if "lageso_user_saved" not in st.session_state:
+    row_defaults = {}
+
+# Load data from all project steps
+charter = latest_json(snapshots_root / "charter")
 design = latest_json(snapshots_root / "design")
+delivery = latest_json(snapshots_root / "delivery")
 assessment = latest_json(snapshots_root / "assessment")
+cloning = latest_json(snapshots_root / "cloning")
 screening = latest_json(snapshots_root / "screening")
 master_bank = latest_json(snapshots_root / "master_bank_registry")
 
+# Extract charter information
+primary_cell_line = charter.get("cell_line", meta.get("cell_line", ""))
+edit_program = charter.get("edit_program", meta.get("edit_program", ""))
+compliance_scope = charter.get("compliance_scope", meta.get("compliance_scope", ""))
+disease = charter.get("disease_relevance", meta.get("disease_relevance", meta.get("disease", "")))
+owner = charter.get("owner", meta.get("owner", ""))
+
+# Extract design information
+design_mutation = design.get("mutation") or {}
+gene_symbol = design_mutation.get("gene", meta.get("gene", ""))
+edit_intent = design_mutation.get("edit_intent", "")
+
+# Extract gRNAs (up to 2 from selected_guides and additional_guides)
 design_guides = design.get("selected_guides") or []
+additional_guides = design.get("additional_guides") or []
+all_guides = design_guides + additional_guides
+grna1 = all_guides[0].get("sequence", "") if len(all_guides) > 0 else ""
+grna1_id = all_guides[0].get("id", "") if len(all_guides) > 0 else ""
+grna2 = all_guides[1].get("sequence", "") if len(all_guides) > 1 else ""
+grna2_id = all_guides[1].get("id", "") if len(all_guides) > 1 else ""
+
+# Format: ID: sequence
+sgrna1_formatted = f"{grna1_id}: {grna1}" if grna1_id and grna1 else grna1
+sgrna2_formatted = f"{grna2_id}: {grna2}" if grna2_id and grna2 else grna2
+sgrna_sequences = f"{sgrna1_formatted}; {sgrna2_formatted}" if sgrna2_formatted else sgrna1_formatted
+
+# Extract donors from 'donors' array (up to 2)
+design_donors = design.get("donors") or []
+donor1 = design_donors[0] if len(design_donors) > 0 else {}
+donor2 = design_donors[1] if len(design_donors) > 1 else {}
+
+donor1_sequence = donor1.get("sequence", "")
+donor1_type = donor1.get("donor_type", "")
+donor2_sequence = donor2.get("sequence", "")
+donor2_type = donor2.get("donor_type", "")
+
+# Also check old donor field for backward compatibility
 design_primers = design.get("primer_pairs") or []
 design_donor = design.get("donor") or {}
+if not donor1_sequence:
+    donor1_sequence = design_donor.get("sequence", "")
+    donor1_type = design_donor.get("donor_type", design_donor.get("type", ""))
 
+vector_name = design.get("vector_name", design_donor.get("name", ""))
+addgene_number = design.get("addgene_number", design_donor.get("addgene_cat", ""))
+
+# Extract master bank data - get all cell lines registered
 mb_entries = master_bank.get("entries") or []
-mb_data = mb_entries[0].get("data", {}) if mb_entries else {}
+cell_line_names = []
+iris_ids = []
+registration_dates = []
+zygosities = []
 
-cell_line_name = meta.get("cell_line") or mb_data.get("HPSCReg_Name") or compliance.get("cell_line", "")
+for entry in mb_entries:
+    mb_data = entry.get("data", {})
+    cell_name = mb_data.get("HPSCReg_Name") or mb_data.get("IRIS_ID", "")
+    if cell_name:
+        cell_line_names.append(cell_name)
+    iris_id = mb_data.get("IRIS_ID", "")
+    if iris_id:
+        iris_ids.append(iris_id)
+    reg_date = mb_data.get("Date_Registered") or mb_data.get("date_registered", "")
+    if reg_date:
+        registration_dates.append(str(reg_date))
+    # Use verification field for Zygosity
+    zyg = mb_data.get("verification", mb_data.get("Zygosity", ""))
+    if zyg:
+        zygosities.append(zyg)
+
+# Get first entry for defaults
+mb_data = mb_entries[0].get("data", {}) if mb_entries else {}
+first_cell_line = cell_line_names[0] if cell_line_names else ""
+first_iris_id = iris_ids[0] if iris_ids else project_id
+first_date = registration_dates[0] if registration_dates else time.strftime("%Y-%m-%d")
+first_zygosity = zygosities[0] if zygosities else ""
+
+# Use full project ID (e.g., "59753 (61377)")
+bank_identifier = project_id
+
+cell_line_name = first_cell_line or meta.get("cell_line") or compliance.get("cell_line", "")
 operator_name = (
-    compliance.get("responsible_person") or meta.get("owner") or meta.get("contacts", {}).get("operator", "")
-)
-bank_identifier = (
-    mb_data.get("IRIS_ID")
-    or mb_data.get("HPSCReg_Name")
-    or compliance.get("bank_id", "")
+    compliance.get("responsible_person") or owner or meta.get("owner") or meta.get("contacts", {}).get("operator", "")
 )
 
 values_preview = {
@@ -182,28 +262,124 @@ values_preview = {
 st.markdown("### Current values derived from snapshots")
 st.json(values_preview)
 
+# Build comprehensive auto-filled default row
+# Format donor field with both donors if available
+# Create pattern: "GeneName_EditType_ssODN1: sequence1; GeneName_EditType_ssODN2: sequence2"
+donor_field = ""
+
+# Extract gene name from gene_symbol (remove NCBI ID if present)
+gene_name_short = gene_symbol.split("(")[0].strip() if gene_symbol else "Gene"
+gene_name_short = gene_name_short.split()[0]  # Get first word only
+
+# Create donor prefix based on gene and edit type
+edit_type_short = edit_intent.replace("-", "_") if edit_intent else "Edit"
+
+def format_donor_with_id(sequence: str, donor_num: int, gene: str, edit: str) -> str:
+    """Format donor sequence with ID prefix"""
+    if not sequence:
+        return ""
+    # Check if sequence already has a prefix pattern (contains colon in first 50 chars)
+    if ":" in sequence[:50]:
+        return sequence  # Already has prefix
+    # Add prefix: GeneName_EditType_ssODN#: sequence
+    return f"{gene}_{edit}_ssODN{donor_num}: {sequence}"
+
+if donor1_type == "ssODN" and donor1_sequence:
+    donor1_formatted = format_donor_with_id(donor1_sequence, 1, gene_name_short, edit_type_short)
+    donor_field = donor1_formatted
+    
+    if donor2_type == "ssODN" and donor2_sequence:
+        donor2_formatted = format_donor_with_id(donor2_sequence, 2, gene_name_short, edit_type_short)
+        donor_field = f"{donor1_formatted}; {donor2_formatted}"
+elif vector_name or addgene_number:
+    donor_field = f"{vector_name} (Addgene #{addgene_number})" if addgene_number and vector_name else vector_name
+elif donor1_sequence:
+    donor_field = donor1_sequence
+
 default_row = {
     "Lfd.Nr.": compliance.get("sequential_number", "1"),
-    "Parental cell line": compliance.get("parental_cell_line", meta.get("parental_line", "")),
-    "Cell line name": compliance.get("cell_line", cell_line_name),
+    "Parental cell line": primary_cell_line,
+    "Cell line name": cell_line_name,
     "Link Form Z": compliance.get("link_form_z", ""),
-    "IRIS ID": compliance.get("bank_id", bank_identifier),
-    "Gene symbol (NCBI ID)": compliance.get("gene_symbol_ncbi", meta.get("gene", "")),
-    "crRNA/sgRNA sequence": values_preview["gRNA1"],
-    "Donor/Vector (ssODN seq / Addgene cat. number)": compliance.get("donor_vector", values_preview["DonorSeq"]),
-    "Modification Type": values_preview["Edit"],
+    "IRIS ID": bank_identifier,
+    "Gene symbol (NCBI ID)": gene_symbol,
+    "crRNA/sgRNA sequence": sgrna_sequences,
+    "Donor/Vector (ssODN seq / Addgene cat. number)": donor_field,
+    "Modification Type": edit_intent or edit_program,
     "Modification description": compliance.get("modification_description", ""),
-    "Zygosity": compliance.get("zygosity", ""),
-    "Date of Registration": compliance.get("registration_date", time.strftime("%Y-%m-%d")),
-    "RG": compliance.get("risk_classification", ""),
-    "Disease": compliance.get("disease", meta.get("disease", "")),
+    "Zygosity": first_zygosity,
+    "Date of Registration": first_date,
+    "RG": compliance.get("risk_classification", "1"),
+    "Disease": disease,
 }
 
+# Create multiple rows - one per Master Bank entry
+default_rows = []
+if mb_entries:
+    for idx, entry in enumerate(mb_entries, start=1):
+        mb_data_entry = entry.get("data", {})
+        entry_cell_line = mb_data_entry.get("HPSCReg_Name") or mb_data_entry.get("IRIS_ID", "")
+        entry_iris_id = mb_data_entry.get("IRIS_ID", "")
+        entry_date = mb_data_entry.get("Date_Registered") or mb_data_entry.get("date_registered", "")
+        # Use verification field for Zygosity
+        entry_zygosity = mb_data_entry.get("verification", mb_data_entry.get("Zygosity", ""))
+        
+        # Use full project ID for IRIS ID
+        entry_iris_full = project_id
+        
+        default_rows.append({
+            "Lfd.Nr.": compliance.get("sequential_number", str(idx)),
+            "Parental cell line": primary_cell_line,
+            "Cell line name": entry_cell_line,
+            "Link Form Z": compliance.get("link_form_z", ""),
+            "IRIS ID": entry_iris_full,
+            "Gene symbol (NCBI ID)": gene_symbol,
+            "crRNA/sgRNA sequence": sgrna_sequences,
+            "Donor/Vector (ssODN seq / Addgene cat. number)": donor_field,
+            "Modification Type": edit_intent or edit_program,
+            "Modification description": compliance.get("modification_description", ""),
+            "Zygosity": entry_zygosity,
+            "Date of Registration": str(entry_date) if entry_date else time.strftime("%Y-%m-%d"),
+            "RG": compliance.get("risk_classification", "1"),
+            "Disease": disease,
+        })
+else:
+    # No master bank entries, use default single row
+    default_rows = [default_row]
+
+# Show auto-fill sources
+with st.expander("ℹ️ Auto-filled data sources", expanded=False):
+    st.markdown("""
+    **Data extracted from:**
+    - **Charter**: Parental cell line, Gene symbol, NCBI ID, Modification type/description, Disease, Risk group
+    - **Design Log**: sgRNA sequences, Donor/Vector info, Addgene numbers
+    - **Master Bank Registry**: Cell line names, IRIS IDs, Registration dates, Zygosity
+    """)
+    if charter:
+        st.markdown(f"✓ Charter data loaded")
+    if design:
+        st.markdown(f"✓ Design data loaded")
+    if master_bank:
+        st.markdown(f"✓ Master Bank data loaded ({len(mb_entries)} entries)")
+
 existing_rows = row_defaults.get(method, {}).get("rows") or []
+
+# Always use fresh auto-filled data from snapshots
 if not existing_rows:
-    existing_rows = [default_row]
+    existing_rows = default_rows
 
 st.markdown("### Compliance table")
+
+col1, col2 = st.columns([3, 1])
+with col2:
+    if st.button("🔄 Refresh from latest data"):
+        # Set flag to force refresh on next rerun
+        st.session_state.lageso_force_refresh = True
+        # Clear old cached data
+        st.session_state.pop(f"lageso_table_{method}", None)
+        st.success("✓ Refreshing with latest project data...")
+        st.rerun()
+
 table_editor = st.data_editor(
     existing_rows,
     column_config={col: st.column_config.TextColumn() for col in COLUMN_HEADERS},
@@ -409,15 +585,111 @@ def generate_excel(rows: List[Dict[str, str]]):
         st.download_button("Download populated .xlsm", handle, file_name=out_path.name)
 
 
-col_save, col_excel, col_anchor = st.columns(3)
+def append_to_sd_template(rows: List[Dict[str, str]]):
+    """Append LAGESO Compliance data to SD template Sheet 3 (CRISPR)"""
+    if load_workbook is None:
+        st.error("openpyxl is required (`pip install openpyxl`).")
+        return
+    
+    sd_template_path = templates_dir / "13_15 SD Proj 1-3.xlsm"
+    if not sd_template_path.exists():
+        st.error(f"SD Template not found: {sd_template_path}")
+        return
+
+    try:
+        wb = load_workbook(sd_template_path, keep_vba=True)
+        
+        # Sheet 3 is named "CRISPR" (index 2, 0-based)
+        if len(wb.sheetnames) < 3:
+            st.error("SD template doesn't have 3 sheets")
+            return
+        
+        ws = wb.worksheets[2]  # Third sheet (CRISPR)
+        
+        # Find the last row with data to append at the bottom
+        last_row = 1  # Start from row 1
+        for row in ws.iter_rows(min_row=1, max_col=1):  # Check column A
+            if row[0].value is not None:
+                last_row = row[0].row
+        
+        start_row = last_row + 1  # Append after the last row with data
+        
+        # Column mapping for SD template Sheet 3
+        sd_columns = {
+            "Lfd.Nr.": 1,  # Column A
+            "Parental cell line": 2,  # Column B
+            "Cell line name": 3,  # Column C
+            "Link Form Z": 4,  # Column D
+            "IRIS ID": 5,  # Column E
+            "Gene symbol (NCBI ID)": 6,  # Column F
+            "crRNA/sgRNA sequence": 7,  # Column G
+            "Donor/Vector (ssODN seq / Addgene cat. number)": 8,  # Column H
+            "Modification Type": 9,  # Column I
+            "Modification description": 10,  # Column J
+            "Zygosity": 11,  # Column K
+            "Date of Registration": 12,  # Column L
+            "RG": 13,  # Column M
+            "Disease": 14,  # Column N
+        }
+        
+        # Write each row to the sheet
+        for row_idx, row in enumerate(rows):
+            excel_row = start_row + row_idx
+            for col_name, col_num in sd_columns.items():
+                try:
+                    cell = ws.cell(row=excel_row, column=col_num)
+                    # Check if this cell is part of a merged range
+                    is_merged = False
+                    for merged_range in ws.merged_cells.ranges:
+                        if cell.coordinate in merged_range:
+                            is_merged = True
+                            break
+                    
+                    if not is_merged:
+                        cell.value = row.get(col_name, "")
+                except (AttributeError, TypeError):
+                    # Skip cells that can't be written to
+                    continue
+        
+        # Save the updated file
+        timestamp = int(time.time())
+        out_path = reports_dir / f"SD_Proj3_{project_id}_{timestamp}.xlsm"
+        wb.save(out_path)
+        
+        register_file(
+            project_id,
+            "reports",
+            {
+                "step": "lageso_sd_export",
+                "path": str(out_path),
+                "timestamp": timestamp,
+                "label": "SD Project 3 Export",
+                "type": "xlsm",
+            },
+        )
+        
+        st.success(f"✓ Exported {len(rows)} row(s) to SD template: {out_path.name}")
+        with out_path.open("rb") as handle:
+            st.download_button("📥 Download SD Project 3", handle, file_name=out_path.name, key="sd_download")
+    
+    except Exception as e:
+        st.error(f"Error exporting to SD template: {str(e)}")
+
+
+col_save, col_excel, col_sd, col_anchor = st.columns(4)
 
 with col_save:
     if st.button("Save compliance snapshot"):
         save_compliance_snapshot(table_records)
+        st.session_state.lageso_user_saved = True
 
 with col_excel:
     if st.button("Generate Excel"):
         generate_excel(table_records)
+
+with col_sd:
+    if st.button("📤 Export to SD Proj 3"):
+        append_to_sd_template(table_records)
 
 with col_anchor:
     snapshot_state = st.session_state.get("lageso_compliance_snapshot")

@@ -139,9 +139,13 @@ def _collect_file_paths(snapshot: Any) -> List[Tuple[str, Path]]:
                 walk(item, next_label)
         elif isinstance(node, str):
             candidate = Path(node)
-            if candidate.exists() and candidate.is_file() and candidate not in seen:
-                entries.append((label or candidate.name, candidate))
-                seen.add(candidate)
+            try:
+                if candidate.exists() and candidate.is_file() and candidate not in seen:
+                    entries.append((label or candidate.name, candidate))
+                    seen.add(candidate)
+            except OSError:
+                # Ignore strings that are not valid filesystem paths (e.g., long text blobs)
+                return
 
     walk(snapshot, "")
     return entries
