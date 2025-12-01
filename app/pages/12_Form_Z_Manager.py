@@ -183,35 +183,98 @@ def latest_json(folder: Path) -> Dict:
     return {}
 
 
+# Load data from various project steps
+charter = latest_json(snapshots_root / "charter")
 design = latest_json(snapshots_root / "design")
 master_bank = latest_json(snapshots_root / "master_bank_registry")
 
+# Extract charter information
+primary_cell_line = charter.get("primary_cell_line", meta.get("parental_line", ""))
+target_gene = charter.get("target_gene", meta.get("target_gene", ""))
+gene_symbol = charter.get("gene_symbol", meta.get("gene_symbol", ""))
+modification_type = charter.get("modification_type", meta.get("modification_type", ""))
+modification_description = charter.get("modification_description", meta.get("modification_description", ""))
+
+# Extract design information
 design_guides = design.get("selected_guides") or []
+sgrna_sequences = ", ".join([g.get("sequence", "") for g in design_guides if g.get("sequence")])
 primary_guide = d(design_guides, 0, "sequence", default="")
-donor_sequence = (design.get("donor") or {}).get("sequence", "")
+donor_data = design.get("donor") or {}
+donor_sequence = donor_data.get("sequence", "")
+vector_name = design.get("vector_name", donor_data.get("name", ""))
 
+# Extract master bank data - get all cell lines registered
 mb_entries = master_bank.get("entries", [])
-mb_data = mb_entries[0].get("data", {}) if mb_entries else {}
+cell_line_names = []
+gvo_dates = []
+for entry in mb_entries:
+    mb_data = entry.get("data", {})
+    iris_id = mb_data.get("IRIS_ID", "")
+    if iris_id:
+        cell_line_names.append(iris_id)
+    date_field = mb_data.get("Date_Registered") or mb_data.get("date_registered", "")
+    if date_field:
+        gvo_dates.append(str(date_field))
 
+# Get first entry data for defaults
+mb_data = mb_entries[0].get("data", {}) if mb_entries else {}
+first_cell_line = cell_line_names[0] if cell_line_names else mb_data.get("IRIS_ID", "")
+first_date = gvo_dates[0] if gvo_dates else ""
+
+# Build default row with comprehensive auto-fill
 default_row = {
     "Lfd. Nr. in Anlage 13/15 Project S2": compliance.get("form_z_number", "1"),
-    "Spender — Bezeichnung (Description)": compliance.get("parental_cell_line", meta.get("parental_line", "")),
-    "Spender — RG": compliance.get("spender_rg", compliance.get("risk_classification", "")),
-    "Empfänger — Bezeichnung (Description)": compliance.get("cell_line", meta.get("cell_line", "")),
-    "Empfänger — RG": compliance.get("empfaenger_rg", compliance.get("risk_classification", "")),
-    "Vektor — Bezeichnung (Description)": compliance.get("donor_vector", donor_sequence),
-    "übertragene Nukleinsäure vorhanden?": compliance.get("nucleic_acid_present", "Ja"),
-    "übertragene Nukleinsäure — Bezeichnung (Description)": compliance.get("nucleic_acid_description", donor_sequence),
+    "Spender — Bezeichnung (Description)": gene_symbol or target_gene,
+    "Spender — RG": compliance.get("spender_rg", "1"),
+    "Empfänger — Bezeichnung (Description)": primary_cell_line,
+    "Empfänger — RG": compliance.get("empfaenger_rg", "1"),
+    "Vektor — Bezeichnung (Description)": vector_name or donor_sequence[:50] if donor_sequence else "",
+    "übertragene Nukleinsäure vorhanden?": "Ja" if donor_sequence else "Nein",
+    "übertragene Nukleinsäure — Bezeichnung (Description)": donor_sequence,
     "Gefährdungspotential (Hazard potential)": compliance.get("hazard_potential", ""),
-    "GVO — Bezeichnung (Description)": compliance.get("gvo_description", mb_data.get("IRIS_ID", "")),
-    "GVO — RG": compliance.get("gvo_rg", compliance.get("risk_classification", "")),
-    "GVO — erzeugt oder entsorgt am": compliance.get("gvo_generated_on", ""),
+    "GVO — Bezeichnung (Description)": first_cell_line or project_id,
+    "GVO — RG": compliance.get("gvo_rg", "1"),
+    "GVO — erzeugt oder entsorgt am": first_date,
     "GVO — erhalten am": compliance.get("gvo_received_on", ""),
 }
+
+# Store auto-filled metadata in session for SD template export
+if "form_z_autofill" not in st.session_state:
+    st.session_state["form_z_autofill"] = {
+        "parental_cell_line": primary_cell_line,
+        "cell_line_names": cell_line_names,
+        "gene_symbol": gene_symbol or target_gene,
+        "sgrna_sequences": sgrna_sequences,
+        "donor_sequence": donor_sequence,
+        "vector_name": vector_name,
+        "modification_type": modification_type,
+        "modification_description": modification_description,
+        "project_id": project_id,
+    }
 
 existing_rows = compliance.get("form_z_rows") or [default_row]
 
 st.markdown("### Form Z entries")
+
+# Show auto-fill info
+with st.expander("📋 Auto-filled data from project"):
+    col1, col2 = st.columns(2)
+    with col1:
+        st.caption("**From Project Charter:**")
+        st.write(f"- Primary cell line: `{primary_cell_line or 'N/A'}`")
+        st.write(f"- Target gene: `{target_gene or 'N/A'}`")
+        st.write(f"- Gene symbol: `{gene_symbol or 'N/A'}`")
+        st.write(f"- Modification type: `{modification_type or 'N/A'}`")
+    with col2:
+        st.caption("**From Design Log:**")
+        st.write(f"- sgRNA sequences: `{sgrna_sequences or 'N/A'}`")
+        st.write(f"- Donor/Vector: `{vector_name or 'N/A'}`")
+        st.caption("**From Master Bank Registry:**")
+        if cell_line_names:
+            st.write(f"- Cell lines: `{', '.join(cell_line_names)}`")
+        else:
+            st.write("- No cell lines registered yet")
+
 table_editor = st.data_editor(
     existing_rows,
     column_config={col: st.column_config.TextColumn() for col in COLUMNS},
@@ -407,33 +470,62 @@ def append_to_sd_template(rows: List[Dict[str, str]]):
     # Find next empty row (skip header at row 3)
     next_row = ws.max_row + 1
     
-    # Map Form Z columns to SD template columns
+    # Get auto-filled metadata
+    autofill = st.session_state.get("form_z_autofill", {})
+    parental_cell_line = autofill.get("parental_cell_line", "")
+    cell_line_names = autofill.get("cell_line_names", [])
+    gene_symbol = autofill.get("gene_symbol", "")
+    sgrna_sequences = autofill.get("sgrna_sequences", "")
+    donor_sequence = autofill.get("donor_sequence", "")
+    vector_name = autofill.get("vector_name", "")
+    modification_type = autofill.get("modification_type", "")
+    modification_description = autofill.get("modification_description", "")
+    project_id_val = autofill.get("project_id", project_id)
+    
     # SD Template columns (Row 3):
     # A: Lfd.Nr., B: Parental cell line, C: Cell line name, D: Link Form Z, 
     # E: IRIS ID, F: Gene symbol, G: crRNA/sgRNA, H: Donor/Vector, I: (empty),
     # J: Modification Type, K: Modification description, L: Zygosity,
     # M: Date of Registration, N: RG, O: Disease
     
-    manifest = load_manifest(project_id)
-    meta = manifest.get("meta", {})
-    
-    for idx, row in enumerate(rows, start=1):
-        # Extract data from Form Z row
-        ws.cell(next_row, 1, idx)  # Lfd.Nr
-        ws.cell(next_row, 2, meta.get("parental_cell_line", ""))  # Parental cell line
-        ws.cell(next_row, 3, row.get("GVO — Bezeichnung (Description)", ""))  # Cell line name
-        ws.cell(next_row, 4, "")  # Link Form Z (to be filled manually)
-        ws.cell(next_row, 5, project_id)  # IRIS ID
-        ws.cell(next_row, 6, row.get("Spender — Bezeichnung (Description)", ""))  # Gene symbol
-        ws.cell(next_row, 7, "")  # crRNA/sgRNA (from project meta if available)
-        ws.cell(next_row, 8, row.get("Vektor — Bezeichnung (Description)", ""))  # Donor/Vector
-        ws.cell(next_row, 10, "")  # Modification Type
-        ws.cell(next_row, 11, row.get("übertragene Nukleinsäure — Bezeichnung (Description)", ""))  # Modification description
-        ws.cell(next_row, 12, "")  # Zygosity
-        ws.cell(next_row, 13, row.get("GVO — erzeugt oder entsorgt am", ""))  # Date
-        ws.cell(next_row, 14, row.get("GVO — RG", ""))  # RG
-        ws.cell(next_row, 15, "")  # Disease
-        next_row += 1
+    # If multiple cell lines from master bank, create a row for each
+    if cell_line_names:
+        for idx, cell_line in enumerate(cell_line_names, start=1):
+            row_data = rows[idx - 1] if idx - 1 < len(rows) else rows[0] if rows else {}
+            
+            ws.cell(next_row, 1, idx)  # Lfd.Nr
+            ws.cell(next_row, 2, parental_cell_line)  # Parental cell line
+            ws.cell(next_row, 3, cell_line)  # Cell line name from master bank
+            ws.cell(next_row, 4, "")  # Link Form Z
+            ws.cell(next_row, 5, project_id_val)  # IRIS ID (Project ID)
+            ws.cell(next_row, 6, gene_symbol)  # Gene symbol from charter
+            ws.cell(next_row, 7, sgrna_sequences)  # crRNA/sgRNA from design
+            ws.cell(next_row, 8, vector_name or donor_sequence[:100] if donor_sequence else "")  # Donor/Vector
+            ws.cell(next_row, 10, modification_type)  # Modification Type from charter
+            ws.cell(next_row, 11, modification_description)  # Modification description from charter
+            ws.cell(next_row, 12, row_data.get("Zygosity", ""))  # Zygosity (manual entry)
+            ws.cell(next_row, 13, row_data.get("GVO — erzeugt oder entsorgt am", ""))  # Date
+            ws.cell(next_row, 14, row_data.get("GVO — RG", "1"))  # RG
+            ws.cell(next_row, 15, meta.get("disease", ""))  # Disease from project meta
+            next_row += 1
+    else:
+        # No master bank entries, use Form Z data
+        for idx, row in enumerate(rows, start=1):
+            ws.cell(next_row, 1, idx)  # Lfd.Nr
+            ws.cell(next_row, 2, parental_cell_line)  # Parental cell line
+            ws.cell(next_row, 3, row.get("GVO — Bezeichnung (Description)", ""))  # Cell line name
+            ws.cell(next_row, 4, "")  # Link Form Z
+            ws.cell(next_row, 5, project_id_val)  # IRIS ID
+            ws.cell(next_row, 6, gene_symbol)  # Gene symbol
+            ws.cell(next_row, 7, sgrna_sequences)  # crRNA/sgRNA
+            ws.cell(next_row, 8, vector_name or donor_sequence[:100] if donor_sequence else "")  # Donor/Vector
+            ws.cell(next_row, 10, modification_type)  # Modification Type
+            ws.cell(next_row, 11, modification_description)  # Modification description
+            ws.cell(next_row, 12, "")  # Zygosity
+            ws.cell(next_row, 13, row.get("GVO — erzeugt oder entsorgt am", ""))  # Date
+            ws.cell(next_row, 14, row.get("GVO — RG", "1"))  # RG
+            ws.cell(next_row, 15, meta.get("disease", ""))  # Disease
+            next_row += 1
     
     # Save to reports directory
     timestamp = int(time.time())
