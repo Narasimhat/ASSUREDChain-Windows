@@ -102,6 +102,33 @@ snapshot_dir = project_subdir(project_id, "snapshots", "form_z")
 reports_dir = project_subdir(project_id, "reports", "form_z")
 
 templates_dir = ROOT / "data" / "templates"
+templates_dir.mkdir(parents=True, exist_ok=True)
+
+# Template upload section
+st.subheader("📤 Upload New Templates")
+with st.expander("Upload templates to library"):
+    col_excel, col_word = st.columns(2)
+    with col_excel:
+        st.caption("Upload Excel template (.xlsm)")
+        excel_upload = st.file_uploader("Excel template", type=["xlsm"], key="excel_upload")
+        if excel_upload:
+            save_path = templates_dir / excel_upload.name
+            with save_path.open("wb") as f:
+                f.write(excel_upload.getbuffer())
+            st.success(f"✅ Saved: {excel_upload.name}")
+            st.rerun()
+    
+    with col_word:
+        st.caption("Upload Word template (.docx)")
+        word_upload = st.file_uploader("Word template", type=["docx"], key="word_upload")
+        if word_upload:
+            save_path = templates_dir / word_upload.name
+            with save_path.open("wb") as f:
+                f.write(word_upload.getbuffer())
+            st.success(f"✅ Saved: {word_upload.name}")
+            st.rerun()
+
+st.subheader("📋 Select Templates")
 available_excel_templates = sorted(templates_dir.glob("*.xlsm"))
 available_word_templates = sorted(templates_dir.glob("*.docx"))
 
