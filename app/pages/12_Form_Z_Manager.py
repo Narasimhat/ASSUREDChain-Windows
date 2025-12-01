@@ -388,7 +388,79 @@ def generate_word(rows: List[Dict[str, str]]):
         st.download_button("Download Formblatt Z", handle, file_name=out_path.name)
 
 
-col_snapshot, col_excel, col_word = st.columns(3)
+def append_to_sd_template(rows: List[Dict[str, str]]):
+    """Append project data to Sheet 3 of 13_15 SD template."""
+    template_path = templates_dir / "13_15 SD Proj 1-3.xlsm"
+    if not template_path.exists():
+        st.error(f"Template not found: {template_path}")
+        return
+    
+    # Load template (not read-only so we can write)
+    wb = load_workbook(template_path)
+    if len(wb.sheetnames) < 3:
+        st.error("Template must have at least 3 sheets")
+        wb.close()
+        return
+    
+    ws = wb[wb.sheetnames[2]]  # Sheet 3 (0-indexed as sheet 2)
+    
+    # Find next empty row (skip header at row 3)
+    next_row = ws.max_row + 1
+    
+    # Map Form Z columns to SD template columns
+    # SD Template columns (Row 3):
+    # A: Lfd.Nr., B: Parental cell line, C: Cell line name, D: Link Form Z, 
+    # E: IRIS ID, F: Gene symbol, G: crRNA/sgRNA, H: Donor/Vector, I: (empty),
+    # J: Modification Type, K: Modification description, L: Zygosity,
+    # M: Date of Registration, N: RG, O: Disease
+    
+    manifest = load_manifest(project_id)
+    meta = manifest.get("meta", {})
+    
+    for idx, row in enumerate(rows, start=1):
+        # Extract data from Form Z row
+        ws.cell(next_row, 1, idx)  # Lfd.Nr
+        ws.cell(next_row, 2, meta.get("parental_cell_line", ""))  # Parental cell line
+        ws.cell(next_row, 3, row.get("GVO — Bezeichnung (Description)", ""))  # Cell line name
+        ws.cell(next_row, 4, "")  # Link Form Z (to be filled manually)
+        ws.cell(next_row, 5, project_id)  # IRIS ID
+        ws.cell(next_row, 6, row.get("Spender — Bezeichnung (Description)", ""))  # Gene symbol
+        ws.cell(next_row, 7, "")  # crRNA/sgRNA (from project meta if available)
+        ws.cell(next_row, 8, row.get("Vektor — Bezeichnung (Description)", ""))  # Donor/Vector
+        ws.cell(next_row, 10, "")  # Modification Type
+        ws.cell(next_row, 11, row.get("übertragene Nukleinsäure — Bezeichnung (Description)", ""))  # Modification description
+        ws.cell(next_row, 12, "")  # Zygosity
+        ws.cell(next_row, 13, row.get("GVO — erzeugt oder entsorgt am", ""))  # Date
+        ws.cell(next_row, 14, row.get("GVO — RG", ""))  # RG
+        ws.cell(next_row, 15, "")  # Disease
+        next_row += 1
+    
+    # Save to reports directory
+    timestamp = int(time.time())
+    output_path = reports_dir / f"13_15_SD_updated_{timestamp}.xlsm"
+    wb.save(output_path)
+    wb.close()
+    
+    digest = sha256_bytes(output_path.read_bytes())
+    register_file(
+        project_id,
+        "reports",
+        {
+            "step": "form_z",
+            "filename": output_path.name,
+            "path": str(output_path),
+            "sha256": digest,
+            "timestamp": timestamp,
+            "type": "xlsm",
+            "label": "13/15 SD Template Export",
+        },
+    )
+    st.success(f"✅ Data appended to SD template: {output_path.name}")
+    with output_path.open("rb") as handle:
+        st.download_button("Download 13/15 SD Template", handle, file_name=output_path.name, key="sd_download")
+
+
+col_snapshot, col_excel, col_word, col_sd = st.columns(4)
 if col_snapshot.button("Save Form Z snapshot"):
     save_form_z_snapshot(table_rows)
 
@@ -397,6 +469,9 @@ if col_excel.button("Generate Excel"):
 
 if col_word.button("Generate Word"):
     generate_word(table_rows)
+
+if col_sd.button("Export to 13/15 SD"):
+    append_to_sd_template(table_rows)
 
 col_anchor = st.container()
 snapshot_state = st.session_state.get("form_z_snapshot")
