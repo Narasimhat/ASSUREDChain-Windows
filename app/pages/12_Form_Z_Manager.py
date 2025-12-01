@@ -109,8 +109,8 @@ st.subheader("📤 Upload New Templates")
 with st.expander("Upload templates to library"):
     col_excel, col_word = st.columns(2)
     with col_excel:
-        st.caption("Upload Excel template (.xlsm)")
-        excel_upload = st.file_uploader("Excel template", type=["xlsm"], key="excel_upload")
+        st.caption("Upload Excel template (.xlsx, .xlsm)")
+        excel_upload = st.file_uploader("Excel template", type=["xlsx", "xlsm"], key="excel_upload")
         if excel_upload:
             save_path = templates_dir / excel_upload.name
             with save_path.open("wb") as f:
@@ -129,7 +129,7 @@ with st.expander("Upload templates to library"):
             st.rerun()
 
 st.subheader("📋 Select Templates")
-available_excel_templates = sorted(templates_dir.glob("*.xlsm"))
+available_excel_templates = sorted(list(templates_dir.glob("*.xlsm")) + list(templates_dir.glob("*.xlsx")))
 available_word_templates = sorted(templates_dir.glob("*.docx"))
 
 excel_template_saved = Path(compliance.get("form_z_template_path", "")) if compliance.get("form_z_template_path") else None
