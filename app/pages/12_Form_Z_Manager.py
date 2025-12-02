@@ -105,6 +105,10 @@ reports_dir = project_subdir(project_id, "reports", "form_z")
 templates_dir = ROOT / "data" / "templates"
 templates_dir.mkdir(parents=True, exist_ok=True)
 
+# Z-forms export directory
+zforms_dir = templates_dir / "Z-forms"
+zforms_dir.mkdir(parents=True, exist_ok=True)
+
 # Template upload section
 st.subheader("📤 Upload New Templates")
 with st.expander("Upload templates to library"):
@@ -448,85 +452,79 @@ def save_form_z_snapshot(rows: List[Dict[str, str]]):
 
 
 def generate_excel(rows: List[Dict[str, str]]):
+    """Generate Form Z Excel file using template structure"""
     if load_workbook is None:
         st.error("openpyxl is required (`pip install openpyxl`).")
         return
-    # Resolve a safe Excel template path. Guard against OSError on exists() for bad inputs.
-    template_path = excel_template_path
+    
     try:
-        exists = False
-        try:
-            exists = template_path.exists()
-        except OSError:
-            exists = False
-        if not exists:
-            fallback = templates_dir / "Z-Form_ BIHi275-A1-A2.xlsx"
-            if fallback.exists():
-                template_path = fallback
-            else:
-                # Any .xlsx/.xlsm in templates dir as last resort
-                candidates = sorted(list(templates_dir.glob("*.xlsm")) + list(templates_dir.glob("*.xlsx")))
-                if candidates:
-                    template_path = candidates[0]
-                else:
-                    st.error("No Excel template found. Please upload a Form Z template in the Templates section.")
-                    return
-    except Exception as exc:
-        st.warning(f"Invalid template path. Falling back to default. Details: {exc}")
-        fallback = templates_dir / "Z-Form_ BIHi275-A1-A2.xlsx"
-        if fallback.exists():
-            template_path = fallback
-        else:
-            candidates = sorted(list(templates_dir.glob("*.xlsm")) + list(templates_dir.glob("*.xlsx")))
-            if candidates:
-                template_path = candidates[0]
-            else:
-                st.error("No Excel template found. Please upload a Form Z template in the Templates section.")
-                return
-
-    wb = load_workbook(template_path, keep_vba=True)
-    sheet_name = wb.sheetnames[0]
-    ws = wb[sheet_name]
-
+        from copy import copy
+    except ImportError:
+        st.error("copy module is required.")
+        return
+    
+    # Load the template
+    template_path = templates_dir / "Z-Form_ BIHi275-A1-A2.xlsx"
+    if not template_path.exists():
+        st.error(f"Template not found: {template_path}")
+        return
+    
     # Get cell line names from Master Bank Registry
     autofill = st.session_state.get("form_z_autofill", {})
     cell_line_names = autofill.get("cell_line_names", [])
     
-    # Write all rows to Excel
-    for offset, row in enumerate(rows or [default_row]):
-        for col_idx, header in enumerate(COLUMNS, start=1):
-            ws.cell(row=start_row + offset, column=col_idx, value=row.get(header, ""))
-
+    # Load template
+    wb = load_workbook(template_path, keep_vba=False)
+    ws = wb[wb.sheetnames[0]]
+    
+    # Data starts at row 4 in the template
+    start_row = 4
+    
+    # Write data rows, copying formatting from row 4
+    for offset, row_data in enumerate(rows):
+        current_row = start_row + offset
+        
+        for col_idx, col_name in enumerate(COLUMNS, start=1):
+            cell = ws.cell(row=current_row, column=col_idx)
+            
+            # Copy formatting from template row 4 if this is a new row
+            if current_row > 5:  # Beyond template data rows
+                ref_cell = ws.cell(row=4, column=col_idx)
+                if ref_cell.font:
+                    cell.font = copy(ref_cell.font)
+                if ref_cell.alignment:
+                    cell.alignment = copy(ref_cell.alignment)
+                if ref_cell.border:
+                    cell.border = copy(ref_cell.border)
+                if ref_cell.fill:
+                    cell.fill = copy(ref_cell.fill)
+            
+            # Set the value
+            cell.value = row_data.get(col_name, "")
+    
     timestamp = int(time.time())
     
     # Create filename with all cell line names: Z-Form_ BIHi275-A1-A2.xlsx
-    # Extract just the cell line identifiers (like BIHi005-A-1X) and combine with hyphens
     def _safe_filename_component(s: str) -> str:
         s = (s or "").strip()
-        # Allow letters, numbers, dash and underscore; replace others with '-'
         s = s.replace(" ", "-").replace("/", "-").replace("\\", "-")
-        # Collapse multiple dashes
         while "--" in s:
             s = s.replace("--", "-")
-        # Cap component length to 40 chars to keep overall filename reasonable
         return s[:40]
-
+    
     if cell_line_names:
         formatted_names = [_safe_filename_component(name) for name in cell_line_names]
         combined_name = "-".join(formatted_names)
-        # Final safety cap: ensure entire filename (without path) stays < 120 chars
-        base_name = f"Z-Form_ {combined_name}.xlsx"
+        base_name = f"Z-Form_{combined_name}.xlsx"
         if len(base_name) > 120:
-            # Trim the combined part conservatively
-            keep_len = max(1, 120 - len("Z-Form_ .xlsx"))
+            keep_len = max(1, 120 - len("Z-Form_.xlsx"))
             combined_name = combined_name[:keep_len]
-            base_name = f"Z-Form_ {combined_name}.xlsx"
-        out_path = reports_dir / base_name
+            base_name = f"Z-Form_{combined_name}.xlsx"
+        out_path = zforms_dir / base_name
     else:
-        # Fallback if no cell lines found
-        out_path = reports_dir / f"{project_id}_FormZ_{timestamp}.xlsx"
-        out_path = reports_dir / f"{project_id}_FormZ_{timestamp}.xlsx"
+        out_path = zforms_dir / f"FormZ_{project_id}_{timestamp}.xlsx"
     
+    # Save the workbook
     wb.save(out_path)
     wb.close()
     
@@ -542,9 +540,9 @@ def generate_excel(rows: List[Dict[str, str]]):
             "cell_lines": cell_line_names,
         },
     )
-    st.success(f"✅ Form Z Excel generated: {out_path.name}")
+    st.success(f"✅ Form Z Excel saved to templates/Z-forms: {out_path.name}")
     with out_path.open("rb") as handle:
-        st.download_button("Download Form Z Excel", handle, file_name=out_path.name, key=f"formz_excel_{timestamp}")
+        st.download_button("📥 Download Form Z Excel", handle, file_name=out_path.name, key=f"formz_excel_{timestamp}")
 
 
 def generate_word(rows: List[Dict[str, str]]):

@@ -74,7 +74,106 @@
       "modification_description": "Exon7",
       "design_platform": "Benchling",
       "cas_variant": "Hi.Fi.Cas9",
-      "pam_rule": "NGG"
+      "pam_rule": "NGG",
+      "form_z_rows": [
+        {
+          "Lfd. Nr.": "1",
+          "Spender \u2014 Bezeichnung (Species)": "Human",
+          "Spender \u2014 RG": "1",
+          "Empf\u00e4nger \u2014 Bezeichnung (Parental_cellline)": "Human (AG25367 line)",
+          "Empf\u00e4nger \u2014 RG": "1",
+          "Vektor \u2014 Bezeichnung (CRISPR-Cas9)": "RNP complex (HiFi-Cas9+PSEN1 (ENSG00000080815)_sgRNA)",
+          "Vektor \u2014 Bezeichnung (sgRNA_Sequence)": "PSEN1_A246E_KI_gRNA1: 5'-TGAGCCACTCAGTCCATTCA-3'; PSEN1_A246E_KI_gRNA2: 5'-ACCTCCCTGAATGGACTGAG-3'",
+          "\u00fcbertragene Nukleins\u00e4ure \u2014 Bezeichnung (Gene_Name)": "PSEN1 (ENSG00000080815)_SNP-KI",
+          "\u00fcbertragene Nukleins\u00e4ure \u2014 Bezeichnung (Donor Sequence)": "PSEN1_A246E_ssODN1: CCATTCACTGGAAAGGTCCACTTCGACTCCAGCAGGCATATCTCATTATGATTAGTGCCCTCATGGCCCTGGTGTTTATCAAGTACCTTCCTGAATGGACTGCGTGGCTCATCTTGGCTGTGATTTC; PSEN1_A246E_ssODN2: AAAGAAAACACTCCAGTGGGGCATTCCTGTGACAAACAAATTATCAGTCTTGGGTTTTACCATATACTGAAATCACAGCCAAGATGAGCCACGCTGTCCATTCTGGGAGGTACTTGATAAACACCAG",
+          "Gef\u00e4hrdungspotential (Hazard potential)": "Nein; weil: kein onko- / toxingene",
+          "GVO \u2014 Bezeichnung (Edited_CellLine)": "BIHi005-A-1X",
+          "GVO \u2014 RG": "1",
+          "GVO \u2014 erzeugt oder erhalten am": "",
+          "GVO \u2014 entsorgt am": ""
+        },
+        {
+          "Lfd. Nr.": "2",
+          "Spender \u2014 Bezeichnung (Species)": "Human",
+          "Spender \u2014 RG": "1",
+          "Empf\u00e4nger \u2014 Bezeichnung (Parental_cellline)": "Human (AG25367 line)",
+          "Empf\u00e4nger \u2014 RG": "1",
+          "Vektor \u2014 Bezeichnung (CRISPR-Cas9)": "RNP complex (HiFi-Cas9+PSEN1 (ENSG00000080815)_sgRNA)",
+          "Vektor \u2014 Bezeichnung (sgRNA_Sequence)": "PSEN1_A246E_KI_gRNA1: 5'-TGAGCCACTCAGTCCATTCA-3'; PSEN1_A246E_KI_gRNA2: 5'-ACCTCCCTGAATGGACTGAG-3'",
+          "\u00fcbertragene Nukleins\u00e4ure \u2014 Bezeichnung (Gene_Name)": "PSEN1 (ENSG00000080815)_SNP-KI",
+          "\u00fcbertragene Nukleins\u00e4ure \u2014 Bezeichnung (Donor Sequence)": "PSEN1_A246E_ssODN1: CCATTCACTGGAAAGGTCCACTTCGACTCCAGCAGGCATATCTCATTATGATTAGTGCCCTCATGGCCCTGGTGTTTATCAAGTACCTTCCTGAATGGACTGCGTGGCTCATCTTGGCTGTGATTTC; PSEN1_A246E_ssODN2: AAAGAAAACACTCCAGTGGGGCATTCCTGTGACAAACAAATTATCAGTCTTGGGTTTTACCATATACTGAAATCACAGCCAAGATGAGCCACGCTGTCCATTCTGGGAGGTACTTGATAAACACCAG",
+          "Gef\u00e4hrdungspotential (Hazard potential)": "Nein; weil: kein onko- / toxingene",
+          "GVO \u2014 Bezeichnung (Edited_CellLine)": "BIHi005-A-1Y",
+          "GVO \u2014 RG": "1",
+          "GVO \u2014 erzeugt oder erhalten am": "",
+          "GVO \u2014 entsorgt am": ""
+        }
+      ],
+      "excel_template_path": "/workspaces/ASSUREDChain/data/templates/13_15 SD Proj 1-3.xlsm",
+      "last_excel_method": "CRISPR RNPs",
+      "excel_rows": {
+        "CRISPR RNPs": {
+          "start_row": 5,
+          "rows": [
+            {
+              "Lfd.Nr.": "1",
+              "Parental cell line": "AG25367 line",
+              "Cell line name": "BIHi005-A-1X",
+              "Link Form Z": "",
+              "IRIS ID": "59753 (61377) - isogenic control line generation for AG25367 line",
+              "Gene symbol (NCBI ID)": "PSEN1 (ENSG00000080815)",
+              "crRNA/sgRNA sequence": "PSEN1_A246E_KI_gRNA1: TGAGCCACTCAGTCCATTCA; PSEN1_A246E_KI_gRNA2: ACCTCCCTGAATGGACTGAG",
+              "Donor/Vector (ssODN seq / Addgene cat. number)": "PSEN1_A246E_ssODN1: CCATTCACTGGAAAGGTCCACTTCGACTCCAGCAGGCATATCTCATTATGATTAGTGCCCTCATGGCCCTGGTGTTTATCAAGTACCTTCCTGAATGGACTGCGTGGCTCATCTTGGCTGTGATTTC; PSEN1_A246E_ssODN2: AAAGAAAACACTCCAGTGGGGCATTCCTGTGACAAACAAATTATCAGTCTTGGGTTTTACCATATACTGAAATCACAGCCAAGATGAGCCACGCTGTCCATTCTGGGAGGTACTTGATAAACACCAG",
+              "Modification Type": "SNP-KI",
+              "Modification description": "Exon7",
+              "Zygosity": "Homozygous",
+              "Date of Registration": "2025-12-02",
+              "RG": "1",
+              "Disease": "Alzhiemers disease"
+            },
+            {
+              "Lfd.Nr.": "1",
+              "Parental cell line": "AG25367 line",
+              "Cell line name": "BIHi005-A-1Y",
+              "Link Form Z": "",
+              "IRIS ID": "59753 (61377) - isogenic control line generation for AG25367 line",
+              "Gene symbol (NCBI ID)": "PSEN1 (ENSG00000080815)",
+              "crRNA/sgRNA sequence": "PSEN1_A246E_KI_gRNA1: TGAGCCACTCAGTCCATTCA; PSEN1_A246E_KI_gRNA2: ACCTCCCTGAATGGACTGAG",
+              "Donor/Vector (ssODN seq / Addgene cat. number)": "PSEN1_A246E_ssODN1: CCATTCACTGGAAAGGTCCACTTCGACTCCAGCAGGCATATCTCATTATGATTAGTGCCCTCATGGCCCTGGTGTTTATCAAGTACCTTCCTGAATGGACTGCGTGGCTCATCTTGGCTGTGATTTC; PSEN1_A246E_ssODN2: AAAGAAAACACTCCAGTGGGGCATTCCTGTGACAAACAAATTATCAGTCTTGGGTTTTACCATATACTGAAATCACAGCCAAGATGAGCCACGCTGTCCATTCTGGGAGGTACTTGATAAACACCAG",
+              "Modification Type": "SNP-KI",
+              "Modification description": "Exon7",
+              "Zygosity": "Homozygous",
+              "Date of Registration": "2025-12-02",
+              "RG": "1",
+              "Disease": "Alzhiemers disease"
+            }
+          ]
+        }
+      },
+      "sequential_number": "1",
+      "parental_cell_line": "AG25367 line",
+      "cell_line": "BIHi005-A-1X",
+      "link_form_z": "",
+      "bank_id": "59753 (61377) - isogenic control line generation for AG25367 line",
+      "gene_symbol_ncbi": "PSEN1 (ENSG00000080815)",
+      "donor_vector": "PSEN1_A246E_ssODN1: CCATTCACTGGAAAGGTCCACTTCGACTCCAGCAGGCATATCTCATTATGATTAGTGCCCTCATGGCCCTGGTGTTTATCAAGTACCTTCCTGAATGGACTGCGTGGCTCATCTTGGCTGTGATTTC; PSEN1_A246E_ssODN2: AAAGAAAACACTCCAGTGGGGCATTCCTGTGACAAACAAATTATCAGTCTTGGGTTTTACCATATACTGAAATCACAGCCAAGATGAGCCACGCTGTCCATTCTGGGAGGTACTTGATAAACACCAG",
+      "zygosity": "Homozygous",
+      "registration_date": "2025-12-02",
+      "risk_classification": "1",
+      "disease": "Alzhiemers disease",
+      "form_z_template_path": "/workspaces/ASSUREDChain/data/templates/13_15 SD Proj 1-3.xlsm",
+      "formblatt_z_template_path": "/workspaces/ASSUREDChain/data/templates/formblatt_z_S1_projekt3.docx",
+      "form_z_start_row": 6,
+      "form_z_number": "",
+      "spender_rg": "1",
+      "empfaenger_rg": "1",
+      "nucleic_acid_present": "",
+      "nucleic_acid_description": "",
+      "hazard_potential": "Nein; weil: kein onko- / toxingene",
+      "gvo_description": "",
+      "gvo_rg": "1",
+      "gvo_generated_on": "",
+      "gvo_received_on": ""
     },
     "delivery_defaults": {
       "cell_line": "AG25367",
@@ -473,6 +572,54 @@
         "source_report": "CoA_BIHi005-A_MB01_1764257071_2.docx",
         "bank_id": "MB01",
         "cell_line": "BIHi005-A"
+      },
+      {
+        "step": "master_bank_registry",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/master_bank_registry/master_bank_snapshot_1764668049_9db0b6dacaeb.json",
+        "digest": "9db0b6dacaeb1f4359c73aab43f8c7177d29476b75bdca6d1ff15df66deb6d3a",
+        "timestamp": 1764668049
+      },
+      {
+        "step": "lageso_compliance",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/lageso/59753 (61377) - isogenic control line generation for AG25367 line_lageso_compliance_1764668282_5516e98fdf7b.json",
+        "digest": "5516e98fdf7b56021ef6334a7c96e78ca536da81ba5fa0977fe83813876d2f8b",
+        "timestamp": 1764668282
+      },
+      {
+        "step": "lageso_compliance",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/lageso/59753 (61377) - isogenic control line generation for AG25367 line_lageso_compliance_1764668827_cede65e0ce90.json",
+        "digest": "cede65e0ce9030f372bf64a083b829614ca006d0eb2ba64848b5706e48265fb6",
+        "timestamp": 1764668827
+      },
+      {
+        "step": "lageso_compliance",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/lageso/59753 (61377) - isogenic control line generation for AG25367 line_lageso_compliance_1764669185_a187beac97bc.json",
+        "digest": "a187beac97bc11eef31c69689f3fc3699ce3a4587aac647def42be67eefc72e0",
+        "timestamp": 1764669185
+      },
+      {
+        "step": "form_z",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/form_z/59753 (61377) - isogenic control line generation for AG25367 line_form_z_1764670490_7d360df65c3d.json",
+        "digest": "7d360df65c3dfaea9ef9e435e632ef2fc64cb3beacccd145185e86d3c9ac3282",
+        "timestamp": 1764670490
+      },
+      {
+        "step": "form_z",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/form_z/59753 (61377) - isogenic control line generation for AG25367 line_form_z_1764671007_96a54d6b25fc.json",
+        "digest": "96a54d6b25fc2b9d575e7b1e6e270ec5d34304586785b312e8b2079acc40c10e",
+        "timestamp": 1764671007
+      },
+      {
+        "step": "form_z",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/form_z/59753 (61377) - isogenic control line generation for AG25367 line_form_z_1764671219_5d452708a059.json",
+        "digest": "5d452708a0596597a314b7a935375b81bc505e927f4f8044ebf0c37d82f64dcc",
+        "timestamp": 1764671219
+      },
+      {
+        "step": "lageso_compliance",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/lageso/59753 (61377) - isogenic control line generation for AG25367 line_lageso_compliance_1764671590_242bf37dc8b5.json",
+        "digest": "242bf37dc8b5c20f176a7a1923656b4f3e3b395b797ea04900e26f726bd25ca4",
+        "timestamp": 1764671590
       }
     ],
     "reports": [
@@ -949,6 +1096,166 @@
           "CoA_BIHi005-A_MB01_1764257071_2.docx"
         ],
         "included_count": 5
+      },
+      {
+        "step": "master_bank_registry",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/master_bank_registry/59753-61377-isogenic-control-line-generation-for-AG25367-line-master-bank-1764668049.pdf",
+        "timestamp": 1764668049,
+        "digest": "31352cb1545724ca473ef75b548b779e06f119f680d5f9262e02e4f7e9ae6346",
+        "type": "pdf"
+      },
+      {
+        "step": "lageso_compliance",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/lageso/59753-61377-isogenic-control-line-generation-for-AG25367-line-lageso-compliance-1764668282.pdf",
+        "timestamp": 1764668282,
+        "digest": "8a96779881b5afe58e3b3055be58b135af0f29b47206dbe19a45b54c412582f5",
+        "type": "pdf"
+      },
+      {
+        "step": "lageso_compliance",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/lageso/59753-61377-isogenic-control-line-generation-for-AG25367-line-lageso-compliance-1764668827.pdf",
+        "timestamp": 1764668827,
+        "digest": "af079988a8d6cc5875a144a3a94b383478be34bd40e4b2af7847f1dfd287045b",
+        "type": "pdf"
+      },
+      {
+        "step": "lageso_compliance",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/lageso/LAGESO_Compliance_59753 (61377) - isogenic control line generation for AG25367 line_1764668836.xlsx",
+        "timestamp": 1764668836,
+        "label": "LAGESO Compliance Table",
+        "type": "xlsx"
+      },
+      {
+        "step": "lageso_sd_export",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/lageso/SD_Proj3_59753 (61377) - isogenic control line generation for AG25367 line_1764668853.xlsm",
+        "timestamp": 1764668853,
+        "label": "SD Project 3 Export",
+        "type": "xlsm"
+      },
+      {
+        "step": "lageso_compliance",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/lageso/59753-61377-isogenic-control-line-generation-for-AG25367-line-lageso-compliance-1764669185.pdf",
+        "timestamp": 1764669185,
+        "digest": "37b71f1f5a39f24ce81ef43c96f0b1b11ab20eb94c23952becda9589315ef553",
+        "type": "pdf"
+      },
+      {
+        "step": "lageso_compliance",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/lageso/LAGESO_Compliance_59753 (61377) - isogenic control line generation for AG25367 line_1764669189.xlsx",
+        "timestamp": 1764669189,
+        "label": "LAGESO Compliance Table",
+        "type": "xlsx"
+      },
+      {
+        "step": "lageso_sd_export",
+        "path": "/workspaces/ASSUREDChain/data/templates/13_15 SD Proj 1-3.xlsm",
+        "timestamp": 1764669193,
+        "label": "SD Project 3 Template Updated",
+        "type": "xlsm"
+      },
+      {
+        "step": "form_z",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/form_z/59753-61377-isogenic-control-line-generation-for-AG25367-line-form-z-1764670490.pdf",
+        "timestamp": 1764670490,
+        "digest": "9eca18e1534fc1f94981b68cf4c8e400670505ec4c92ae2bcdd772b129a2e756",
+        "type": "pdf"
+      },
+      {
+        "step": "form_z",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/form_z/Z-Form_ BIHi005-A-1X-BIHi005-A-1Y.xlsx",
+        "timestamp": 1764670516,
+        "type": "xlsx",
+        "label": "Form Z Excel",
+        "cell_lines": [
+          "BIHi005-A-1X",
+          "BIHi005-A-1Y"
+        ]
+      },
+      {
+        "step": "form_z",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/form_z/Z-Form_BIHi005-A-1X-BIHi005-A-1Y.xlsx",
+        "timestamp": 1764670683,
+        "type": "xlsx",
+        "label": "Form Z Excel",
+        "cell_lines": [
+          "BIHi005-A-1X",
+          "BIHi005-A-1Y"
+        ]
+      },
+      {
+        "step": "form_z",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/form_z/59753-61377-isogenic-control-line-generation-for-AG25367-line-form-z-1764671007.pdf",
+        "timestamp": 1764671007,
+        "digest": "e11f97879bf9325321082b34786cc6b535302688a152c4744190921fe83b39c5",
+        "type": "pdf"
+      },
+      {
+        "step": "form_z",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/form_z/Z-Form_BIHi005-A-1X-BIHi005-A-1Y.xlsx",
+        "timestamp": 1764671009,
+        "type": "xlsx",
+        "label": "Form Z Excel",
+        "cell_lines": [
+          "BIHi005-A-1X",
+          "BIHi005-A-1Y"
+        ]
+      },
+      {
+        "step": "form_z",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/form_z/59753-61377-isogenic-control-line-generation-for-AG25367-line-form-z-1764671219.pdf",
+        "timestamp": 1764671219,
+        "digest": "cc54d9239347dba981c39f5c8bcb76fe51c15da711b2d2662e9fe5d10c7b4b7a",
+        "type": "pdf"
+      },
+      {
+        "step": "form_z",
+        "path": "/workspaces/ASSUREDChain/data/templates/Z-forms/Z-Form_BIHi005-A-1X-BIHi005-A-1Y.xlsx",
+        "timestamp": 1764671224,
+        "type": "xlsx",
+        "label": "Form Z Excel",
+        "cell_lines": [
+          "BIHi005-A-1X",
+          "BIHi005-A-1Y"
+        ]
+      },
+      {
+        "step": "lageso_compliance",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/lageso/59753-61377-isogenic-control-line-generation-for-AG25367-line-lageso-compliance-1764671590.pdf",
+        "timestamp": 1764671590,
+        "digest": "c70c40c40870e57f95ad99e08c525d57b97258a76c9dfc229818a9cfe3552d90",
+        "type": "pdf"
+      },
+      {
+        "step": "lageso_compliance",
+        "path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/reports/lageso/LAGESO_Compliance_59753 (61377) - isogenic control line generation for AG25367 line_1764671596.xlsx",
+        "timestamp": 1764671596,
+        "label": "LAGESO Compliance Table",
+        "type": "xlsx"
+      },
+      {
+        "step": "lageso_sd_export",
+        "path": "/workspaces/ASSUREDChain/data/templates/13_15 SD Proj 1-3.xlsm",
+        "timestamp": 1764671602,
+        "label": "SD Project 3 Template Updated",
+        "type": "xlsm"
+      },
+      {
+        "step": "lageso_sd_export",
+        "path": "/workspaces/ASSUREDChain/data/templates/13_15 SD Proj 1-3.xlsm",
+        "timestamp": 1764672034,
+        "label": "SD Project 3 Template Updated",
+        "type": "xlsm"
+      },
+      {
+        "step": "form_z",
+        "path": "/workspaces/ASSUREDChain/data/templates/Z-forms/Z-Form_BIHi005-A-1X-BIHi005-A-1Y.xlsx",
+        "timestamp": 1764672110,
+        "type": "xlsx",
+        "label": "Form Z Excel",
+        "cell_lines": [
+          "BIHi005-A-1X",
+          "BIHi005-A-1Y"
+        ]
       }
     ],
     "uploads": [
@@ -3598,6 +3905,12 @@
       "event": "projectsummary_generated",
       "file": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/exports/59753 (61377) - isogenic control line generation for AG25367 line_summary_1764257394.docx",
       "sha256": "e9164ad0952625c0ba11eb1ae08a4780c39273b944cf2080f6c8df6f8ea0b672"
+    },
+    {
+      "ts": 1764668049,
+      "step": "master_bank_registry",
+      "action": "snapshot_saved",
+      "snapshot_path": "/workspaces/ASSUREDChain/data/projects/59753 (61377) - isogenic control line generation for AG25367 line/snapshots/master_bank_registry/master_bank_snapshot_1764668049_9db0b6dacaeb.json"
     }
   ]
 }

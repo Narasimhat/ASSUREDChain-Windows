@@ -1,3 +1,4 @@
+import hashlib
 import json
 import sys
 import time
@@ -9,9 +10,14 @@ import streamlit as st
 from app.components.layout import init_page
 
 try:
-    from openpyxl import load_workbook
+    from openpyxl import load_workbook, Workbook
+    from openpyxl.styles import Font, PatternFill, Alignment
 except ImportError:
     load_workbook = None
+    Workbook = None
+    Font = None
+    PatternFill = None
+    Alignment = None
 
 ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
@@ -475,114 +481,67 @@ def save_compliance_snapshot(rows: List[Dict[str, str]]):
 
 
 def generate_excel(rows: List[Dict[str, str]]):
-    if load_workbook is None:
+    """Generate a standalone Excel file with just the compliance table"""
+    if Workbook is None or load_workbook is None:
         st.error("openpyxl is required (`pip install openpyxl`).")
         return
-    if not template_path.exists():
-        st.error(f"Template not found: {template_path}")
-        return
-
-    wb = load_workbook(template_path, keep_vba=True)
-    sheet_map = {
-        "TALENs": "TALENs",
-        "CRISPR plasmids": "CRISPR_plasmids",
-        "CRISPR RNPs": "CRISPR_RNPs",
-    }
-    sheet_name = sheet_map[method]
-    if sheet_name not in wb.sheetnames:
-        st.error(f"Sheet '{sheet_name}' not found in template.")
-        return
-    ws = wb[sheet_name]
-
-    cell_map = {
-        "TALENs": {
-            "ProjectID": "B2",
-            "CellLine": "B3",
-            "Gene": "B4",
-            "Edit": "B5",
-            "Operator": "B6",
-            "Date": "B7",
-            "gRNA1": "B9",
-            "gRNA2": "B10",
-            "PrimerFw": "B12",
-            "PrimerRv": "B13",
-            "Amplicon_bp": "B14",
-            "DonorType": "B16",
-            "DonorSeq": "B17",
-            "AssayTool": "E3",
-            "TotalIndelPct": "E4",
-            "Positives": "E6",
-            "BankID": "E11",
-            "Passage": "E12",
-        },
-        "CRISPR plasmids": {
-            "ProjectID": "B2",
-            "CellLine": "B3",
-            "Gene": "B4",
-            "Edit": "B5",
-            "Operator": "B6",
-            "Date": "B7",
-            "gRNA1": "C9",
-            "gRNA2": "C10",
-            "PrimerFw": "C12",
-            "PrimerRv": "C13",
-            "Amplicon_bp": "C14",
-            "DonorType": "C16",
-            "DonorSeq": "C17",
-            "AssayTool": "F3",
-            "TotalIndelPct": "F4",
-            "Positives": "F6",
-            "BankID": "F11",
-            "Passage": "F12",
-        },
-        "CRISPR RNPs": {
-            "ProjectID": "B2",
-            "CellLine": "B3",
-            "Gene": "B4",
-            "Edit": "B5",
-            "Operator": "B6",
-            "Date": "B7",
-            "gRNA1": "D9",
-            "gRNA2": "D10",
-            "PrimerFw": "D12",
-            "PrimerRv": "D13",
-            "Amplicon_bp": "D14",
-            "DonorType": "D16",
-            "DonorSeq": "D17",
-            "AssayTool": "G3",
-            "TotalIndelPct": "G4",
-            "Positives": "G6",
-            "BankID": "G11",
-            "Passage": "G12",
-        },
-    }
-
-    for key, value in values_preview.items():
-        dest = cell_map[method].get(key)
-        if dest:
-            ws[dest] = value
-
-    for offset, row in enumerate(rows or [default_row]):
+    
+    try:
+        # Create a new workbook
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "LAGESO Compliance"
+        
+        # Write headers with styling
+        header_fill = PatternFill(start_color="4472C4", end_color="4472C4", fill_type="solid")
+        header_font = Font(bold=True, color="FFFFFF")
+        
         for col_idx, header in enumerate(COLUMN_HEADERS, start=1):
-            ws.cell(row=start_row + offset, column=col_idx, value=row.get(header, ""))
-
-    timestamp = int(time.time())
-    out_path = reports_dir / f"{project_id}_{method.replace(' ', '_')}_{timestamp}.xlsm"
-    wb.save(out_path)
-    register_file(
-        project_id,
-        "reports",
-        {
-            "step": "lageso_excel",
-            "path": str(out_path),
-            "timestamp": timestamp,
-            "label": f"{method} Excel",
-            "type": "xlsm",
-        },
-    )
-    st.success(f"Excel workbook generated: {out_path.name}")
-    with out_path.open("rb") as handle:
-        st.download_button("Download populated .xlsm", handle, file_name=out_path.name)
+            cell = ws.cell(row=1, column=col_idx)
+            cell.value = header
+            cell.fill = header_fill
+            cell.font = header_font
+            cell.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+        
+        # Write data rows
+        for row_idx, row_data in enumerate(rows, start=2):
+            for col_idx, col_name in enumerate(COLUMN_HEADERS, start=1):
+                cell = ws.cell(row=row_idx, column=col_idx)
+                cell.value = row_data.get(col_name, "")
+                cell.alignment = Alignment(vertical="top", wrap_text=True)
+        
+        # Auto-adjust column widths
+        for col_idx, header in enumerate(COLUMN_HEADERS, start=1):
+            col_letter = ws.cell(row=1, column=col_idx).column_letter
+            max_length = len(str(header))
+            for row_idx in range(2, len(rows) + 2):
+                cell_value = str(ws.cell(row=row_idx, column=col_idx).value or "")
+                max_length = max(max_length, min(len(cell_value), 50))
+            ws.column_dimensions[col_letter].width = max_length + 2
+        
+        # Save the workbook
+        timestamp = int(time.time())
+        out_path = reports_dir / f"LAGESO_Compliance_{project_id}_{timestamp}.xlsx"
+        wb.save(out_path)
+        
+        register_file(
+            project_id,
+            "reports",
+            {
+                "step": "lageso_compliance",
+                "path": str(out_path),
+                "timestamp": timestamp,
+                "label": "LAGESO Compliance Table",
+                "type": "xlsx",
+            },
+        )
+        
+        st.success(f"✓ Generated compliance Excel with {len(rows)} row(s): {out_path.name}")
+        with out_path.open("rb") as handle:
+            st.download_button("📥 Download Compliance Excel", handle, file_name=out_path.name, key="compliance_excel_download")
+    
+    except Exception as e:
+        st.error(f"Error generating Excel: {str(e)}")
 
 
 def append_to_sd_template(rows: List[Dict[str, str]]):
@@ -597,6 +556,9 @@ def append_to_sd_template(rows: List[Dict[str, str]]):
         return
 
     try:
+        from openpyxl.styles import Font, Alignment, Border, Side
+        from copy import copy
+        
         wb = load_workbook(sd_template_path, keep_vba=True)
         
         # Sheet 3 is named "CRISPR" (index 2, 0-based)
@@ -613,6 +575,9 @@ def append_to_sd_template(rows: List[Dict[str, str]]):
                 last_row = row[0].row
         
         start_row = last_row + 1  # Append after the last row with data
+        
+        # Find a reference row with good formatting (row 4 is first data row)
+        reference_row = 4 if last_row >= 4 else last_row
         
         # Column mapping for SD template Sheet 3
         sd_columns = {
@@ -632,9 +597,14 @@ def append_to_sd_template(rows: List[Dict[str, str]]):
             "Disease": 14,  # Column N
         }
         
-        # Write each row to the sheet
+        # Write each row to the sheet with formatting
         for row_idx, row in enumerate(rows):
             excel_row = start_row + row_idx
+            
+            # Calculate sequential number for column A (Lfd.Nr.)
+            # The number should be the row number minus the header rows (usually row 4 is the first data row, so it's number 1)
+            sequential_number = excel_row - 3  # Row 4 becomes 1, row 5 becomes 2, etc.
+            
             for col_name, col_num in sd_columns.items():
                 try:
                     cell = ws.cell(row=excel_row, column=col_num)
@@ -646,31 +616,45 @@ def append_to_sd_template(rows: List[Dict[str, str]]):
                             break
                     
                     if not is_merged:
-                        cell.value = row.get(col_name, "")
+                        # Set the value - use sequential number for Lfd.Nr. column
+                        if col_name == "Lfd.Nr.":
+                            cell.value = sequential_number
+                        else:
+                            cell.value = row.get(col_name, "")
+                        
+                        # Copy formatting from reference row
+                        ref_cell = ws.cell(row=reference_row, column=col_num)
+                        if ref_cell.font:
+                            cell.font = copy(ref_cell.font)
+                        if ref_cell.alignment:
+                            cell.alignment = copy(ref_cell.alignment)
+                        if ref_cell.border:
+                            cell.border = copy(ref_cell.border)
+                        if ref_cell.fill:
+                            cell.fill = copy(ref_cell.fill)
                 except (AttributeError, TypeError):
                     # Skip cells that can't be written to
                     continue
         
-        # Save the updated file
-        timestamp = int(time.time())
-        out_path = reports_dir / f"SD_Proj3_{project_id}_{timestamp}.xlsm"
-        wb.save(out_path)
+        # Save directly to the template file (overwrite/update it)
+        wb.save(sd_template_path)
         
+        timestamp = int(time.time())
         register_file(
             project_id,
             "reports",
             {
                 "step": "lageso_sd_export",
-                "path": str(out_path),
+                "path": str(sd_template_path),
                 "timestamp": timestamp,
-                "label": "SD Project 3 Export",
+                "label": "SD Project 3 Template Updated",
                 "type": "xlsm",
             },
         )
         
-        st.success(f"✓ Exported {len(rows)} row(s) to SD template: {out_path.name}")
-        with out_path.open("rb") as handle:
-            st.download_button("📥 Download SD Project 3", handle, file_name=out_path.name, key="sd_download")
+        st.success(f"✓ Appended {len(rows)} row(s) to SD template in templates folder")
+        with sd_template_path.open("rb") as handle:
+            st.download_button("📥 Download Updated SD Template", handle, file_name=sd_template_path.name, key="sd_download")
     
     except Exception as e:
         st.error(f"Error exporting to SD template: {str(e)}")
