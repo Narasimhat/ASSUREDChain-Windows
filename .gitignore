@@ -1,0 +1,20 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.sqlite3
+env/
+build/
+dist/
+.DS_Store
+.idea/
+.vscode/
+*.orig
+.streamlit/
+
+# Project-generated artifacts (do not version large outputs)
+/data/projects/**/reports/**
+/data/projects/**/snapshots/**
+/data/projects/**/uploads/**

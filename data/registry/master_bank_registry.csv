@@ -1,0 +1,3 @@
+IRIS_ID,edit_Name,HPSCReg_Name,status,Reason_ForHold,Banking,Morph,Flourescence,Myco,Cellpellet_Max,SNP,STR,Cellpellet_PCR,verification,g_Banding,Pluri_FACS,PluriIF_Staining,Trilineage,COA,CTS,Responsible_Person,MB_type,Bemerkung,LN2_Seedbank,Masterbank_freezing_Date,Bank_size,LN2_Masterbank
+IRIS001,LRP2-KO,WTSIi227-A-1,running,,Done,Done,Done,Done,Done,Done,Done,Done,Homozygous,Done,,,,,,Alice,,,,2025-10-30,24,"LIN2, Bix3, 10-50"
+IRIS001,LRP2-KO,WTSIi227-A-2,running,,Done,Done,Done,Done,Done,Done,Done,Done,Homozygous,Done,,,,,,Alice,,,,2025-10-30,24,"LIN2, Bix3, 10-50"

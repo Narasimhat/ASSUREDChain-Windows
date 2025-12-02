@@ -1,0 +1,71 @@
+{
+  "timestamp_unix": 1761952443,
+  "entries": [
+    {
+      "label": "MB1",
+      "data": {
+        "IRIS_ID": "IRIS001",
+        "edit_Name": "Test",
+        "HPSCReg_Name": "LineA",
+        "status": "running",
+        "Reason_ForHold": "",
+        "Banking": "",
+        "Morph": "",
+        "Flourescence": "",
+        "Myco": "",
+        "Cellpellet_Max": "",
+        "SNP": "",
+        "STR": "",
+        "Cellpellet_PCR": "",
+        "verification": "",
+        "g_Banding": "",
+        "Pluri_FACS": "",
+        "PluriIF_Staining": "",
+        "Trilineage": "",
+        "COA": "",
+        "CTS": "",
+        "Responsible_Person": "Alice",
+        "MB_type": "",
+        "Bemerkung": "",
+        "LN2_Seedbank": "",
+        "Masterbank_freezing_Date": "2025-10-30",
+        "Bank_size": "24",
+        "LN2_Masterbank": ""
+      },
+      "attachments": {}
+    },
+    {
+      "label": "MB2",
+      "data": {
+        "IRIS_ID": "",
+        "edit_Name": "",
+        "HPSCReg_Name": "",
+        "status": "",
+        "Reason_ForHold": "",
+        "Banking": "",
+        "Morph": "",
+        "Flourescence": "",
+        "Myco": "",
+        "Cellpellet_Max": "",
+        "SNP": "",
+        "STR": "",
+        "Cellpellet_PCR": "",
+        "verification": "",
+        "g_Banding": "",
+        "Pluri_FACS": "",
+        "PluriIF_Staining": "",
+        "Trilineage": "",
+        "COA": "",
+        "CTS": "",
+        "Responsible_Person": "",
+        "MB_type": "",
+        "Bemerkung": "",
+        "LN2_Seedbank": "",
+        "Masterbank_freezing_Date": "",
+        "Bank_size": "",
+        "LN2_Masterbank": ""
+      },
+      "attachments": {}
+    }
+  ]
+}

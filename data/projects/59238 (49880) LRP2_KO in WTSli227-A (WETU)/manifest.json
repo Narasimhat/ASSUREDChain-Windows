@@ -1,0 +1,989 @@
+{
+  "meta": {
+    "project_name": "",
+    "cell_line": "WTSIi227-A",
+    "owner": "Narasimha Telugu, Maria Hofstatter",
+    "created_at": 1764684537,
+    "status": "draft",
+    "project_id": "59238 (49880) LRP2_KO in WTSli227-A (WETU)",
+    "objective": "LRP2 gene knockout  in WETU cell line",
+    "scope": "It should be a staight forward project. The cell line might be sensitive for downstream process such as clone development",
+    "success_criteria": "High knockout score",
+    "edit_program": "Knockout / Frameshift",
+    "compliance_scope": "Research only",
+    "target_milestone": "2025-12-31",
+    "disease_relevance": "Neurodevelopment disorders",
+    "compliance": {
+      "guides": [
+        {
+          "id": "LRP2_KO_gRNA1 ",
+          "sequence": "GACAGTGCGCATTTTCGCTG",
+          "pam": "TGG",
+          "strand": null,
+          "genomic_locus": null,
+          "distance_to_edit_bp": 0,
+          "on_target_algo": null,
+          "on_target_score": null,
+          "off_target_algo": null,
+          "off_target_score": null,
+          "notes": null
+        },
+        {
+          "id": "LRP2_KO_gRNA2 ",
+          "sequence": "CGCGTCATCTGAACAGTCTT",
+          "pam": "TGG",
+          "strand": null,
+          "genomic_locus": null,
+          "distance_to_edit_bp": 0,
+          "on_target_algo": null,
+          "on_target_score": null,
+          "off_target_algo": null,
+          "off_target_score": null,
+          "notes": null
+        }
+      ],
+      "primers": [
+        {
+          "name": "Primer1",
+          "forward": "TCTTCCCACGGATGTTCAAATAA",
+          "reverse": "CAGTTCTCTATTCAACCACACAGA",
+          "expected_amplicon_bp": 450
+        }
+      ],
+      "donors": [
+        {
+          "donor_type": "ssODN",
+          "sequence": null,
+          "length_nt": null,
+          "asymmetry": null,
+          "strand": null,
+          "introduces_silent_pam_or_seed_mut": true,
+          "hdr_notes": null
+        }
+      ],
+      "gene": "LRP2",
+      "edit_intent": "KO",
+      "modification_description": "Exon2",
+      "design_platform": "Benchling",
+      "cas_variant": "HiFICas9",
+      "pam_rule": "NGG",
+      "excel_template_path": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\templates\\13_15 SD Proj 1-3.xlsm",
+      "last_excel_method": "CRISPR RNPs",
+      "excel_rows": {
+        "CRISPR RNPs": {
+          "start_row": 5,
+          "rows": [
+            {
+              "Lfd.Nr.": "1",
+              "Parental cell line": "WTSIi227-A",
+              "Cell line name": "WTSIi227-A-1",
+              "Link Form Z": "",
+              "IRIS ID": "59238 (49880) LRP2_KO in WTSli227-A (WETU)",
+              "Gene symbol (NCBI ID)": "LRP2",
+              "crRNA/sgRNA sequence": "LRP2_KO_gRNA1 : GACAGTGCGCATTTTCGCTG; LRP2_KO_gRNA2 : CGCGTCATCTGAACAGTCTT",
+              "Donor/Vector (ssODN seq / Addgene cat. number)": "",
+              "Modification Type": "KO",
+              "Modification description": "Exon2",
+              "Zygosity": "Homozygous",
+              "Date of Registration": "2025-12-02",
+              "RG": "1",
+              "Disease": "Neurodevelopment disorders"
+            },
+            {
+              "Lfd.Nr.": "2",
+              "Parental cell line": "WTSIi227-A",
+              "Cell line name": "WTSIi227-A-2",
+              "Link Form Z": "",
+              "IRIS ID": "59238 (49880) LRP2_KO in WTSli227-A (WETU)",
+              "Gene symbol (NCBI ID)": "LRP2",
+              "crRNA/sgRNA sequence": "LRP2_KO_gRNA1 : GACAGTGCGCATTTTCGCTG; LRP2_KO_gRNA2 : CGCGTCATCTGAACAGTCTT",
+              "Donor/Vector (ssODN seq / Addgene cat. number)": "",
+              "Modification Type": "KO",
+              "Modification description": "Exon2",
+              "Zygosity": "Homozygous",
+              "Date of Registration": "2025-12-02",
+              "RG": "1",
+              "Disease": "Neurodevelopment disorders"
+            }
+          ]
+        }
+      },
+      "sequential_number": "1",
+      "parental_cell_line": "WTSIi227-A",
+      "cell_line": "WTSIi227-A-1",
+      "link_form_z": "",
+      "bank_id": "59238 (49880) LRP2_KO in WTSli227-A (WETU)",
+      "gene_symbol_ncbi": "LRP2",
+      "donor_vector": "",
+      "zygosity": "Homozygous",
+      "registration_date": "2025-12-02",
+      "risk_classification": "1",
+      "disease": "Neurodevelopment disorders",
+      "form_z_rows": [
+        {
+          "Lfd. Nr.": "1",
+          "Spender \u2014 Bezeichnung (Species)": "Human",
+          "Spender \u2014 RG": "1",
+          "Empf\u00e4nger \u2014 Bezeichnung (Parental_cellline)": "Human (WTSIi227-A)",
+          "Empf\u00e4nger \u2014 RG": "1",
+          "Vektor \u2014 Bezeichnung (CRISPR-Cas9)": "RNP complex (HiFi-Cas9+LRP2_sgRNA)",
+          "Vektor \u2014 Bezeichnung (sgRNA_Sequence)": "LRP2_KO_gRNA1 : 5'-GACAGTGCGCATTTTCGCTG-3'; LRP2_KO_gRNA2 : 5'-CGCGTCATCTGAACAGTCTT-3'",
+          "\u00fcbertragene Nukleins\u00e4ure \u2014 Bezeichnung (Gene_Name)": "LRP2_KO",
+          "\u00fcbertragene Nukleins\u00e4ure \u2014 Bezeichnung (Donor Sequence)": "",
+          "Gef\u00e4hrdungspotential (Hazard potential)": "Nein; weil: kein onko- / toxingene",
+          "GVO \u2014 Bezeichnung (Edited_CellLine)": "WTSIi227-A-1",
+          "GVO \u2014 RG": "1",
+          "GVO \u2014 erzeugt oder erhalten am": "",
+          "GVO \u2014 entsorgt am": ""
+        },
+        {
+          "Lfd. Nr.": "2",
+          "Spender \u2014 Bezeichnung (Species)": "Human",
+          "Spender \u2014 RG": "1",
+          "Empf\u00e4nger \u2014 Bezeichnung (Parental_cellline)": "Human (WTSIi227-A)",
+          "Empf\u00e4nger \u2014 RG": "1",
+          "Vektor \u2014 Bezeichnung (CRISPR-Cas9)": "RNP complex (HiFi-Cas9+LRP2_sgRNA)",
+          "Vektor \u2014 Bezeichnung (sgRNA_Sequence)": "LRP2_KO_gRNA1 : 5'-GACAGTGCGCATTTTCGCTG-3'; LRP2_KO_gRNA2 : 5'-CGCGTCATCTGAACAGTCTT-3'",
+          "\u00fcbertragene Nukleins\u00e4ure \u2014 Bezeichnung (Gene_Name)": "LRP2_KO",
+          "\u00fcbertragene Nukleins\u00e4ure \u2014 Bezeichnung (Donor Sequence)": "",
+          "Gef\u00e4hrdungspotential (Hazard potential)": "Nein; weil: kein onko- / toxingene",
+          "GVO \u2014 Bezeichnung (Edited_CellLine)": "WTSIi227-A-2",
+          "GVO \u2014 RG": "1",
+          "GVO \u2014 erzeugt oder erhalten am": "",
+          "GVO \u2014 entsorgt am": ""
+        }
+      ],
+      "form_z_template_path": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\templates\\13_15 SD Proj 1-3.xlsm",
+      "formblatt_z_template_path": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\templates\\formblatt_z_S1_projekt3.docx",
+      "form_z_start_row": 6,
+      "form_z_number": "",
+      "spender_rg": "1",
+      "empfaenger_rg": "1",
+      "nucleic_acid_present": "",
+      "nucleic_acid_description": "",
+      "hazard_potential": "Nein; weil: kein onko- / toxingene",
+      "gvo_description": "",
+      "gvo_rg": "1",
+      "gvo_generated_on": "",
+      "gvo_received_on": ""
+    },
+    "delivery_defaults": {
+      "cell_line": "WTSIi227-A",
+      "passage_number": "P40",
+      "delivery_goal": "RNP",
+      "total_cells": 250000,
+      "viability_percent": 92.0,
+      "electroporation_device": "Neon Transfection System",
+      "neon_tip_volume_ul": 10.0,
+      "voltage_v": 1200,
+      "pulse_width_ms": 30.0,
+      "pulse_number": 1,
+      "buffer_system": "Buffer R (Neon kit)",
+      "buffer_notes": "Prepared fresh, kept on ice.",
+      "assembly_notes": "Add all components to the cells in 30\u00b5l of Buffer",
+      "incubation_time_minutes": 0,
+      "post_pulse_recovery_medium": "StemFlexPlusCloneR2",
+      "post_pulse_recovery_volume_ml": 0.5,
+      "recovery_temperature_c": 32.0,
+      "recovery_duration_minutes": 600.0,
+      "recovery_duration_unit": "hours",
+      "plating_format": "24-well plate",
+      "plating_density_cells_per_well": 100000,
+      "additional_notes": "Deliver 1200 V / 30 ms / 1 pulse per protocol. Immediately transfer to recovery medium.",
+      "author": "Narasimha Telugu",
+      "rnp_components": [
+        {
+          "name": "Cas9 Nuclease",
+          "component_type": "Cas9",
+          "concentration": null,
+          "concentration_units": null,
+          "volume_ul": 1.0,
+          "vendor": null,
+          "lot_number": null
+        },
+        {
+          "name": "sgRNA 1 and 2 mix",
+          "component_type": "sgRNA",
+          "concentration": null,
+          "concentration_units": null,
+          "volume_ul": 4.0,
+          "vendor": null,
+          "lot_number": null
+        },
+        {
+          "name": "ssODN HDR donor",
+          "component_type": "ssODN",
+          "concentration": null,
+          "concentration_units": null,
+          "volume_ul": null,
+          "vendor": null,
+          "lot_number": null
+        }
+      ]
+    },
+    "assessment_defaults": {
+      "cell_line": "WTSIi227-A",
+      "assay_type": "Sanger-Indel",
+      "tool_used": "ICE",
+      "total_indel_pct": 65.0,
+      "ki_pct": null,
+      "hdr_pct": 0.0,
+      "top_indels": [
+        {
+          "size_bp": 0,
+          "frequency_pct": 64.0
+        }
+      ],
+      "pcr_defaults": {},
+      "decision": "proceed_to_cloning",
+      "notes": "",
+      "author": "Narasimha Telugu"
+    },
+    "cloning_defaults": {
+      "cell_line": "WTSIi227-A",
+      "operator": "Narasimha Telugu",
+      "date": "2025-12-02",
+      "notes": ""
+    }
+  },
+  "files": {
+    "snapshots": [
+      {
+        "step": "charter",
+        "path": "data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\charter\\59238 (49880) LRP2_KO in WTSli227-A (WETU)_1764684986_141267b6b022.json",
+        "timestamp": 1764684986,
+        "digest": "cccaaaee1c01388849875a3dff2d82a69eb20216ecfbffcbfff633506b05a769"
+      },
+      {
+        "step": "design",
+        "path": "data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\design\\59238 (49880) LRP2_KO in WTSli227-A (WETU)_1764685084_494a9af3dd37.json",
+        "digest": "494a9af3dd37f72d00ce7a40ecdf66ebd30a7f4cdbf8503df3ea8e3764e355ec",
+        "timestamp": 1764685084
+      },
+      {
+        "step": "design",
+        "path": "data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\design\\59238 (49880) LRP2_KO in WTSli227-A (WETU)_1764685514_25e7a51886e1.json",
+        "digest": "25e7a51886e163dc1e001e1672e8450da33f96e968105c85e1837b95279e8cf7",
+        "timestamp": 1764685514
+      },
+      {
+        "step": "delivery",
+        "path": "data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\delivery\\59238 (49880) LRP2_KO in WTSli227-A (WETU)_1764685780_fa4ffd6d3211.json",
+        "digest": "fa4ffd6d32112089eef8507ab6b3db50b0e689d0754055a8762f6eae9c9cd01d",
+        "timestamp": 1764685780
+      },
+      {
+        "step": "assessment",
+        "path": "data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\assessment\\59238 (49880) LRP2_KO in WTSli227-A (WETU)_1764685959_e5f924781b27.json",
+        "digest": "e5f924781b27192a17627ae0720066500d86f1b69216c78301994ab109b74c31",
+        "timestamp": 1764685959
+      },
+      {
+        "step": "cloning",
+        "path": "data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\cloning\\59238 (49880) LRP2_KO in WTSli227-A (WETU)_cloning_snapshot.json",
+        "digest": "09c246f8727209dedd594bdcc4658c2d9f7867035adc3670a179a65cce361540",
+        "timestamp": 1764687769
+      },
+      {
+        "step": "master_bank_registry",
+        "path": "data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\master_bank_registry\\master_bank_snapshot_1764688173_0baa25d8e9b6.json",
+        "digest": "0baa25d8e9b6213920a319905dda237d573fc07e0ef935991cbe009c47ec5e59",
+        "timestamp": 1764688173
+      },
+      {
+        "step": "lageso_compliance",
+        "path": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\lageso\\59238 (49880) LRP2_KO in WTSli227-A (WETU)_lageso_compliance_1764688306_f6e7d79b4aea.json",
+        "digest": "f6e7d79b4aeadce8e10cd9e08e0cabbd4e5e8b4d027117937d0dd1ff889d38ca",
+        "timestamp": 1764688306
+      },
+      {
+        "step": "form_z",
+        "path": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\form_z\\59238 (49880) LRP2_KO in WTSli227-A (WETU)_form_z_1764688501_acce0a5073b6.json",
+        "digest": "acce0a5073b67bb0244d15610754dcb47cc126fec98a8aad7515e273f963f1b8",
+        "timestamp": 1764688501
+      }
+    ],
+    "reports": [
+      {
+        "step": "charter",
+        "path": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\reports\\charter\\59238-49880-LRP2-KO-in-WTSli227-A-WETU-charter-1764684989.pdf",
+        "timestamp": 1764684989,
+        "digest": "c89e1cbae0620f40e4eb4293e31a9a979908d58b05cdd9f388333079c3f0e96b",
+        "type": "pdf"
+      },
+      {
+        "step": "design",
+        "path": "data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\reports\\design\\59238-49880-LRP2-KO-in-WTSli227-A-WETU-design-1764685084.pdf",
+        "timestamp": 1764685084,
+        "digest": "076cf0288c3abd00f4841cd8c302e98dc784959844e29df9879057b42b4ff2f8",
+        "type": "pdf"
+      },
+      {
+        "step": "design",
+        "path": "data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\reports\\design\\59238-49880-LRP2-KO-in-WTSli227-A-WETU-design-1764685514.pdf",
+        "timestamp": 1764685514,
+        "digest": "d7587c4838c4c15261e3cfc4a0cfb737b6b3361a80e9a0179c00605677de94a9",
+        "type": "pdf"
+      },
+      {
+        "step": "delivery",
+        "path": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\reports\\delivery\\59238-49880-LRP2-KO-in-WTSli227-A-WETU-delivery-1764685780.pdf",
+        "timestamp": 1764685780,
+        "digest": "a00a17f731dbaa7560a7cc26ec66cfab8393187e19de7b6259bd18aa4d3ce93a",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\reports\\assessment\\59238-49880-LRP2-KO-in-WTSli227-A-WETU-assessment-1764685959.pdf",
+        "timestamp": 1764685959,
+        "digest": "afb21e6310bc505e0945744b38c7acb5c76d65cddf1f8135f08a4eec86b691cf",
+        "type": "pdf"
+      },
+      {
+        "step": "cloning",
+        "path": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\reports\\cloning\\59238 (49880) LRP2_KO in WTSli227-A (WETU)_cloning_report.pdf",
+        "timestamp": 1764687769,
+        "digest": "0ce9f8cfe0ed7bb9731385748cd744a618f96b3bcde099f7271accf0be84b249",
+        "type": "pdf"
+      },
+      {
+        "step": "master_bank_registry",
+        "path": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\reports\\master_bank_registry\\59238-49880-LRP2-KO-in-WTSli227-A-WETU-master-bank-1764688173.pdf",
+        "timestamp": 1764688173,
+        "digest": "612a6064c2b551013ff0b573b6cbffe4490bb060ed2e57d288f330ecdb55e9f4",
+        "type": "pdf"
+      },
+      {
+        "step": "lageso_compliance",
+        "path": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\reports\\lageso\\59238-49880-LRP2-KO-in-WTSli227-A-WETU-lageso-compliance-1764688306.pdf",
+        "timestamp": 1764688306,
+        "digest": "e64f81cffe8a470b981131712aa62d489a61c7dee4d439fd05d4b5eb3a75d61c",
+        "type": "pdf"
+      },
+      {
+        "step": "lageso_compliance",
+        "path": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\reports\\lageso\\LAGESO_Compliance_59238 (49880) LRP2_KO in WTSli227-A (WETU)_1764688343.xlsx",
+        "timestamp": 1764688343,
+        "label": "LAGESO Compliance Table",
+        "type": "xlsx"
+      },
+      {
+        "step": "lageso_sd_export",
+        "path": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\templates\\13_15 SD Proj 1-3.xlsm",
+        "timestamp": 1764688462,
+        "label": "SD Project 3 Template Updated",
+        "type": "xlsm"
+      },
+      {
+        "step": "form_z",
+        "path": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\reports\\form_z\\59238-49880-LRP2-KO-in-WTSli227-A-WETU-form-z-1764688501.pdf",
+        "timestamp": 1764688501,
+        "digest": "ebd0c44bae27957d80a42d4cf093d3202179e65c6be0fcc48366aae7624c409e",
+        "type": "pdf"
+      },
+      {
+        "step": "form_z",
+        "path": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\templates\\Z-forms\\Z-Form_WTSIi227-A-1-WTSIi227-A-2.xlsx",
+        "timestamp": 1764688865,
+        "type": "xlsx",
+        "label": "Form Z Excel",
+        "cell_lines": [
+          "WTSIi227-A-1",
+          "WTSIi227-A-2"
+        ]
+      },
+      {
+        "step": "assured_binder",
+        "path": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\reports\\binders\\59238-49880-LRP2-KO-in-WTSli227-A-WETU-assured-binder-1764689152.pdf",
+        "timestamp": 1764689152,
+        "digest": "5187ef9c2f305e830ef493be502958ea82a876ed85b69a0c3facc4bbfb151926",
+        "type": "pdf",
+        "skipped": [],
+        "included_count": 8
+      }
+    ],
+    "uploads": [
+      {
+        "filename": "Screenshot 2025-12-02 152238.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\design\\1764685514233_3aa82f87a4.png",
+        "timestamp": 1764685514233,
+        "step": "design"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 152441.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\design\\1764685514258_6a8599881c.png",
+        "timestamp": 1764685514258,
+        "step": "design"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 152238.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\design\\1764685524895_490ed452da.png",
+        "timestamp": 1764685524895,
+        "step": "design"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 152441.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\design\\1764685524919_d59cea3566.png",
+        "timestamp": 1764685524919,
+        "step": "design"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153053.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1764685959361_b7cc71301d.png",
+        "timestamp": 1764685959361,
+        "step": "assessment",
+        "kind": "tool_result"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686084129_43dbf4800f.png",
+        "timestamp": 1764686084129,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686084317_d4a7fb0f29.png",
+        "timestamp": 1764686084317,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686088244_f0c4670f05.png",
+        "timestamp": 1764686088244,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686088431_b8ffb1f21a.png",
+        "timestamp": 1764686088431,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686090409_81363cc5e0.png",
+        "timestamp": 1764686090409,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686090674_71be449fe6.png",
+        "timestamp": 1764686090674,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686090866_9d207c0852.png",
+        "timestamp": 1764686090866,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686092010_3d19b40d38.png",
+        "timestamp": 1764686092010,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686092189_bb5042db40.png",
+        "timestamp": 1764686092189,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686093146_879b9fba6c.png",
+        "timestamp": 1764686093146,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686093342_91edad9dda.png",
+        "timestamp": 1764686093342,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686138620_469698292a.png",
+        "timestamp": 1764686138620,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153518.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686138659_1fcec2c55b.png",
+        "timestamp": 1764686138659,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686138844_473846f012.png",
+        "timestamp": 1764686138844,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153518.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686138883_c1e16e5451.png",
+        "timestamp": 1764686138883,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686160522_a33879821b.png",
+        "timestamp": 1764686160522,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153518.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686160574_91253fdef6.png",
+        "timestamp": 1764686160574,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686160772_20b7e1ede5.png",
+        "timestamp": 1764686160772,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153518.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686160811_abebe1a3b6.png",
+        "timestamp": 1764686160811,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686170757_5a474dd2a2.png",
+        "timestamp": 1764686170757,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153518.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686170791_721437d5a9.png",
+        "timestamp": 1764686170791,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686170980_7d889c632e.png",
+        "timestamp": 1764686170980,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153518.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686171017_46d2222066.png",
+        "timestamp": 1764686171017,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686173547_9f58c0c426.png",
+        "timestamp": 1764686173547,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153518.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686173587_8ed0310953.png",
+        "timestamp": 1764686173587,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686368537_d9cbaf10c3.png",
+        "timestamp": 1764686368537,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686368788_a2a618548a.png",
+        "timestamp": 1764686368788,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686383484_a69e2667fc.png",
+        "timestamp": 1764686383484,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686383675_c7ffc74348.png",
+        "timestamp": 1764686383675,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686427297_1c271200e3.png",
+        "timestamp": 1764686427297,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153053.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686427335_ba98139e1f.png",
+        "timestamp": 1764686427335,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686427518_85b333c3b4.png",
+        "timestamp": 1764686427518,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153053.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686427558_0659ab548d.png",
+        "timestamp": 1764686427558,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686470838_44c1f10c27.png",
+        "timestamp": 1764686470838,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153053.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686470873_6493df4eda.png",
+        "timestamp": 1764686470873,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686471058_3ae20eafc0.png",
+        "timestamp": 1764686471058,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153053.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686471101_bae62d6a3b.png",
+        "timestamp": 1764686471101,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686478958_a43f956f47.png",
+        "timestamp": 1764686478958,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153053.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686478996_bbfba67f47.png",
+        "timestamp": 1764686478996,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686479187_4fa569d76e.png",
+        "timestamp": 1764686479187,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153053.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686479243_641d85ad7d.png",
+        "timestamp": 1764686479243,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686482202_b684058d0c.png",
+        "timestamp": 1764686482202,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153053.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686482241_0b2794d92f.png",
+        "timestamp": 1764686482241,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686482438_49a5223659.png",
+        "timestamp": 1764686482438,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153053.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686482475_9e1024932d.png",
+        "timestamp": 1764686482475,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686484966_803074079c.png",
+        "timestamp": 1764686484966,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153053.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686485004_c53a4b1c1e.png",
+        "timestamp": 1764686485004,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686541265_35baa01f17.png",
+        "timestamp": 1764686541265,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153053.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686541311_5503a463dd.png",
+        "timestamp": 1764686541311,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686541505_f09e169d49.png",
+        "timestamp": 1764686541505,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153053.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686541563_d9e9392651.png",
+        "timestamp": 1764686541563,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686546604_72bf4eb419.png",
+        "timestamp": 1764686546604,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153053.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686546666_877911d507.png",
+        "timestamp": 1764686546666,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686546849_af67629ea1.png",
+        "timestamp": 1764686546849,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153053.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686546887_4d1b65d3b2.png",
+        "timestamp": 1764686546887,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686562150_633804a347.png",
+        "timestamp": 1764686562150,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153053.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764686562189_91604d52b5.png",
+        "timestamp": 1764686562189,
+        "step": "cloning",
+        "task": "ver_pcr_seq"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764687646991_9303b902bd.png",
+        "timestamp": 1764687646991,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764687647213_bab33e7ee9.png",
+        "timestamp": 1764687647213,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764687666721_08816ae032.png",
+        "timestamp": 1764687666721,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153518.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764687666761_3e7764e8de.png",
+        "timestamp": 1764687666761,
+        "step": "cloning",
+        "task": "ver_seq_analysis"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764687666950_d166ef4fa3.png",
+        "timestamp": 1764687666950,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153518.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764687666994_f2871da95e.png",
+        "timestamp": 1764687666994,
+        "step": "cloning",
+        "task": "ver_seq_analysis"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764687730268_2d4a4ddfc6.png",
+        "timestamp": 1764687730268,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153518.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764687730334_1ee7a03a7b.png",
+        "timestamp": 1764687730334,
+        "step": "cloning",
+        "task": "ver_seq_analysis"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764687730546_8a7efbdd7d.png",
+        "timestamp": 1764687730546,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153518.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764687730591_6bef62c768.png",
+        "timestamp": 1764687730591,
+        "step": "cloning",
+        "task": "ver_seq_analysis"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764687762339_3e9d704957.png",
+        "timestamp": 1764687762339,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153518.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764687762383_f148988217.png",
+        "timestamp": 1764687762383,
+        "step": "cloning",
+        "task": "ver_seq_analysis"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764687762580_55df933d41.png",
+        "timestamp": 1764687762580,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153518.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764687762618_1886717876.png",
+        "timestamp": 1764687762618,
+        "step": "cloning",
+        "task": "ver_seq_analysis"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153419.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764687769168_eebfff61c4.png",
+        "timestamp": 1764687769168,
+        "step": "cloning",
+        "task": "dev_plate_on_iota"
+      },
+      {
+        "filename": "Screenshot 2025-12-02 153518.png",
+        "stored_as": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\1764687769211_db50b8a3be.png",
+        "timestamp": 1764687769211,
+        "step": "cloning",
+        "task": "ver_seq_analysis"
+      }
+    ]
+  },
+  "chain": [],
+  "audit": [
+    {
+      "ts": 1764685085,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\design\\59238 (49880) LRP2_KO in WTSli227-A (WETU)_1764685084_494a9af3dd37.json"
+    },
+    {
+      "ts": 1764685514,
+      "step": "design",
+      "action": "snapshot_saved",
+      "snapshot_path": "data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\design\\59238 (49880) LRP2_KO in WTSli227-A (WETU)_1764685514_25e7a51886e1.json"
+    },
+    {
+      "ts": 1764685780,
+      "step": "delivery",
+      "action": "snapshot_saved",
+      "snapshot_path": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\delivery\\59238 (49880) LRP2_KO in WTSli227-A (WETU)_1764685780_fa4ffd6d3211.json"
+    },
+    {
+      "ts": 1764685959,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\assessment\\59238 (49880) LRP2_KO in WTSli227-A (WETU)_1764685959_e5f924781b27.json"
+    },
+    {
+      "ts": 1764687769,
+      "step": "cloning",
+      "action": "snapshot_saved",
+      "snapshot_path": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\cloning\\59238 (49880) LRP2_KO in WTSli227-A (WETU)_cloning_snapshot.json"
+    },
+    {
+      "ts": 1764688173,
+      "step": "master_bank_registry",
+      "action": "snapshot_saved",
+      "snapshot_path": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\master_bank_registry\\master_bank_snapshot_1764688173_0baa25d8e9b6.json"
+    }
+  ]
+}
