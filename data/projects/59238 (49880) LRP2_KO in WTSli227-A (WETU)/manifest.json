@@ -301,6 +301,24 @@
         "path": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\form_z\\59238 (49880) LRP2_KO in WTSli227-A (WETU)_form_z_1764688501_acce0a5073b6.json",
         "digest": "acce0a5073b67bb0244d15610754dcb47cc126fec98a8aad7515e273f963f1b8",
         "timestamp": 1764688501
+      },
+      {
+        "step": "assessment",
+        "path": "data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\assessment\\59238 (49880) LRP2_KO in WTSli227-A (WETU)_1765137508_4a7fa9fea8fa.json",
+        "digest": "4a7fa9fea8fa8d11793cd7d84cb2faff364223a22eef48d7ffe875fcc6119023",
+        "timestamp": 1765137508
+      },
+      {
+        "step": "assessment",
+        "path": "data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\assessment\\59238 (49880) LRP2_KO in WTSli227-A (WETU)_1765137859_8b2328a9c9e6.json",
+        "digest": "8b2328a9c9e6b1350ef242aa4d87ff307a1e84bd2129e66b9dadfff1540a27e9",
+        "timestamp": 1765137859
+      },
+      {
+        "step": "assessment",
+        "path": "data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\assessment\\59238 (49880) LRP2_KO in WTSli227-A (WETU)_1765138284_2c9a10ecb9ca.json",
+        "digest": "2c9a10ecb9ca55ecfbbe7bfbebf85b5440aaa9df4805871e22da21aecc942c30",
+        "timestamp": 1765138284
       }
     ],
     "reports": [
@@ -400,6 +418,27 @@
         "type": "pdf",
         "skipped": [],
         "included_count": 8
+      },
+      {
+        "step": "assessment",
+        "path": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\reports\\assessment\\59238-49880-LRP2-KO-in-WTSli227-A-WETU-assessment-1765137508.pdf",
+        "timestamp": 1765137508,
+        "digest": "7501fd8ce6b5b2837969b7a2ee5058c2e15caea94999de0edb2ce757045d431e",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\reports\\assessment\\59238-49880-LRP2-KO-in-WTSli227-A-WETU-assessment-1765137859.pdf",
+        "timestamp": 1765137859,
+        "digest": "561de5c8df137dc153c6f71f63ec5e28013532785b428e8acb51d0d76c56b432",
+        "type": "pdf"
+      },
+      {
+        "step": "assessment",
+        "path": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\reports\\assessment\\59238-49880-LRP2-KO-in-WTSli227-A-WETU-assessment-1765138284.pdf",
+        "timestamp": 1765138284,
+        "digest": "0cfdd00eff6f425bd0a333c2ddc0c557a64fe07c63b1516cdf5bdec87bb3b78f",
+        "type": "pdf"
       }
     ],
     "uploads": [
@@ -944,6 +983,1056 @@
         "timestamp": 1764687769211,
         "step": "cloning",
         "task": "ver_seq_analysis"
+      },
+      {
+        "filename": "SORCS1_Exn4_1.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\59238-49880-LRP2-KO-in-WTSli227-A-WETU\\1765136644949_2563474156.ab1",
+        "timestamp": 1765136644949,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_2.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\59238-49880-LRP2-KO-in-WTSli227-A-WETU\\1765136644981_1c8149f325.ab1",
+        "timestamp": 1765136644981,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_3.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\59238-49880-LRP2-KO-in-WTSli227-A-WETU\\1765136645008_533031c394.ab1",
+        "timestamp": 1765136645008,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_4.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\59238-49880-LRP2-KO-in-WTSli227-A-WETU\\1765136645043_bcd5a7beb2.ab1",
+        "timestamp": 1765136645043,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_5.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\59238-49880-LRP2-KO-in-WTSli227-A-WETU\\1765136645082_3bc769e7a1.ab1",
+        "timestamp": 1765136645082,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_1.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\59238-49880-LRP2-KO-in-WTSli227-A-WETU\\1765136669994_452a12a6ab.ab1",
+        "timestamp": 1765136669994,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_2.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\59238-49880-LRP2-KO-in-WTSli227-A-WETU\\1765136670043_fa94a01df8.ab1",
+        "timestamp": 1765136670043,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_3.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\59238-49880-LRP2-KO-in-WTSli227-A-WETU\\1765136670087_3324e00589.ab1",
+        "timestamp": 1765136670087,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_4.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\59238-49880-LRP2-KO-in-WTSli227-A-WETU\\1765136670135_d2fc0a9db1.ab1",
+        "timestamp": 1765136670135,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_5.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\59238-49880-LRP2-KO-in-WTSli227-A-WETU\\1765136670187_267452e0e0.ab1",
+        "timestamp": 1765136670187,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_WT.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\59238-49880-LRP2-KO-in-WTSli227-A-WETU\\1765136670238_9a1610fdc7.ab1",
+        "timestamp": 1765136670238,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_1.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\59238-49880-LRP2-KO-in-WTSli227-A-WETU\\1765136744208_a5735075c1.ab1",
+        "timestamp": 1765136744208,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_2.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\59238-49880-LRP2-KO-in-WTSli227-A-WETU\\1765136744261_860001c152.ab1",
+        "timestamp": 1765136744261,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_3.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\59238-49880-LRP2-KO-in-WTSli227-A-WETU\\1765136744306_4ac553989d.ab1",
+        "timestamp": 1765136744306,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_4.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\59238-49880-LRP2-KO-in-WTSli227-A-WETU\\1765136744354_a68caf8214.ab1",
+        "timestamp": 1765136744354,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_5.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\59238-49880-LRP2-KO-in-WTSli227-A-WETU\\1765136744403_1f49990ca3.ab1",
+        "timestamp": 1765136744403,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "control.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\59238-49880-LRP2-KO-in-WTSli227-A-WETU\\1765136744461_7444e3f57d.ab1",
+        "timestamp": 1765136744461,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_1.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137500636_eb3eaebcf7.ab1",
+        "timestamp": 1765137500636,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_2.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137500670_e166ec16e4.ab1",
+        "timestamp": 1765137500670,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_3.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137500704_295fca42ac.ab1",
+        "timestamp": 1765137500704,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_4.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137500739_1b893e517b.ab1",
+        "timestamp": 1765137500739,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_5.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137500772_bb6c6fa40b.ab1",
+        "timestamp": 1765137500772,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_6.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137500809_3e5bd252f9.ab1",
+        "timestamp": 1765137500809,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_7.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137500853_022ed5b288.ab1",
+        "timestamp": 1765137500853,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_8.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137500901_a47a5508df.ab1",
+        "timestamp": 1765137500901,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_9.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137500948_6c845b2748.ab1",
+        "timestamp": 1765137500948,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_10.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137500999_c94d1bdcfc.ab1",
+        "timestamp": 1765137500999,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_11.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137501048_fdb5ab865c.ab1",
+        "timestamp": 1765137501048,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_12.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137501090_de34b5556c.ab1",
+        "timestamp": 1765137501090,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_13.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137501132_bb66bf9cf2.ab1",
+        "timestamp": 1765137501132,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_14.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137501174_71c1214806.ab1",
+        "timestamp": 1765137501174,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_15.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137501216_8b3a2880f7.ab1",
+        "timestamp": 1765137501216,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_17.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137501257_c47a46603c.ab1",
+        "timestamp": 1765137501257,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_18.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137501305_0148c8b4c2.ab1",
+        "timestamp": 1765137501305,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_19.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137501339_2f10a903d7.ab1",
+        "timestamp": 1765137501339,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_20.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137501375_ffdb53f3f1.ab1",
+        "timestamp": 1765137501375,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_WT.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137501407_67d9f24c3a.ab1",
+        "timestamp": 1765137501407,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_1.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137507188_c9a3e911dc.ab1",
+        "timestamp": 1765137507188,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_2.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137507234_781ea3b1d0.ab1",
+        "timestamp": 1765137507234,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_3.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137507278_8651f8da11.ab1",
+        "timestamp": 1765137507278,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_4.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137507325_c4fa87e51e.ab1",
+        "timestamp": 1765137507325,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_5.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137507379_13aa20f4ea.ab1",
+        "timestamp": 1765137507379,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_6.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137507429_5429d7669f.ab1",
+        "timestamp": 1765137507429,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_7.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137507477_dd1b5b5b4a.ab1",
+        "timestamp": 1765137507477,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_8.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137507530_089ad80398.ab1",
+        "timestamp": 1765137507530,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_9.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137507580_ecabce247e.ab1",
+        "timestamp": 1765137507580,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_10.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137507630_76f74eafcc.ab1",
+        "timestamp": 1765137507630,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_11.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137507679_b82ed2403c.ab1",
+        "timestamp": 1765137507679,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_12.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137507730_bc1736f876.ab1",
+        "timestamp": 1765137507730,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_13.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137507782_e8271bb7d8.ab1",
+        "timestamp": 1765137507782,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_14.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137507835_3e5b07415c.ab1",
+        "timestamp": 1765137507835,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_15.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137507889_7fa3dba250.ab1",
+        "timestamp": 1765137507889,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_17.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137507946_fc1aea2f5d.ab1",
+        "timestamp": 1765137507946,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_18.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137508001_d8bdd4d5bd.ab1",
+        "timestamp": 1765137508001,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_19.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137508064_405ee3ebcf.ab1",
+        "timestamp": 1765137508064,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_20.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137508116_71121b638e.ab1",
+        "timestamp": 1765137508116,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_WT.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137508169_fcd4c0689a.ab1",
+        "timestamp": 1765137508169,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "Sorcs1_KO1.zip",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765137859661_48eaf1945e.zip",
+        "timestamp": 1765137859661,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "Sorcs1_KO1.zip",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765138284344_4d06eb1fa4.zip",
+        "timestamp": 1765138284344,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_1.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_1.736.ab1",
+        "timestamp": 1765138397482,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_10.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_10.736.ab1",
+        "timestamp": 1765138397509,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_11.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_11.736.ab1",
+        "timestamp": 1765138397534,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_12.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_12.736.ab1",
+        "timestamp": 1765138397559,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_13.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_13.736.ab1",
+        "timestamp": 1765138397584,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_14.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_14.736.ab1",
+        "timestamp": 1765138397607,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_15.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_15.736.ab1",
+        "timestamp": 1765138397631,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_17.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_17.736.ab1",
+        "timestamp": 1765138397654,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_18.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_18.736.ab1",
+        "timestamp": 1765138397680,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_19.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_19.736.ab1",
+        "timestamp": 1765138397706,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_2.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_2.736.ab1",
+        "timestamp": 1765138397732,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_20.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_20.736.ab1",
+        "timestamp": 1765138397756,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_3.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_3.736.ab1",
+        "timestamp": 1765138397781,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_4.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_4.736.ab1",
+        "timestamp": 1765138397803,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_5.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_5.736.ab1",
+        "timestamp": 1765138397826,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_6.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_6.736.ab1",
+        "timestamp": 1765138397848,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_7.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_7.736.ab1",
+        "timestamp": 1765138397872,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_8.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_8.736.ab1",
+        "timestamp": 1765138397897,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_9.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_9.736.ab1",
+        "timestamp": 1765138397926,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_WT.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_WT.736.ab1",
+        "timestamp": 1765138397955,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "Sorcs1_KO1.zip",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765138398562_284dec3fdb.zip",
+        "timestamp": 1765138398562,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SORCS1_Exn4_1.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_1.736_1.ab1",
+        "timestamp": 1765138403306,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_10.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_10.736_1.ab1",
+        "timestamp": 1765138403333,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_11.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_11.736_1.ab1",
+        "timestamp": 1765138403364,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_12.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_12.736_1.ab1",
+        "timestamp": 1765138403393,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_13.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_13.736_1.ab1",
+        "timestamp": 1765138403429,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_14.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_14.736_1.ab1",
+        "timestamp": 1765138403471,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_15.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_15.736_1.ab1",
+        "timestamp": 1765138403504,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_17.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_17.736_1.ab1",
+        "timestamp": 1765138403540,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_18.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_18.736_1.ab1",
+        "timestamp": 1765138403579,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_19.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_19.736_1.ab1",
+        "timestamp": 1765138403619,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_2.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_2.736_1.ab1",
+        "timestamp": 1765138403648,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_20.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_20.736_1.ab1",
+        "timestamp": 1765138403671,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_3.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_3.736_1.ab1",
+        "timestamp": 1765138403694,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_4.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_4.736_1.ab1",
+        "timestamp": 1765138403719,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_5.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_5.736_1.ab1",
+        "timestamp": 1765138403752,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_6.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_6.736_1.ab1",
+        "timestamp": 1765138403794,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_7.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_7.736_1.ab1",
+        "timestamp": 1765138403839,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_8.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_8.736_1.ab1",
+        "timestamp": 1765138403878,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_9.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_9.736_1.ab1",
+        "timestamp": 1765138403919,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_WT.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\ice_autopack\\SORCS1_Exn4_WT.736_1.ab1",
+        "timestamp": 1765138403956,
+        "step": "assessment",
+        "kind": "ab1"
+      },
+      {
+        "filename": "Sorcs1_KO1.zip",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\assessment\\1765138410450_eb1ccf0b21.zip",
+        "timestamp": 1765138410450,
+        "step": "assessment",
+        "kind": "sequencing_data"
+      },
+      {
+        "filename": "SRY-C.678.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SRY-C.678.ab1",
+        "timestamp": 1765139382556,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "Sry11.678.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\Sry11.678.ab1",
+        "timestamp": 1765139382585,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "Sry13.678.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\Sry13.678.ab1",
+        "timestamp": 1765139382616,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "Sry14.678.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\Sry14.678.ab1",
+        "timestamp": 1765139382642,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "Sry15.678.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\Sry15.678.ab1",
+        "timestamp": 1765139382667,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "Sry18.678.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\Sry18.678.ab1",
+        "timestamp": 1765139382693,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "Sry2.678.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\Sry2.678.ab1",
+        "timestamp": 1765139382717,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "Sry5.678.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\Sry5.678.ab1",
+        "timestamp": 1765139382739,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "Sry7.678.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\Sry7.678.ab1",
+        "timestamp": 1765139382763,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_1.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_1.736.ab1",
+        "timestamp": 1765139396869,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_10.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_10.736.ab1",
+        "timestamp": 1765139396900,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_11.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_11.736.ab1",
+        "timestamp": 1765139396926,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_12.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_12.736.ab1",
+        "timestamp": 1765139396951,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_13.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_13.736.ab1",
+        "timestamp": 1765139396978,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_14.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_14.736.ab1",
+        "timestamp": 1765139397002,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_15.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_15.736.ab1",
+        "timestamp": 1765139397027,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_17.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_17.736.ab1",
+        "timestamp": 1765139397052,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_18.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_18.736.ab1",
+        "timestamp": 1765139397078,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_19.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_19.736.ab1",
+        "timestamp": 1765139397105,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_2.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_2.736.ab1",
+        "timestamp": 1765139397131,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_20.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_20.736.ab1",
+        "timestamp": 1765139397156,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_3.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_3.736.ab1",
+        "timestamp": 1765139397180,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_4.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_4.736.ab1",
+        "timestamp": 1765139397203,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_5.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_5.736.ab1",
+        "timestamp": 1765139397225,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_6.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_6.736.ab1",
+        "timestamp": 1765139397250,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_7.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_7.736.ab1",
+        "timestamp": 1765139397280,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_8.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_8.736.ab1",
+        "timestamp": 1765139397306,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_9.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_9.736.ab1",
+        "timestamp": 1765139397332,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_WT.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_WT.736.ab1",
+        "timestamp": 1765139397359,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_1.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_1.736_1.ab1",
+        "timestamp": 1765139400526,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_10.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_10.736_1.ab1",
+        "timestamp": 1765139400555,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_11.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_11.736_1.ab1",
+        "timestamp": 1765139400582,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_12.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_12.736_1.ab1",
+        "timestamp": 1765139400613,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_13.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_13.736_1.ab1",
+        "timestamp": 1765139400645,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_14.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_14.736_1.ab1",
+        "timestamp": 1765139400670,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_15.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_15.736_1.ab1",
+        "timestamp": 1765139400702,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_17.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_17.736_1.ab1",
+        "timestamp": 1765139400736,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_18.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_18.736_1.ab1",
+        "timestamp": 1765139400767,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_19.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_19.736_1.ab1",
+        "timestamp": 1765139400802,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_2.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_2.736_1.ab1",
+        "timestamp": 1765139400835,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_20.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_20.736_1.ab1",
+        "timestamp": 1765139400868,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_3.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_3.736_1.ab1",
+        "timestamp": 1765139400905,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_4.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_4.736_1.ab1",
+        "timestamp": 1765139400949,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_5.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_5.736_1.ab1",
+        "timestamp": 1765139400982,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_6.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_6.736_1.ab1",
+        "timestamp": 1765139401016,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_7.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_7.736_1.ab1",
+        "timestamp": 1765139401055,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_8.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_8.736_1.ab1",
+        "timestamp": 1765139401091,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_9.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_9.736_1.ab1",
+        "timestamp": 1765139401130,
+        "step": "cloning",
+        "kind": "ab1"
+      },
+      {
+        "filename": "SORCS1_Exn4_WT.736.ab1",
+        "stored_as": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\uploads\\cloning\\ice_autopack\\SORCS1_Exn4_WT.736_1.ab1",
+        "timestamp": 1765139401164,
+        "step": "cloning",
+        "kind": "ab1"
       }
     ]
   },
@@ -984,6 +2073,24 @@
       "step": "master_bank_registry",
       "action": "snapshot_saved",
       "snapshot_path": "\\\\mdc-berlin.net\\fs\\AG_Diecke\\DATA MANAGMENT\\Projects\\Gene_Editing_Projects\\ASSUREDChain\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\master_bank_registry\\master_bank_snapshot_1764688173_0baa25d8e9b6.json"
+    },
+    {
+      "ts": 1765137508,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\assessment\\59238 (49880) LRP2_KO in WTSli227-A (WETU)_1765137508_4a7fa9fea8fa.json"
+    },
+    {
+      "ts": 1765137859,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\assessment\\59238 (49880) LRP2_KO in WTSli227-A (WETU)_1765137859_8b2328a9c9e6.json"
+    },
+    {
+      "ts": 1765138284,
+      "step": "assessment",
+      "action": "snapshot_saved",
+      "snapshot_path": "C:\\Users\\ntelugu\\Documents\\GitHub\\ASSUREDChain-Windows\\data\\projects\\59238 (49880) LRP2_KO in WTSli227-A (WETU)\\snapshots\\assessment\\59238 (49880) LRP2_KO in WTSli227-A (WETU)_1765138284_2c9a10ecb9ca.json"
     }
   ]
 }

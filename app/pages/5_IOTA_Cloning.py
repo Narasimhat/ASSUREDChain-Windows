@@ -1,7 +1,14 @@
+import io
 import json
 import os
+import re
+import shutil
+import subprocess
 import sys
+import tempfile
 import time
+import types
+import zipfile
 from pathlib import Path
 from typing import Dict, Optional
 
@@ -26,6 +33,7 @@ from app.components.project_state import (
     use_project,
 )
 from app.components.web3_client import send_log_tx
+from scripts.prepare_ice_upload import build_excel, find_control, make_zip
 
 FALLBACK_DATA_DIR = ROOT / "data" / "iota_cloning_logs"
 FALLBACK_UPLOAD_DIR = FALLBACK_DATA_DIR / "attachments"
@@ -140,6 +148,131 @@ def evaluate_cloning_readiness(payload: dict) -> dict:
 
     return {"ready": not issues, "issues": issues, "warnings": warnings}
 
+
+def _default_guides_and_donor(project_meta: dict) -> tuple[str, str]:
+    # Prefer design snapshots for this project
+    try:
+        project_id = project_meta.get("meta", {}).get("project_id") or project_meta.get("project_id") or None
+        if project_id:
+            design_dir = project_subdir(project_id, "snapshots", "design")
+            if design_dir.exists():
+                design_jsons = sorted(design_dir.glob("*.json"), key=lambda p: p.stat().st_mtime, reverse=True)
+                for jf in design_jsons:
+                    data = json.loads(jf.read_text())
+                    guides = []
+                    for g in data.get("selected_guides", []):
+                        seq = (g or {}).get("sequence") or ""
+                        if seq:
+                            guides.append(seq.strip())
+                    donor = (
+                        data.get("ssodn_sequence")
+                        or data.get("donor_sequence")
+                        or data.get("ssodn")
+                        or data.get("ssodn_template")
+                        or ""
+                    )
+                    if guides or donor:
+                        return ",".join(guides), (donor or "").strip()
+    except Exception:
+        pass
+
+    compliance = project_meta.get("compliance", {}) if project_meta else {}
+    guides = []
+    for g in compliance.get("guides", []):
+        seq = (g or {}).get("sequence") or ""
+        if seq:
+            guides.append(seq.strip())
+    donor = ""
+    for d in compliance.get("donors", []):
+        donor = (d or {}).get("sequence") or ""
+        if donor:
+            donor = donor.strip()
+            break
+    return ",".join(guides), donor
+
+
+def _slugify(text: str) -> str:
+    cleaned = re.sub(r"[^A-Za-z0-9]+", "-", text).strip("-")
+    return cleaned or "project"
+
+
+def _wrap_path_for_buffer(path: Path):
+    data = path.read_bytes()
+    return types.SimpleNamespace(name=path.name, getbuffer=lambda d=data: d)
+
+
+def run_ice_locally(batch_file, ab1_files, output_base: Path):
+    """Run synthego_ice_batch locally. Returns (summary_json_path, summary_xlsx_path or None)."""
+    cli = shutil.which("synthego_ice_batch")
+    if cli is None:
+        candidates = [
+            ROOT / ".venv" / "Scripts" / "synthego_ice_batch.exe",
+            ROOT / ".venv" / "Scripts" / "synthego_ice_batch",
+            ROOT / ".venv" / "bin" / "synthego_ice_batch",
+        ]
+        for c in candidates:
+            if c.exists():
+                cli = str(c)
+                break
+    if cli is None:
+        raise RuntimeError(
+            "synthego_ice_batch CLI not found. Install with `pip install synthego-ice` and ensure .venv Scripts/bin on PATH."
+        )
+
+    patch_dir = Path(tempfile.mkdtemp(prefix="ice_patch_"))
+    sitecustomize = patch_dir / "sitecustomize.py"
+    sitecustomize.write_text(
+        """
+import io
+try:
+    from Bio import AlignIO
+    from Bio.Align import MultipleSeqAlignment
+    if not hasattr(MultipleSeqAlignment, "format"):
+        def _msa_format(self, fmt):
+            buf = io.StringIO()
+            AlignIO.write([self], buf, fmt)
+            return buf.getvalue()
+        MultipleSeqAlignment.format = _msa_format
+except Exception:
+    pass
+try:
+    import xlsxwriter.workbook as _wb
+    if not hasattr(_wb.Workbook, "save"):
+        _wb.Workbook.save = _wb.Workbook.close
+except Exception:
+    pass
+"""
+    )
+
+    temp_dir = Path(tempfile.mkdtemp(prefix="ice_run_"))
+    data_dir = temp_dir / "ab1"
+    data_dir.mkdir(parents=True, exist_ok=True)
+    batch_path = temp_dir / "batch.xlsx"
+    batch_path.write_bytes(batch_file.getbuffer())
+    for f in ab1_files:
+        (data_dir / f.name).write_bytes(f.getbuffer())
+    out_dir = temp_dir / "out"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    cmd = [cli, "--in", str(batch_path), "--data", str(data_dir), "--out", str(out_dir)]
+    env = os.environ.copy()
+    env["PYTHONPATH"] = f"{patch_dir}{os.pathsep}{env.get('PYTHONPATH', '')}"
+    res = subprocess.run(cmd, capture_output=True, text=True, env=env)
+    if res.returncode != 0:
+        raise RuntimeError(f"ICE run failed: {res.stderr or res.stdout}")
+    summary_json = next(out_dir.glob("ice.results.*.json"), None)
+    summary_xlsx = next(out_dir.glob("ice.results.*.xlsx"), None)
+    if not summary_json:
+        raise RuntimeError("ICE run completed but summary JSON not found.")
+    ts = time.strftime("%Y%m%d-%H%M%S")
+    dest_json = output_base / f"ice.results.{ts}.json"
+    dest_xlsx = output_base / f"ice.results.{ts}.xlsx"
+    shutil.copy(summary_json, dest_json)
+    if summary_xlsx:
+        shutil.copy(summary_xlsx, dest_xlsx)
+    else:
+        dest_xlsx = None
+    return dest_json, dest_xlsx
+
 init_page("Step 5 - IOTA Clone Development and Verification")
 selected_project = use_project("project")
 project_meta = load_project_meta(selected_project) if selected_project else {}
@@ -183,6 +316,7 @@ default_cell_line = existing_snapshot_data.get("cell_line") or cloning_defaults.
 default_operator = existing_snapshot_data.get("operator") or cloning_defaults.get("operator", "Narasimha Telugu")
 default_date = existing_snapshot_data.get("date") or cloning_defaults.get("date", time.strftime("%Y-%m-%d"))
 default_notes = existing_snapshot_data.get("notes") or cloning_defaults.get("notes", "")
+default_guides, default_donor = _default_guides_and_donor(project_meta)
 PREFIX_TO_SECTION = {
     "dev": "development",
     "ver": "verification",
@@ -313,6 +447,110 @@ with cols[2]:
     st.metric("Operator", default_operator)
 with cols[3]:
     st.metric("Date", default_date)
+
+# ICE helper for cloning (auto build + run using design log guides)
+st.divider()
+st.subheader("ICE Sanger analysis (auto-pack)")
+st.caption("Upload .ab1 files or a zip. Guides/donor come from the design log; control inferred by name hint.")
+ice_files = st.file_uploader(
+    "Upload .ab1 files or zip",
+    type=["ab1", "zip"],
+    accept_multiple_files=True,
+    key="cloning_ice_ab1",
+)
+auto_pack = None
+if ice_files:
+    dest_dir = upload_dir / "ice_autopack"
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    saved_paths: list[Path] = []
+    control_hint = "wt,control,ctrl,utf"
+
+    def _write_ab1_file(name: str, data: bytes) -> Path:
+        base = Path(name).name
+        path = dest_dir / base
+        counter = 1
+        while path.exists():
+            stem = Path(base).stem
+            suffix = Path(base).suffix
+            path = dest_dir / f"{stem}_{counter}{suffix}"
+            counter += 1
+        path.write_bytes(data)
+        if selected_project:
+            register_file(
+                selected_project,
+                "uploads",
+                {
+                    "filename": Path(name).name,
+                    "stored_as": str(path),
+                    "timestamp": int(time.time() * 1000),
+                    "step": "cloning",
+                    "kind": "ab1",
+                },
+            )
+        return path
+
+    wrapped_files = []
+    for f in ice_files:
+        name = f.name.lower()
+        if name.endswith(".zip"):
+            buf = io.BytesIO(f.getbuffer())
+            with zipfile.ZipFile(buf) as zf:
+                for info in zf.infolist():
+                    if info.filename.lower().endswith(".ab1"):
+                        content = zf.read(info.filename)
+                        p = _write_ab1_file(Path(info.filename).name, content)
+                        saved_paths.append(p)
+                        wrapped_files.append(_wrap_path_for_buffer(p))
+        elif name.endswith(".ab1"):
+            data = f.getbuffer()
+            p = _write_ab1_file(f.name, data)
+            saved_paths.append(p)
+            wrapped_files.append(_wrap_path_for_buffer(p))
+
+    if len(saved_paths) >= 2:
+        guides_to_use = (default_guides or "").strip()
+        if not guides_to_use:
+            st.error("No guides found in the design log; add guides to the project first.")
+        else:
+            try:
+                control_path = find_control(saved_paths, None, control_hint)
+                label_prefix = _slugify(selected_project or "cloning")
+                excel_out = dest_dir / "ice_batch.xlsx"
+                zip_out = dest_dir / "upload.zip"
+                excel_path = build_excel(dest_dir, guides_to_use, default_donor, control_path, saved_paths, label_prefix, excel_out)
+                make_zip(zip_out, [excel_path] + saved_paths)
+                auto_pack = {
+                    "batch": _wrap_path_for_buffer(excel_path),
+                    "ab1": wrapped_files,
+                    "excel_path": excel_path,
+                    "zip_path": zip_out,
+                    "control": control_path.name,
+                }
+                st.success(f"Built ICE batch ({excel_out.name}) and zip ({zip_out.name}) using control {control_path.name}.")
+            except Exception as e:
+                st.error(f"Auto-build failed: {e}")
+    elif saved_paths:
+        st.warning("Need at least two .ab1 files to build an ICE batch.")
+
+if st.button("Run ICE now (cloning)"):
+    if not auto_pack:
+        st.error("Upload .ab1 files (or zip) first; the app will auto-build the batch.")
+        st.stop()
+    try:
+        output_base = report_dir if selected_project else FALLBACK_DATA_DIR
+        summary_json, summary_xlsx = run_ice_locally(auto_pack["batch"], auto_pack["ab1"], output_base)
+        attachments["ice_result"] = str(summary_json)
+        saved_attachment_paths.append(summary_json)
+        if summary_xlsx:
+            saved_attachment_paths.append(summary_xlsx)
+        data = json.loads(Path(summary_json).read_text())
+        if data:
+            first = data[0]
+            st.success(f"ICE run complete. Total indel (ICE): {first.get('ice')}. Results attached.")
+        else:
+            st.success("ICE run complete. Results attached.")
+    except Exception as e:
+        st.error(f"ICE run failed: {e}")
 
 st.divider()
 

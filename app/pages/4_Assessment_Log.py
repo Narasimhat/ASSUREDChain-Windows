@@ -4,6 +4,13 @@ import os
 import re
 import sys
 import time
+import tempfile
+import subprocess
+import shutil
+import io
+import zipfile
+import types
+from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
@@ -28,6 +35,7 @@ from app.components.project_state import (
     use_project,
 )
 from app.components.web3_client import send_log_tx
+from scripts.prepare_ice_upload import build_excel, find_control, make_zip
 
 FALLBACK_DATA_DIR = ROOT / "data" / "assessment_logs"
 FALLBACK_UPLOAD_DIR = FALLBACK_DATA_DIR / "attachments"
@@ -61,6 +69,86 @@ class AssessmentSnapshot(BaseModel):
     author: str
     timestamp_unix: int
     files: dict[str, str] = {}
+
+
+def run_ice_locally(batch_file, ab1_files, output_base: Path):
+    """Run synthego_ice_batch locally. Returns (summary_json_path, summary_xlsx_path or None)."""
+    cli = shutil.which("synthego_ice_batch")
+    if cli is None:
+        # fallback: look in local .venv/Scripts (Windows) or .venv/bin (POSIX)
+        venv_bin_candidates = [
+            ROOT / ".venv" / "Scripts" / "synthego_ice_batch.exe",
+            ROOT / ".venv" / "Scripts" / "synthego_ice_batch",
+            ROOT / ".venv" / "bin" / "synthego_ice_batch",
+        ]
+        for candidate in venv_bin_candidates:
+            if candidate.exists():
+                cli = str(candidate)
+                break
+    if cli is None:
+        raise RuntimeError(
+            "synthego_ice_batch CLI not found. Install with `pip install synthego-ice` in this environment "
+            "and ensure the .venv Scripts/bin directory is on PATH."
+        )
+
+    # Monkeypatch ICE runtime for Biopython/XlsxWriter compatibility via sitecustomize
+    patch_dir = Path(tempfile.mkdtemp(prefix="ice_patch_"))
+    sitecustomize = patch_dir / "sitecustomize.py"
+    sitecustomize.write_text(
+        """
+import io
+try:
+    from Bio import AlignIO
+    from Bio.Align import MultipleSeqAlignment
+    if not hasattr(MultipleSeqAlignment, "format"):
+        def _msa_format(self, fmt):
+            buf = io.StringIO()
+            AlignIO.write([self], buf, fmt)
+            return buf.getvalue()
+        MultipleSeqAlignment.format = _msa_format
+except Exception:
+    pass
+
+try:
+    import xlsxwriter.workbook as _wb
+    if not hasattr(_wb.Workbook, "save"):
+        _wb.Workbook.save = _wb.Workbook.close
+except Exception:
+    pass
+"""
+    )
+
+    temp_dir = Path(tempfile.mkdtemp(prefix="ice_run_"))
+    data_dir = temp_dir / "ab1"
+    data_dir.mkdir(parents=True, exist_ok=True)
+    batch_path = temp_dir / "batch.xlsx"
+    batch_path.write_bytes(batch_file.getbuffer())
+    for f in ab1_files:
+        (data_dir / f.name).write_bytes(f.getbuffer())
+
+    out_dir = temp_dir / "out"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    cmd = [cli, "--in", str(batch_path), "--data", str(data_dir), "--out", str(out_dir)]
+    env = os.environ.copy()
+    env["PYTHONPATH"] = f"{patch_dir}{os.pathsep}{env.get('PYTHONPATH', '')}"
+    res = subprocess.run(cmd, capture_output=True, text=True, env=env)
+    if res.returncode != 0:
+        raise RuntimeError(f"ICE run failed: {res.stderr or res.stdout}")
+
+    summary_json = next(out_dir.glob("ice.results.*.json"), None)
+    summary_xlsx = next(out_dir.glob("ice.results.*.xlsx"), None)
+    if not summary_json:
+        raise RuntimeError("ICE run completed but summary JSON not found.")
+
+    ts = datetime.now().strftime("%Y%m%d-%H%M%S")
+    dest_json = output_base / f"ice.results.{ts}.json"
+    dest_xlsx = output_base / f"ice.results.{ts}.xlsx"
+    shutil.copy(summary_json, dest_json)
+    if summary_xlsx:
+        shutil.copy(summary_xlsx, dest_xlsx)
+    else:
+        dest_xlsx = None
+    return dest_json, dest_xlsx
 
 
 def sha256_bytes(b: bytes) -> str:
@@ -100,6 +188,60 @@ def evaluate_assessment_readiness(payload: dict, attachments_map: dict[str, str]
 
     return {"ready": not issues, "issues": issues, "warnings": warnings}
 
+
+def _default_guides_and_donor(project_meta: dict) -> tuple[str, str]:
+    # Prefer design snapshot for this project if available
+    try:
+        project_id = project_meta.get("meta", {}).get("project_id") or project_meta.get("project_id") or None
+        if project_id:
+            design_dir = project_subdir(project_id, "snapshots", "design")
+            if design_dir.exists():
+                design_jsons = sorted(design_dir.glob("*.json"), key=lambda p: p.stat().st_mtime, reverse=True)
+                for jf in design_jsons:
+                    data = json.loads(jf.read_text())
+                    guides = []
+                    for g in data.get("selected_guides", []):
+                        seq = (g or {}).get("sequence") or ""
+                        if seq:
+                            guides.append(seq.strip())
+                    donor = (
+                        data.get("ssodn_sequence")
+                        or data.get("donor_sequence")
+                        or data.get("ssodn")
+                        or data.get("ssodn_template")
+                        or ""
+                    )
+                    if guides or donor:
+                        return ",".join(guides), (donor or "").strip()
+    except Exception:
+        # Fallback to compliance block below
+        pass
+
+    compliance = project_meta.get("compliance", {}) if project_meta else {}
+    guides = []
+    for g in compliance.get("guides", []):
+        seq = (g or {}).get("sequence") or ""
+        if seq:
+            guides.append(seq.strip())
+    donor = ""
+    for d in compliance.get("donors", []):
+        donor = (d or {}).get("sequence") or ""
+        if donor:
+            donor = donor.strip()
+            break
+    return ",".join(guides), donor
+
+
+def _slugify(text: str) -> str:
+    cleaned = re.sub(r"[^A-Za-z0-9]+", "-", text).strip("-")
+    return cleaned or "project"
+
+
+def _wrap_path_for_buffer(path: Path):
+    data = path.read_bytes()
+    return types.SimpleNamespace(name=path.name, getbuffer=lambda d=data: d)
+
+
 init_page("Step 4 - Assessment (Sanger / PCR)")
 selected_project = use_project("project")
 project_meta = load_project_meta(selected_project) if selected_project else {}
@@ -108,6 +250,16 @@ st.caption(
     "Upload Sanger results (TIDE / ICE / DECODR / SeqScreener / TIDER) or log PCR genotyping. "
     "Then anchor on-chain as step 'Assessment'."
 )
+
+# resolve project paths early for ICE runner
+if selected_project:
+    snapshot_dir = project_subdir(selected_project, "snapshots", "assessment")
+    upload_dir = project_subdir(selected_project, "uploads", "assessment")
+    report_dir = project_subdir(selected_project, "reports", "assessment")
+else:
+    snapshot_dir = FALLBACK_DATA_DIR
+    upload_dir = FALLBACK_UPLOAD_DIR
+    report_dir = FALLBACK_DATA_DIR
 
 with st.expander("Which tool should I pick?"):
     st.markdown(
@@ -132,6 +284,148 @@ attachments: dict[str, str] = {}
 saved_attachment_paths: list[Path] = []
 
 assessment_defaults = project_meta.get("assessment_defaults", {})
+ice_defaults = {}
+default_guides, default_donor = _default_guides_and_donor(project_meta)
+
+with st.expander("Run ICE locally (beta)"):
+    st.caption("Runs local synthego_ice_batch and attaches the summary JSON/XLSX as the tool result.")
+    ice_batch = st.file_uploader("ICE batch Excel (.xlsx)", type=["xlsx"], key="ice_batch_upload")
+    ice_ab1 = st.file_uploader("ab1 files (or zip containing ab1)", type=["ab1", "zip"], accept_multiple_files=True, key="ice_ab1_upload")
+    # Automatically prepare ICE batch/zip when ab1 files are uploaded
+    auto_pack = None
+    if ice_ab1:
+        dest_dir = upload_dir / "ice_autopack"
+        dest_dir.mkdir(parents=True, exist_ok=True)
+        saved_paths: list[Path] = []
+        control_hint = "wt,control,ctrl,utf"
+
+        def _write_ab1_file(name: str, data: bytes) -> Path:
+            base = Path(name).name
+            path = dest_dir / base
+            counter = 1
+            while path.exists():
+                stem = Path(base).stem
+                suffix = Path(base).suffix
+                path = dest_dir / f"{stem}_{counter}{suffix}"
+                counter += 1
+            path.write_bytes(data)
+            if selected_project:
+                register_file(
+                    selected_project,
+                    "uploads",
+                    {
+                        "filename": Path(name).name,
+                        "stored_as": str(path),
+                        "timestamp": int(time.time() * 1000),
+                        "step": "assessment",
+                        "kind": "ab1",
+                    },
+                )
+            return path
+
+        uploaded_ab1 = []
+        for f in ice_ab1:
+            name = f.name.lower()
+            if name.endswith(".zip"):
+                buf = io.BytesIO(f.getbuffer())
+                with zipfile.ZipFile(buf) as zf:
+                    for info in zf.infolist():
+                        if info.filename.lower().endswith(".ab1"):
+                            content = zf.read(info.filename)
+                            saved_paths.append(_write_ab1_file(Path(info.filename).name, content))
+                            uploaded_ab1.append(types.SimpleNamespace(name=Path(info.filename).name, getbuffer=lambda d=content: d))
+            elif name.endswith(".ab1"):
+                data = f.getbuffer()
+                saved_paths.append(_write_ab1_file(f.name, data))
+                uploaded_ab1.append(f)
+
+        if len(saved_paths) >= 2:
+            try:
+                control_path = find_control(saved_paths, None, control_hint)
+                label_prefix = _slugify(selected_project or "assessment")
+                excel_out = dest_dir / "ice_batch.xlsx"
+                zip_out = dest_dir / "upload.zip"
+                guides_to_use = (default_guides or "").strip()
+                if not guides_to_use:
+                    st.error("No guide sequences found in the selected project. Add guides to the project or upload a batch Excel.")
+                    st.stop()
+                excel_path = build_excel(dest_dir, guides_to_use, default_donor, control_path, saved_paths, label_prefix, excel_out)
+                make_zip(zip_out, [excel_path] + saved_paths)
+                auto_pack = {
+                    "batch": _wrap_path_for_buffer(excel_path),
+                    "ab1": [_wrap_path_for_buffer(p) for p in saved_paths],
+                    "excel_path": excel_path,
+                    "zip_path": zip_out,
+                    "control": control_path.name,
+                }
+                st.info(
+                    f"Auto-built ICE batch ({excel_out.name}) and zip ({zip_out.name}) using control {control_path.name}."
+                )
+            except Exception as e:
+                st.error(f"Auto-build failed: {e}")
+        elif saved_paths:
+            st.warning("Need at least two .ab1 files to build an ICE batch.")
+
+    if st.button("Run ICE now"):
+        if not ice_batch or not ice_ab1:
+            if auto_pack:
+                ice_batch_for_run = auto_pack["batch"]
+                processed_ab1 = auto_pack["ab1"]
+            else:
+                st.error("Upload a batch Excel and at least one .ab1 file (or let auto-build create the batch).")
+                st.stop()
+        else:
+            ice_batch_for_run = ice_batch
+            processed_ab1 = []
+            for f in ice_ab1:
+                name = f.name.lower()
+                if name.endswith(".zip"):
+                    buf = f.getbuffer()
+                    with zipfile.ZipFile(io.BytesIO(buf)) as zf:
+                        for info in zf.infolist():
+                            if info.filename.lower().endswith(".ab1"):
+                                content = zf.read(info.filename)
+                                processed_ab1.append(
+                                    types.SimpleNamespace(
+                                        name=Path(info.filename).name,
+                                        getbuffer=lambda d=content: d,
+                                    )
+                                )
+                elif name.endswith(".ab1"):
+                    processed_ab1.append(f)
+
+        if auto_pack and not ice_batch:
+            ice_batch_for_run = auto_pack["batch"]
+            processed_ab1 = auto_pack["ab1"]
+
+        if not processed_ab1:
+            st.error("No .ab1 files found (even inside the zip).")
+            st.stop()
+
+        try:
+            output_base = report_dir if selected_project else FALLBACK_DATA_DIR
+            summary_json, summary_xlsx = run_ice_locally(ice_batch_for_run, processed_ab1, output_base)
+            attachments["tool_result"] = str(summary_json)
+            saved_attachment_paths.append(summary_json)
+            if summary_xlsx:
+                saved_attachment_paths.append(summary_xlsx)
+            data = json.loads(Path(summary_json).read_text())
+            if data:
+                first = data[0]
+                ice_defaults = {
+                    "tool_used": "ICE",
+                    "total_indel_pct": first.get("ice"),
+                    "hdr_pct": first.get("hdr_pct"),
+                }
+                st.success(f"ICE run complete. Attached {Path(summary_json).name}. Total indel (ICE): {first.get('ice')}")
+            else:
+                st.success(f"ICE run complete. Attached {Path(summary_json).name}.")
+        except Exception as e:
+            st.error(f"ICE run failed: {e}")
+
+if ice_defaults:
+    assessment_defaults = {**assessment_defaults, **ice_defaults}
+
 delivery_defaults = project_meta.get("delivery_defaults", {})
 default_cell_line = (
     assessment_defaults.get("cell_line")
@@ -143,15 +437,6 @@ default_cell_line = (
 assay_options = ["Sanger-Indel", "PCR-Genotyping"]
 default_assay_type = assessment_defaults.get("assay_type", "Sanger-Indel")
 default_assay_index = assay_options.index(default_assay_type) if default_assay_type in assay_options else 0
-
-if selected_project:
-    snapshot_dir = project_subdir(selected_project, "snapshots", "assessment")
-    upload_dir = project_subdir(selected_project, "uploads", "assessment")
-    report_dir = project_subdir(selected_project, "reports", "assessment")
-else:
-    snapshot_dir = FALLBACK_DATA_DIR
-    upload_dir = FALLBACK_UPLOAD_DIR
-    report_dir = FALLBACK_DATA_DIR
 
 
 with st.form("assessment_form"):
