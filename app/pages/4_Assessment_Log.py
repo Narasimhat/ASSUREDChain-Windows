@@ -196,7 +196,10 @@ except Exception:
     summary_json = next(out_dir.glob("ice.results.*.json"), None)
     summary_xlsx = next(out_dir.glob("ice.results.*.xlsx"), None)
     if not summary_json:
-        raise RuntimeError("ICE run completed but summary JSON not found.")
+        files = [p.name for p in out_dir.glob('*')]
+        raise RuntimeError(
+            f"ICE run completed but summary JSON not found. stdout: {res.stdout} stderr: {res.stderr} files: {files}"
+        )
 
     ts = datetime.now().strftime("%Y%m%d-%H%M%S")
     dest_json = output_base / f"ice.results.{ts}.json"
@@ -375,8 +378,7 @@ if st.session_state.get("ice_summary_html_content"):
                 )
             except FileNotFoundError:
                 pass
-# Automatically prepare ICE batch/zip when ab1 files are uploaded
-auto_pack = st.session_state.get("ice_auto_pack")
+auto_pack = None
 if ice_ab1:
     dest_dir = upload_dir / "ice_autopack"
     dest_dir.mkdir(parents=True, exist_ok=True)
@@ -407,35 +409,36 @@ if ice_ab1:
             )
         return path
 
-        uploaded_ab1 = []
-        for f in ice_ab1:
-            name = f.name.lower()
-            if name.endswith(".zip"):
-                buf = io.BytesIO(f.getbuffer())
-                with zipfile.ZipFile(buf) as zf:
-                    for info in zf.infolist():
-                        if info.filename.lower().endswith(".ab1"):
-                            content = zf.read(info.filename)
-                            saved_paths.append(_write_ab1_file(Path(info.filename).name, content))
-                            uploaded_ab1.append(types.SimpleNamespace(name=Path(info.filename).name, getbuffer=lambda d=content: d))
-            elif name.endswith(".ab1"):
-                data = f.getbuffer()
-                saved_paths.append(_write_ab1_file(f.name, data))
-                uploaded_ab1.append(f)
+    wrapped_files = []
+    for f in ice_ab1:
+        name = f.name.lower()
+        if name.endswith(".zip"):
+            buf = io.BytesIO(f.getbuffer())
+            with zipfile.ZipFile(buf) as zf:
+                for info in zf.infolist():
+                    if info.filename.lower().endswith(".ab1"):
+                        content = zf.read(info.filename)
+                        p = _write_ab1_file(Path(info.filename).name, content)
+                        saved_paths.append(p)
+                        wrapped_files.append(_wrap_path_for_buffer(p))
+        elif name.endswith(".ab1"):
+            data = f.getbuffer()
+            p = _write_ab1_file(f.name, data)
+            saved_paths.append(p)
+            wrapped_files.append(_wrap_path_for_buffer(p))
 
-        if len(saved_paths) >= 2:
+    if len(saved_paths) >= 2:
+        guides_to_use = (default_guides or "").strip()
+        if not guides_to_use:
+            st.error("No guide sequences found in the selected project. Add guides to the project or upload a batch Excel.")
+        else:
             try:
                 control_path = find_control(saved_paths, None, control_hint)
                 label_prefix = _slugify(selected_project or "assessment")
                 excel_out = dest_dir / "ice_batch.xlsx"
                 zip_out = dest_dir / "upload.zip"
-                guides_to_use = (default_guides or "").strip()
-                if not guides_to_use:
-                    st.error("No guide sequences found in the selected project. Add guides to the project or upload a batch Excel.")
-                    st.stop()
                 excel_path = build_excel(dest_dir, guides_to_use, default_donor, control_path, saved_paths, label_prefix, excel_out)
                 try:
-                    # Force labels to mirror experiment filenames (stem without .ab1)
                     import pandas as _pd
 
                     df = _pd.read_excel(excel_path)
@@ -446,19 +449,17 @@ if ice_ab1:
                     pass
                 make_zip(zip_out, [excel_path] + saved_paths)
                 auto_pack = {
-                    "excel_path": excel_out.as_posix(),
-                    "zip_path": zip_out.as_posix(),
-                    "ab1_paths": [p.as_posix() for p in saved_paths],
+                    "batch": _wrap_path_for_buffer(excel_path),
+                    "ab1": wrapped_files,
+                    "excel_path": excel_path,
+                    "zip_path": zip_out,
                     "control": control_path.name,
                 }
-                st.session_state["ice_auto_pack"] = auto_pack
-                st.info(
-                    f"Auto-built ICE batch ({excel_out.name}) and zip ({zip_out.name}) using control {control_path.name}."
-                )
+                st.success(f"Built ICE batch ({excel_out.name}) and zip ({zip_out.name}) using control {control_path.name}.")
             except Exception as e:
                 st.error(f"Auto-build failed: {e}")
-        elif saved_paths:
-            st.warning("Need at least two .ab1 files to build an ICE batch.")
+    elif saved_paths:
+        st.warning("Need at least two .ab1 files to build an ICE batch.")
 
 if auto_pack and "excel_path" in auto_pack:
     st.caption("ICE auto-pack available")
@@ -487,8 +488,8 @@ if auto_pack and "excel_path" in auto_pack:
     if st.button("Run ICE now"):
         if not ice_batch or not ice_ab1:
             if auto_pack:
-                ice_batch_for_run = _wrap_path_for_buffer(Path(auto_pack["excel_path"]))
-                processed_ab1 = [_wrap_path_for_buffer(Path(p)) for p in auto_pack.get("ab1_paths", [])]
+                ice_batch_for_run = auto_pack["batch"]
+                processed_ab1 = auto_pack["ab1"]
             else:
                 st.error("Upload a batch Excel and at least one .ab1 file (or let auto-build create the batch).")
                 st.stop()
@@ -511,10 +512,6 @@ if auto_pack and "excel_path" in auto_pack:
                                 )
                 elif name.endswith(".ab1"):
                     processed_ab1.append(f)
-
-        if auto_pack and not ice_batch:
-            ice_batch_for_run = _wrap_path_for_buffer(Path(auto_pack["excel_path"]))
-            processed_ab1 = [_wrap_path_for_buffer(Path(p)) for p in auto_pack.get("ab1_paths", [])]
 
         if not processed_ab1:
             st.error("No .ab1 files found (even inside the zip).")
