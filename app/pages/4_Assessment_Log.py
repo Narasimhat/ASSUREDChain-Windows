@@ -383,29 +383,29 @@ if ice_ab1:
     saved_paths: list[Path] = []
     control_hint = "wt,control,ctrl,utf"
 
-        def _write_ab1_file(name: str, data: bytes) -> Path:
-            base = Path(name).name
-            path = dest_dir / base
-            counter = 1
-            while path.exists():
-                stem = Path(base).stem
-                suffix = Path(base).suffix
-                path = dest_dir / f"{stem}_{counter}{suffix}"
-                counter += 1
-            path.write_bytes(data)
-            if selected_project:
-                register_file(
-                    selected_project,
-                    "uploads",
-                    {
-                        "filename": Path(name).name,
-                        "stored_as": str(path),
-                        "timestamp": int(time.time() * 1000),
-                        "step": "assessment",
-                        "kind": "ab1",
-                    },
-                )
-            return path
+    def _write_ab1_file(name: str, data: bytes) -> Path:
+        base = Path(name).name
+        path = dest_dir / base
+        counter = 1
+        while path.exists():
+            stem = Path(base).stem
+            suffix = Path(base).suffix
+            path = dest_dir / f"{stem}_{counter}{suffix}"
+            counter += 1
+        path.write_bytes(data)
+        if selected_project:
+            register_file(
+                selected_project,
+                "uploads",
+                {
+                    "filename": Path(name).name,
+                    "stored_as": str(path),
+                    "timestamp": int(time.time() * 1000),
+                    "step": "assessment",
+                    "kind": "ab1",
+                },
+            )
+        return path
 
         uploaded_ab1 = []
         for f in ice_ab1:
