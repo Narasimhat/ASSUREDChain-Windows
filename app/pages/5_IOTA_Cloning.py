@@ -201,8 +201,45 @@ def _wrap_path_for_buffer(path: Path):
     return types.SimpleNamespace(name=path.name, getbuffer=lambda d=data: d)
 
 
+def _render_ice_html(output_base: Path, summary_path: Path) -> Path | None:
+    """Build a minimal ICE summary HTML (no indel breakdown)."""
+    try:
+        data = json.loads(summary_path.read_text())
+        if not isinstance(data, list):
+            return None
+    except Exception:
+        return None
+
+    rows = []
+    for entry in data:
+        rows.append(
+            "<tr>"
+            f"<td>{entry.get('sample_name','')}</td>"
+            f"<td>{entry.get('ice','')}</td>"
+            f"<td>{entry.get('ice_d','')}</td>"
+            f"<td>{entry.get('r_squared') or entry.get('rsq','')}</td>"
+            f"<td>{entry.get('hdr_pct','')}</td>"
+            f"<td>{entry.get('ko_score','')}</td>"
+            f"<td>{entry.get('experiment_file','')}</td>"
+            f"<td>{entry.get('control_file','')}</td>"
+            "</tr>"
+        )
+
+    html = f"""
+    <html><head><title>ICE Report</title></head><body>
+    <h2>ICE Batch Summary</h2>
+    <table border='1' cellpadding='6'>
+      <tr><th>Sample</th><th>ICE %</th><th>ICE-D %</th><th>R?</th><th>HDR %</th><th>KO %</th><th>Experiment</th><th>Control</th></tr>
+      {''.join(rows)}
+    </table>
+    </body></html>
+    """
+    html_path = output_base / f"{summary_path.stem}.html"
+    html_path.write_text(html, encoding="utf-8")
+    return html_path
+
 def run_ice_locally(batch_file, ab1_files, output_base: Path):
-    """Run synthego_ice_batch locally. Returns (summary_json_path, summary_xlsx_path or None)."""
+    """Run synthego_ice_batch locally. Returns (summary_json_path, summary_xlsx_path or None, html_report or None)."""
     cli = shutil.which("synthego_ice_batch")
     if cli is None:
         candidates = [
@@ -241,6 +278,13 @@ try:
         _wb.Workbook.save = _wb.Workbook.close
 except Exception:
     pass
+
+try:
+    import pandas.io.excel._xlsxwriter as _pwx
+    if hasattr(_pwx, "XlsxWriter") and not hasattr(_pwx.XlsxWriter, "save"):
+        _pwx.XlsxWriter.save = _pwx.XlsxWriter.close
+except Exception:
+    pass
 """
     )
 
@@ -251,6 +295,17 @@ except Exception:
     batch_path.write_bytes(batch_file.getbuffer())
     for f in ab1_files:
         (data_dir / f.name).write_bytes(f.getbuffer())
+
+    # Force labels to mirror experiment filenames (stem without .ab1) for ICE clarity
+    try:
+        import pandas as _pd
+
+        df = _pd.read_excel(batch_path)
+        if "Experiment File" in df.columns:
+            df["Label"] = df["Experiment File"].apply(lambda name: Path(str(name)).stem)
+            df.to_excel(batch_path, index=False)
+    except Exception:
+        pass
     out_dir = temp_dir / "out"
     out_dir.mkdir(parents=True, exist_ok=True)
     cmd = [cli, "--in", str(batch_path), "--data", str(data_dir), "--out", str(out_dir)]
@@ -271,7 +326,20 @@ except Exception:
         shutil.copy(summary_xlsx, dest_xlsx)
     else:
         dest_xlsx = None
-    return dest_json, dest_xlsx
+
+    # Harvest richer ICE artifacts (indel distributions, chromatograms, proposals)
+    extra_patterns = ["*.contribs.json", "*.indel.json", "*.trace.json", "*.allproposals.json"]
+    for pattern in extra_patterns:
+        for src in out_dir.glob(pattern):
+            target = output_base / src.name
+            try:
+                shutil.copy(src, target)
+            except Exception:
+                pass
+
+    html_report = _render_ice_html(output_base, dest_json)
+
+    return dest_json, dest_xlsx, html_report
 
 init_page("Step 5 - IOTA Clone Development and Verification")
 selected_project = use_project("project")
@@ -518,6 +586,16 @@ if ice_files:
                 excel_out = dest_dir / "ice_batch.xlsx"
                 zip_out = dest_dir / "upload.zip"
                 excel_path = build_excel(dest_dir, guides_to_use, default_donor, control_path, saved_paths, label_prefix, excel_out)
+                try:
+                    # Force labels to mirror experiment filenames (stem without .ab1)
+                    import pandas as _pd
+
+                    df = _pd.read_excel(excel_path)
+                    if "Experiment File" in df.columns:
+                        df["Label"] = df["Experiment File"].apply(lambda name: Path(str(name)).stem)
+                        df.to_excel(excel_path, index=False)
+                except Exception:
+                    pass
                 make_zip(zip_out, [excel_path] + saved_paths)
                 auto_pack = {
                     "batch": _wrap_path_for_buffer(excel_path),
@@ -538,14 +616,52 @@ if st.button("Run ICE now (cloning)"):
         st.stop()
     try:
         output_base = report_dir if selected_project else FALLBACK_DATA_DIR
-        summary_json, summary_xlsx = run_ice_locally(auto_pack["batch"], auto_pack["ab1"], output_base)
+        summary_json, summary_xlsx, summary_html = run_ice_locally(auto_pack["batch"], auto_pack["ab1"], output_base)
         attachments["ice_result"] = str(summary_json)
         saved_attachment_paths.append(summary_json)
         if summary_xlsx:
             saved_attachment_paths.append(summary_xlsx)
+        if summary_html:
+            saved_attachment_paths.append(summary_html)
+            try:
+                html_content = Path(summary_html).read_text(encoding="utf-8")
+                with st.expander("ICE summary (HTML)", expanded=True):
+                    st.components.v1.html(html_content, height=400, scrolling=True)
+                    st.download_button(
+                        "Download ICE summary HTML",
+                        html_content,
+                        file_name=Path(summary_html).name,
+                        key="ice_summary_html_download",
+                    )
+            except Exception:
+                pass
         data = json.loads(Path(summary_json).read_text())
         if data:
             first = data[0]
+            try:
+                summary_df = pd.DataFrame(data)[
+                    [
+                        "sample_name",
+                        "experiment_file",
+                        "control_file",
+                        "ice",
+                        "ice_d",
+                        "r_squared",
+                        "hdr_pct",
+                        "ko_score",
+                    ]
+                ]
+                st.subheader("ICE batch summary")
+                st.dataframe(summary_df, use_container_width=True)
+                st.download_button(
+                    "Download ICE summary JSON",
+                    Path(summary_json).read_bytes(),
+                    file_name=Path(summary_json).name,
+                    key="ice_summary_download",
+                )
+                st.caption(f"Stored: {summary_json}")
+            except Exception:
+                pass
             st.success(f"ICE run complete. Total indel (ICE): {first.get('ice')}. Results attached.")
         else:
             st.success("ICE run complete. Results attached.")

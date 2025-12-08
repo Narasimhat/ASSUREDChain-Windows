@@ -39,7 +39,8 @@ def build_excel(project_dir: Path, guides: str, donor: str, control: Path, ab1_f
     experiments = [f for f in ab1_files if f != control]
     for idx, exp in enumerate(sorted(experiments)):
         rows.append({
-            "Label": f"{label_prefix}_{idx+1}",
+            # Use the experiment filename (without .ab1) as the label for clearer ICE output
+            "Label": exp.stem,
             "Control File": control.name,
             "Experiment File": exp.name,
             "Guide Sequence": guides,
