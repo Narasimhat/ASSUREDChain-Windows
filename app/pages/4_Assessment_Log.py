@@ -375,13 +375,13 @@ if st.session_state.get("ice_summary_html_content"):
                 )
             except FileNotFoundError:
                 pass
-    # Automatically prepare ICE batch/zip when ab1 files are uploaded
-    auto_pack = None
-    if ice_ab1:
-        dest_dir = upload_dir / "ice_autopack"
-        dest_dir.mkdir(parents=True, exist_ok=True)
-        saved_paths: list[Path] = []
-        control_hint = "wt,control,ctrl,utf"
+# Automatically prepare ICE batch/zip when ab1 files are uploaded
+auto_pack = st.session_state.get("ice_auto_pack")
+if ice_ab1:
+    dest_dir = upload_dir / "ice_autopack"
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    saved_paths: list[Path] = []
+    control_hint = "wt,control,ctrl,utf"
 
         def _write_ab1_file(name: str, data: bytes) -> Path:
             base = Path(name).name
@@ -452,6 +452,7 @@ if st.session_state.get("ice_summary_html_content"):
                     "zip_path": zip_out,
                     "control": control_path.name,
                 }
+                st.session_state["ice_auto_pack"] = auto_pack
                 st.info(
                     f"Auto-built ICE batch ({excel_out.name}) and zip ({zip_out.name}) using control {control_path.name}."
                 )
@@ -459,6 +460,30 @@ if st.session_state.get("ice_summary_html_content"):
                 st.error(f"Auto-build failed: {e}")
         elif saved_paths:
             st.warning("Need at least two .ab1 files to build an ICE batch.")
+
+if auto_pack and "excel_path" in auto_pack:
+    st.caption("ICE auto-pack available")
+    col_batch, col_zip = st.columns(2)
+    with col_batch:
+        try:
+            st.download_button(
+                "Download batch Excel",
+                Path(auto_pack["excel_path"]).read_bytes(),
+                file_name=Path(auto_pack["excel_path"]).name,
+                key="ice_autopack_excel",
+            )
+        except Exception:
+            st.write("Batch Excel not found.")
+    with col_zip:
+        try:
+            st.download_button(
+                "Download AB1 zip",
+                Path(auto_pack["zip_path"]).read_bytes(),
+                file_name=Path(auto_pack["zip_path"]).name,
+                key="ice_autopack_zip",
+            )
+        except Exception:
+            st.write("Zip not found.")
 
     if st.button("Run ICE now"):
         if not ice_batch or not ice_ab1:
