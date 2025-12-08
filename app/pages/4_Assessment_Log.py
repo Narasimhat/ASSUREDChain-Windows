@@ -446,10 +446,9 @@ if ice_ab1:
                     pass
                 make_zip(zip_out, [excel_path] + saved_paths)
                 auto_pack = {
-                    "batch": _wrap_path_for_buffer(excel_path),
-                    "ab1": [_wrap_path_for_buffer(p) for p in saved_paths],
-                    "excel_path": excel_path,
-                    "zip_path": zip_out,
+                    "excel_path": excel_out.as_posix(),
+                    "zip_path": zip_out.as_posix(),
+                    "ab1_paths": [p.as_posix() for p in saved_paths],
                     "control": control_path.name,
                 }
                 st.session_state["ice_auto_pack"] = auto_pack
@@ -488,8 +487,8 @@ if auto_pack and "excel_path" in auto_pack:
     if st.button("Run ICE now"):
         if not ice_batch or not ice_ab1:
             if auto_pack:
-                ice_batch_for_run = auto_pack["batch"]
-                processed_ab1 = auto_pack["ab1"]
+                ice_batch_for_run = _wrap_path_for_buffer(Path(auto_pack["excel_path"]))
+                processed_ab1 = [_wrap_path_for_buffer(Path(p)) for p in auto_pack.get("ab1_paths", [])]
             else:
                 st.error("Upload a batch Excel and at least one .ab1 file (or let auto-build create the batch).")
                 st.stop()
@@ -514,8 +513,8 @@ if auto_pack and "excel_path" in auto_pack:
                     processed_ab1.append(f)
 
         if auto_pack and not ice_batch:
-            ice_batch_for_run = auto_pack["batch"]
-            processed_ab1 = auto_pack["ab1"]
+            ice_batch_for_run = _wrap_path_for_buffer(Path(auto_pack["excel_path"]))
+            processed_ab1 = [_wrap_path_for_buffer(Path(p)) for p in auto_pack.get("ab1_paths", [])]
 
         if not processed_ab1:
             st.error("No .ab1 files found (even inside the zip).")
