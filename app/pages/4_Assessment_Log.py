@@ -360,7 +360,21 @@ default_guides, default_donor = _default_guides_and_donor(project_meta)
 with st.expander("Run ICE locally (beta)"):
     st.caption("Runs local synthego_ice_batch and attaches the summary JSON/XLSX as the tool result.")
     ice_batch = st.file_uploader("ICE batch Excel (.xlsx)", type=["xlsx"], key="ice_batch_upload")
-    ice_ab1 = st.file_uploader("ab1 files (or zip containing ab1)", type=["ab1", "zip"], accept_multiple_files=True, key="ice_ab1_upload")
+ice_ab1 = st.file_uploader("ab1 files (or zip containing ab1)", type=["ab1", "zip"], accept_multiple_files=True, key="ice_ab1_upload")
+# If a prior ICE summary exists in session, keep it visible even before a new run
+if st.session_state.get("ice_summary_html_content"):
+    with st.expander("ICE summary (HTML)", expanded=True):
+        st.components.v1.html(st.session_state["ice_summary_html_content"], height=400, scrolling=True)
+        if st.session_state.get("ice_summary_html_path"):
+            try:
+                st.download_button(
+                    "Download ICE summary HTML",
+                    Path(st.session_state["ice_summary_html_path"]).read_bytes(),
+                    file_name=Path(st.session_state["ice_summary_html_path"]).name,
+                    key="ice_summary_html_download_cached",
+                )
+            except FileNotFoundError:
+                pass
     # Automatically prepare ICE batch/zip when ab1 files are uploaded
     auto_pack = None
     if ice_ab1:
@@ -494,6 +508,8 @@ with st.expander("Run ICE locally (beta)"):
                 try:
                     with open(summary_html, "r", encoding="utf-8") as f:
                         html_content = f.read()
+                        st.session_state["ice_summary_html_content"] = html_content
+                        st.session_state["ice_summary_html_path"] = str(summary_html)
                     with st.expander("ICE summary (HTML)", expanded=True):
                         st.components.v1.html(html_content, height=400, scrolling=True)
                         st.download_button(
