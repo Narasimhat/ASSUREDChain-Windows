@@ -11,3 +11,4 @@ fastapi>=0.111
 uvicorn[standard]>=0.30
 openai>=1.35
 XlsxWriter>=3.1
+synthego-ice>=1.18.0
