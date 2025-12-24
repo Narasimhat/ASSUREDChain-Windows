@@ -41,6 +41,10 @@ class ChatRequest(BaseModel):
         default=None,
         description="Logical context (e.g., 'design', 'charter') to help the assistant narrow focus.",
     )
+    agent: Optional[str] = Field(
+        default=None,
+        description="Optional agent routing hint: 'openai' or 'local'. When omitted, server uses ASSISTANT_MODE/OPENAI_API_KEY.",
+    )
     messages: List[Message]
 
 
@@ -189,12 +193,12 @@ def chat(request: ChatRequest) -> ChatResponse:
 
     project_context = _load_project_context(request.project_id)
 
-    assistant_mode = os.getenv("ASSISTANT_MODE")
+    assistant_mode = (request.agent or os.getenv("ASSISTANT_MODE") or "").strip().lower()
     if not assistant_mode:
         assistant_mode = "openai" if os.getenv("OPENAI_API_KEY") else "local"
 
     reply: str
-    if assistant_mode.lower() == "local":
+    if assistant_mode == "local":
         try:
             reply = _call_local_model(request.messages, project_context)
         except Exception:

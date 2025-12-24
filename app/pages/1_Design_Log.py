@@ -22,6 +22,7 @@ from pydantic import (
 )
 
 from app.components.assistant_panel import render_assistant
+from app.components.autofill import parse_guides_and_donors
 from app.components.file_utils import (
     build_step_filename,
     merge_pdfs,
@@ -278,6 +279,54 @@ default_donors_payload = compliance_defaults.get("donors") or []
 attachments: dict[str, str] = {}
 saved_attachment_paths: list[Path] = []
 
+# --- Paste to autofill (outside form so button works) ---
+st.subheader("Quick autofill from paste")
+with st.expander("Paste to autofill guides / ssODN", expanded=False):
+    st.caption(
+        "Paste a block from Benchling / CRISPOR / Excel. We'll extract guide sequences and the longest ssODN-like sequence."
+    )
+    pasted = st.text_area("Paste here", key="design_autofill_paste", height=120)
+    apply_autofill = st.button("Apply autofill", key="design_autofill_apply")
+    if apply_autofill and pasted.strip():
+        parsed = parse_guides_and_donors(pasted, default_pam=default_pam_rule)
+        parsed_guides = parsed.get("guides") or []
+        parsed_donor = parsed.get("donor")
+
+        # Expand guide count to match parsed guides
+        st.session_state["num_guides_autofill"] = max(
+            st.session_state.get("num_guides_autofill", 0), len(parsed_guides)
+        )
+        for idx, g in enumerate(parsed_guides[:6]):
+            if g.get("sequence"):
+                st.session_state[f"guide_seq_{idx}"] = g["sequence"]
+            if g.get("pam"):
+                st.session_state[f"guide_pam_{idx}"] = g["pam"]
+            if g.get("strand"):
+                st.session_state[f"guide_strand_{idx}"] = g["strand"]
+            if g.get("genomic_locus"):
+                st.session_state[f"guide_locus_{idx}"] = g["genomic_locus"]
+            if g.get("on_target_score") is not None:
+                st.session_state[f"guide_on_score_{idx}"] = float(g["on_target_score"])
+            if g.get("off_target_score") is not None:
+                st.session_state[f"guide_off_score_{idx}"] = float(g["off_target_score"])
+            if not st.session_state.get(f"guide_id_{idx}"):
+                st.session_state[f"guide_id_{idx}"] = f"g{idx + 1}"
+
+        # If we detected a donor, ensure at least one donor slot exists and fill it.
+        if parsed_donor and parsed_donor.get("sequence"):
+            st.session_state["num_donors_autofill"] = max(
+                st.session_state.get("num_donors_autofill", 0), 1
+            )
+            st.session_state["donor_type_0"] = "ssODN"
+            st.session_state["donor_sequence_0"] = parsed_donor["sequence"]
+
+        st.success(
+            f"Autofilled {len(parsed_guides)} guide(s)" + (" and 1 donor" if parsed_donor else "")
+        )
+        st.rerun()
+
+st.divider()
+
 with st.form("design_v2"):
         col_meta = st.columns(2)
         with col_meta[0]:
@@ -326,7 +375,14 @@ with st.form("design_v2"):
         selected_guides_raw: list[dict] = []
         default_guides_count = min(max(len(default_guides_prefill), 0), 6)
         guide_count_value = default_guides_count if default_guides_count else 2
-        num_guides = st.number_input("Number of selected guides", min_value=0, max_value=6, value=guide_count_value)
+        num_guides_pref = max(int(st.session_state.get("num_guides_autofill", 0)), guide_count_value)
+        num_guides = st.number_input(
+            "Number of selected guides",
+            min_value=0,
+            max_value=6,
+            value=num_guides_pref,
+            key="num_guides_input",
+        )
         for idx in range(num_guides):
             guide_defaults = default_guides_prefill[idx] if idx < len(default_guides_prefill) else {}
             strand_options = ["", "+", "-"]
@@ -459,7 +515,14 @@ with st.form("design_v2"):
         donor_required = edit_intent in ("SNP-KI", "PrimeEdit", "BaseEdit")
         default_donor_count = min(max(len(default_donors_payload), 0), 5)
         donor_count_value = default_donor_count if default_donor_count else (1 if donor_required else 0)
-        num_donors = st.number_input("Number of donor templates", min_value=0, max_value=5, value=donor_count_value)
+        num_donors_pref = max(int(st.session_state.get("num_donors_autofill", 0)), donor_count_value)
+        num_donors = st.number_input(
+            "Number of donor templates",
+            min_value=0,
+            max_value=5,
+            value=num_donors_pref,
+            key="num_donors_input",
+        )
         donor_type_options = ["ssODN", "dsDNA", "plasmid", "none"]
         for idx in range(num_donors):
             donor_defaults = default_donors_payload[idx] if idx < len(default_donors_payload) else {}

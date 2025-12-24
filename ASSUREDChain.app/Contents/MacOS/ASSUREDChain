@@ -1,0 +1,58 @@
+#!/bin/bash
+# ASSUREDChain macOS App Launcher
+
+# Hardcoded project directory (where the actual code lives)
+PROJECT_DIR="/Users/ntelugu/Documents/GitHub/ASSUREDChain-Windows"
+
+# Change to project directory
+cd "$PROJECT_DIR" || {
+    echo "Error: Cannot find project directory at $PROJECT_DIR"
+    echo "Please check that the project still exists at this location."
+    read -p "Press Enter to exit..."
+    exit 1
+}
+
+# Activate virtual environment
+source venv/bin/activate || {
+    echo "Error: Cannot activate virtual environment"
+    echo "Please check that venv exists at $PROJECT_DIR/venv"
+    read -p "Press Enter to exit..."
+    exit 1
+}
+
+# Use full path to Python from venv
+PYTHON="$PROJECT_DIR/venv/bin/python"
+STREAMLIT="$PROJECT_DIR/venv/bin/streamlit"
+
+# Verify executables exist
+if [ ! -f "$PYTHON" ]; then
+    echo "Error: Python not found at $PYTHON"
+    read -p "Press Enter to exit..."
+    exit 1
+fi
+
+# Kill any existing processes on ports 8000 and 8503
+lsof -ti:8000 | xargs kill -9 2>/dev/null
+lsof -ti:8503 | xargs kill -9 2>/dev/null
+sleep 1
+
+# Start the backend API in background
+echo "Starting ASSUREDChain Assistant API..."
+"$PYTHON" -m uvicorn assistant.backend.main:app --host 127.0.0.1 --port 8000 > /tmp/assuredchain_backend.log 2>&1 &
+BACKEND_PID=$!
+
+# Wait for backend to start
+sleep 2
+
+# Start Streamlit and open browser
+echo "Starting ASSUREDChain UI..."
+echo "Opening browser at http://localhost:8503"
+
+# Open browser automatically
+sleep 3 && open "http://localhost:8503" &
+
+# Start Streamlit
+"$STREAMLIT" run app/Home.py --server.port 8503
+
+# Cleanup: kill backend when Streamlit stops
+kill $BACKEND_PID 2>/dev/null

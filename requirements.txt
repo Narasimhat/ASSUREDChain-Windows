@@ -13,3 +13,6 @@ openai>=1.35
 XlsxWriter>=3.1
 synthego-ice<=1.2.0
 scikit-learn>=1.0
+
+# NOTE: synthego-ice depends on the deprecated PyPI package `sklearn`, which
+# fails to install on modern pip. We rely on `scikit-learn` directly instead.

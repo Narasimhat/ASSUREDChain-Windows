@@ -33,6 +33,39 @@ def render_assistant(project_id: Optional[str], context: str) -> None:
     st.sidebar.markdown("### AI Assistant")
     st.sidebar.caption("Ask about compliance steps, missing evidence, or project context.")
 
+    # --- Agent selection ---
+    # Persist per logical context so each page can remember its own setting (in-session).
+    agent_mode_key = f"assistant_agent_mode_{context}"
+    agent_key = f"assistant_agent_{context}"
+    default_mode = st.session_state.get(agent_mode_key, "Auto")
+    agent_mode = st.sidebar.selectbox(
+        "Agent selection",
+        ["Auto", "Manual"],
+        index=0 if default_mode == "Auto" else 1,
+        key=agent_mode_key,
+        help=(
+            "Auto selects the best agent based on the page/context. "
+            "Manual lets you force a specific agent."
+        ),
+    )
+
+    agent: str
+    if agent_mode == "Manual":
+        default_agent = st.session_state.get(agent_key, "openai")
+        agent = st.sidebar.selectbox(
+            "Agent",
+            ["openai", "local"],
+            index=0 if default_agent == "openai" else 1,
+            key=agent_key,
+            help="openai uses OPENAI_API_KEY; local uses ASSISTANT_LOCAL_ENDPOINT (e.g. Ollama).",
+        )
+    else:
+        # Simple heuristic auto-routing.
+        # - 'design' and 'charter' benefit from higher reasoning when available.
+        # - compliance-heavy pages often work fine with a local model.
+        agent = "openai" if context in {"design", "charter"} else "local"
+        st.sidebar.caption(f"Agent: {agent} (auto)")
+
     history_key = f"assistant_history_{context}"
     if history_key not in st.session_state:
         st.session_state[history_key] = []
@@ -61,6 +94,7 @@ def render_assistant(project_id: Optional[str], context: str) -> None:
             payload = {
                 "project_id": project_id,
                 "context": context,
+                "agent": agent,
                 "messages": [
                     {"role": "user", "content": prompt.strip()},
                 ],
