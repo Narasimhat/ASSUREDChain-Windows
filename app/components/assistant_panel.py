@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import json
 import os
 from pathlib import Path
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 import requests
 import streamlit as st
@@ -20,13 +19,30 @@ def _chat_endpoint() -> str:
     return f"{ASSISTANT_URL.rstrip('/')}/chat"
 
 
-def _post_chat(payload: dict) -> dict:
+def _chat_in_process(payload: dict) -> dict:
+    """Call the assistant handler without a separate FastAPI process (Streamlit Cloud)."""
+    from assistant.backend.main import ChatRequest, Message, chat
+
+    request = ChatRequest(
+        project_id=payload.get("project_id"),
+        context=payload.get("context"),
+        agent=payload.get("agent"),
+        messages=[Message(**m) for m in payload.get("messages", [])],
+    )
+    response = chat(request)
+    return response.model_dump()
+
+
+def _post_chat(payload: dict) -> Dict[str, Any]:
     try:
         response = requests.post(_chat_endpoint(), json=payload, timeout=10)
         response.raise_for_status()
         return response.json()
-    except requests.RequestException as exc:
-        return {"error": str(exc)}
+    except requests.RequestException:
+        try:
+            return _chat_in_process(payload)
+        except Exception as exc:
+            return {"error": str(exc)}
 
 
 def render_assistant(project_id: Optional[str], context: str) -> None:
@@ -60,10 +76,11 @@ def render_assistant(project_id: Optional[str], context: str) -> None:
             help="openai uses OPENAI_API_KEY; local uses ASSISTANT_LOCAL_ENDPOINT (e.g. Ollama).",
         )
     else:
-        # Simple heuristic auto-routing.
-        # - 'design' and 'charter' benefit from higher reasoning when available.
-        # - compliance-heavy pages often work fine with a local model.
-        agent = "openai" if context in {"design", "charter"} else "local"
+        # Prefer OpenAI when a key is present (typical on Streamlit Cloud).
+        if os.getenv("OPENAI_API_KEY"):
+            agent = "openai"
+        else:
+            agent = "openai" if context in {"design", "charter"} else "local"
         st.sidebar.caption(f"Agent: {agent} (auto)")
 
     history_key = f"assistant_history_{context}"

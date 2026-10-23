@@ -15,14 +15,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt /tmp/requirements.txt
+COPY requirements.txt requirements-ice.txt /tmp/
 
-# synthego-ice still depends on the removed PyPI package `sklearn`.
-# Install everything else first, then ice without its declared deps.
+# Default runtime deps for Streamlit Cloud / Railway. ICE CLI is optional.
 RUN pip install --upgrade pip \
-    && grep -vE '^synthego-ice' /tmp/requirements.txt > /tmp/requirements.runtime.txt \
-    && pip install -r /tmp/requirements.runtime.txt \
-    && pip install "synthego-ice<=1.2.0" --no-deps
+    && pip install -r /tmp/requirements.txt \
+    && pip install -r /tmp/requirements-ice.txt \
+    && pip install "synthego-ice<=1.2.0" --no-deps || true
 
 COPY . /app
 

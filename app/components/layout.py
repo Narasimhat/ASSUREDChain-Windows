@@ -85,6 +85,9 @@ def init_page(
     banner_width: int = 260,
 ) -> LogoAsset:
     """Convenience helper to configure the page and immediately render the shared logo."""
+    from app.components.secrets_env import apply_streamlit_secrets
+
+    apply_streamlit_secrets()
     logo = configure_page(title, layout=layout, logo_path=logo_path)
     render_page_logo(logo_path=logo.path, show_banner=show_banner, banner_width=banner_width)
     return logo

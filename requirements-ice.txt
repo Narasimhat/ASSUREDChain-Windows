@@ -1,0 +1,7 @@
+# Optional: local Synthego ICE CLI for Assessment / IOTA pages.
+# Prefer Assured QC FAIR for cloud and day-to-day QC imports.
+#
+# Install with:
+#   pip install -r requirements-ice.txt
+#   pip install "synthego-ice<=1.2.0" --no-deps
+scikit-learn>=1.0

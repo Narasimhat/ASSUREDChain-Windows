@@ -51,32 +51,28 @@ streamlit run app/Home.py --server.port 8503
 
 The **Design Logger** page stores snapshots in `data/design_logs/` with filenames that include the JSON hash prefix. Tomorrow's update will push those hashes to the `AssuredRegistry` contract on Sepolia.
 
-## Deploy on Railway (recommended)
+## Deploy on Streamlit Community Cloud (free, recommended)
 
-ASSUREDChain needs a long-running Python process (Streamlit + FastAPI) and durable `data/` storage. Railway fits that; Vercel does not.
+No Railway/Vercel account needed. Free hosting for this Streamlit app via GitHub.
 
-1. Push this branch (or merge to `main`), then open [Railway](https://railway.app) → **New Project** → **Deploy from GitHub** → select `ASSUREDChain-Windows`.
-2. Railway detects `Dockerfile` / `railway.toml` and builds the image (Streamlit on `$PORT`, assistant on `127.0.0.1:8000` inside the same container).
-3. In the service **Variables**, set at least:
+**Trade-offs:** free Cloud storage is **ephemeral** (redeploys wipe `data/`). Fine for demos and teaching; keep real lab snapshots on a local/shared Windows install. The AI assistant runs **in-process** when no separate FastAPI server is available. Local Synthego ICE CLI is optional (`requirements-ice.txt`); prefer Assured QC FAIR imports.
 
-   | Variable | Notes |
-   |---|---|
-   | `OPENAI_API_KEY` | Optional; enables the sidebar assistant |
-   | `ASSISTANT_MODE` | `openai` (default) or `local` |
-   | `WEB3_PROVIDER_URL` / `CONTRACT_ADDRESS` / `CHAIN_ID` / `ACCOUNT_PRIVATE_KEY` | Only if you want on-chain anchoring |
-   | `ASSURED_DESIGN_URL` / `ASSURED_QC_URL` / `ASSURED_HUB_FAIR_URL` | Optional overrides (defaults match `.env.template`) |
+1. Merge/push this branch, then open [share.streamlit.io](https://share.streamlit.io) → sign in with GitHub → **New app**.
+2. Repository: `Narasimhat/ASSUREDChain-Windows` · Branch: `main` (or this PR branch) · Main file path: `app/Home.py`.
+3. Under **Advanced settings → Secrets**, paste from `.streamlit/secrets.toml.example` (at least `OPENAI_API_KEY` if you want the sidebar assistant).
+4. Deploy. Open the public `*.streamlit.app` URL.
 
-   Leave `ASSISTANT_API_URL` unset (defaults to the in-container assistant).
-4. Attach a **Volume** mounted at `/app/data` so design/assessment snapshots survive redeploys.
-5. Generate a public domain under **Settings → Networking**. Health check path: `/_stcore/health`.
+Local Windows installs that still need ICE batch:
 
-Local image smoke test:
-
-```bash
-docker build -t assuredchain .
-docker run --rm -p 8503:8503 -e PORT=8503 assuredchain
-# open http://localhost:8503
+```powershell
+pip install -r requirements.txt
+pip install -r requirements-ice.txt
+pip install "synthego-ice<=1.2.0" --no-deps
 ```
+
+### Optional: Railway / Docker (paid or self-hosted)
+
+If you later want durable disks, use the included `Dockerfile` + `railway.toml` (Streamlit on `$PORT`, assistant on `127.0.0.1:8000`, volume at `/app/data`). Vercel is not a fit for this Python stack.
 
 ## Day 2: Anchor Design Hashes On-Chain
 
