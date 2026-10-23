@@ -12,7 +12,8 @@ dist/
 .idea/
 .vscode/
 *.orig
-.streamlit/
+.streamlit/*
+!.streamlit/config.toml
 
 # Project-generated artifacts (do not version large outputs)
 /data/projects/**/reports/**
