@@ -51,6 +51,33 @@ streamlit run app/Home.py --server.port 8503
 
 The **Design Logger** page stores snapshots in `data/design_logs/` with filenames that include the JSON hash prefix. Tomorrow's update will push those hashes to the `AssuredRegistry` contract on Sepolia.
 
+## Deploy on Railway (recommended)
+
+ASSUREDChain needs a long-running Python process (Streamlit + FastAPI) and durable `data/` storage. Railway fits that; Vercel does not.
+
+1. Push this branch (or merge to `main`), then open [Railway](https://railway.app) → **New Project** → **Deploy from GitHub** → select `ASSUREDChain-Windows`.
+2. Railway detects `Dockerfile` / `railway.toml` and builds the image (Streamlit on `$PORT`, assistant on `127.0.0.1:8000` inside the same container).
+3. In the service **Variables**, set at least:
+
+   | Variable | Notes |
+   |---|---|
+   | `OPENAI_API_KEY` | Optional; enables the sidebar assistant |
+   | `ASSISTANT_MODE` | `openai` (default) or `local` |
+   | `WEB3_PROVIDER_URL` / `CONTRACT_ADDRESS` / `CHAIN_ID` / `ACCOUNT_PRIVATE_KEY` | Only if you want on-chain anchoring |
+   | `ASSURED_DESIGN_URL` / `ASSURED_QC_URL` / `ASSURED_HUB_FAIR_URL` | Optional overrides (defaults match `.env.template`) |
+
+   Leave `ASSISTANT_API_URL` unset (defaults to the in-container assistant).
+4. Attach a **Volume** mounted at `/app/data` so design/assessment snapshots survive redeploys.
+5. Generate a public domain under **Settings → Networking**. Health check path: `/_stcore/health`.
+
+Local image smoke test:
+
+```bash
+docker build -t assuredchain .
+docker run --rm -p 8503:8503 -e PORT=8503 assuredchain
+# open http://localhost:8503
+```
+
 ## Day 2: Anchor Design Hashes On-Chain
 
 1. Deploy `contracts/AssuredRegistry.sol` to Sepolia (Remix + MetaMask).
