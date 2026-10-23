@@ -22,6 +22,13 @@ from pydantic import (
 )
 
 from app.components.assistant_panel import render_assistant
+from app.components.assured_tools import (
+    apply_design_import_to_session,
+    design_url,
+    hub_url,
+    parse_assured_design_export,
+    render_assured_launcher,
+)
 from app.components.autofill import parse_guides_and_donors
 from app.components.file_utils import (
     build_step_filename,
@@ -130,8 +137,14 @@ class DesignSnapshotV2(BaseModel):
     timestamp_unix: int
 
     design_platform: Literal[
-        "CRISPOR", "CHOPCHOP", "Benchling", "RGEN (Cas-Designer)", "Upload/CSV", "Other"
-    ] = "CRISPOR"
+        "Assured Design",
+        "CRISPOR",
+        "CHOPCHOP",
+        "Benchling",
+        "RGEN (Cas-Designer)",
+        "Upload/CSV",
+        "Other",
+    ] = "Assured Design"
     cas_variant: str = Field(..., description="e.g., SpCas9, SpCas9-HF1, LbCas12a, hfCas12Max, etc.")
     pam_rule: str = Field(..., description="e.g., NGG, TTTV, NRN, etc.")
     design_source_url: Optional[str] = None
@@ -243,8 +256,10 @@ else:
 render_assistant(selected_project, context="design")
 
 st.markdown(
-    """
+    f"""
     **Design resources**  
+    • **[Assured Design (FAIR)]({design_url()})** – recommended ASSURED design tool (guides, donors, primers, QC hand-off)  
+    • [ASSURED Hub FAIR Bench]({hub_url()}studio/) – full Design → Order → Trace Analysis → Passport chain  
     • [CRISPOR](http://crispor.tefor.net/) – guide scoring, HDR templates, off-target screening  
     • [CHOPCHOP](https://chopchop.cbu.uib.no/) – multi-enzyme gRNA search with PAM filtering  
     • [Benchling](https://www.benchling.com/) – collaborative plasmid design and sequence management  
@@ -263,18 +278,96 @@ else:
     attachment_dir = FALLBACK_ATTACHMENT_DIR
     report_dir = FALLBACK_DATA_DIR
 
+with st.expander("Assured Design — launch & import", expanded=True):
+    render_assured_launcher(
+        title="Assured Design",
+        url=design_url(),
+        caption=(
+            "Design guides/donors/primers in Assured Design, download the QC hand-off JSON "
+            "(schema `assured-qc-design/1`), then import it here to fill this Design Log."
+        ),
+        key="design_assured",
+    )
+    assured_design_file = st.file_uploader(
+        "Import Assured Design export (assured-qc-design/1 JSON)",
+        type=["json"],
+        key="assured_design_json_upload",
+    )
+    if assured_design_file is not None and st.button("Apply Assured Design import", key="assured_design_apply"):
+        try:
+            parsed = parse_assured_design_export(assured_design_file.getvalue())
+            apply_design_import_to_session(parsed)
+            saved_import = save_uploaded_file(
+                selected_project,
+                assured_design_file,
+                attachment_dir,
+                category="uploads",
+                context={"step": "design", "kind": "assured_design_export"},
+            )
+            st.session_state["assured_design_attachment"] = str(saved_import)
+            st.success(
+                f"Imported {len(parsed.get('selected_guides') or [])} guide(s), "
+                f"{len(parsed.get('donors') or [])} donor(s), "
+                f"{len(parsed.get('primer_pairs') or [])} primer pair(s) from Assured Design."
+            )
+            st.rerun()
+        except Exception as exc:
+            st.error(f"Assured Design import failed: {exc}")
+
 compliance_defaults = meta.get("compliance", {}) if meta else {}
+imported_design = st.session_state.get("assured_design_import") or {}
+imported_mutation = imported_design.get("mutation") or {}
 default_project_id = selected_project or "TIE1_SNPKI_v1"
 default_author = meta.get("owner", "") or "Narasimha Telugu"
-default_gene = compliance_defaults.get("gene") or "TIE1"
-default_edit_intent = compliance_defaults.get("edit_intent") or "SNP-KI"
-default_region = compliance_defaults.get("modification_description") or ""
-default_design_platform = compliance_defaults.get("design_platform", "CRISPOR")
-default_cas_variant = compliance_defaults.get("cas_variant", "hfCas12Max")
-default_pam_rule = compliance_defaults.get("pam_rule", "TTTV")
-default_guides_prefill = compliance_defaults.get("guides") or []
-default_primers_prefill = compliance_defaults.get("primers") or []
-default_donors_payload = compliance_defaults.get("donors") or []
+default_gene = (
+    st.session_state.get("assured_design_gene")
+    or imported_mutation.get("gene")
+    or compliance_defaults.get("gene")
+    or "TIE1"
+)
+default_edit_intent = (
+    st.session_state.get("assured_design_edit_intent")
+    or imported_mutation.get("edit_intent")
+    or compliance_defaults.get("edit_intent")
+    or "SNP-KI"
+)
+default_region = (
+    st.session_state.get("assured_design_region")
+    or imported_mutation.get("region_context")
+    or compliance_defaults.get("modification_description")
+    or ""
+)
+default_design_platform = (
+    st.session_state.get("assured_design_platform")
+    or imported_design.get("design_platform")
+    or compliance_defaults.get("design_platform")
+    or "Assured Design"
+)
+default_cas_variant = (
+    st.session_state.get("assured_design_cas")
+    or imported_design.get("cas_variant")
+    or compliance_defaults.get("cas_variant")
+    or "SpCas9"
+)
+default_pam_rule = (
+    st.session_state.get("assured_design_pam")
+    or imported_design.get("pam_rule")
+    or compliance_defaults.get("pam_rule")
+    or "NGG"
+)
+default_guides_prefill = imported_design.get("selected_guides") or compliance_defaults.get("guides") or []
+default_primers_prefill = imported_design.get("primer_pairs") or compliance_defaults.get("primers") or []
+default_donors_payload = imported_design.get("donors") or compliance_defaults.get("donors") or []
+default_transcript = (
+    st.session_state.get("assured_design_transcript")
+    or imported_mutation.get("transcript")
+    or ""
+)
+default_design_source_url = (
+    st.session_state.get("assured_design_source_url")
+    or imported_design.get("design_source_url")
+    or ""
+)
 
 attachments: dict[str, str] = {}
 saved_attachment_paths: list[Path] = []
@@ -337,7 +430,15 @@ with st.form("design_v2"):
         st.subheader("Platform & Enzyme")
         c1, c2, c3 = st.columns(3)
         with c1:
-            platform_options = ["CRISPOR", "CHOPCHOP", "Benchling", "RGEN (Cas-Designer)", "Upload/CSV", "Other"]
+            platform_options = [
+                "Assured Design",
+                "CRISPOR",
+                "CHOPCHOP",
+                "Benchling",
+                "RGEN (Cas-Designer)",
+                "Upload/CSV",
+                "Other",
+            ]
             default_platform_index = platform_options.index(default_design_platform) if default_design_platform in platform_options else 0
             design_platform = st.selectbox(
                 "Design platform",
@@ -348,11 +449,14 @@ with st.form("design_v2"):
             cas_variant = st.text_input("Cas variant", value=default_cas_variant)
         with c3:
             pam_rule = st.text_input("PAM rule", value=default_pam_rule)
-        design_source_url = st.text_input("Design source URL (optional)")
+        design_source_url = st.text_input(
+            "Design source URL (optional)",
+            value=default_design_source_url or (design_url() if design_platform == "Assured Design" else ""),
+        )
 
         st.subheader("Mutation / Locus")
         gene = st.text_input("Gene", value=default_gene)
-        transcript = st.text_input("Transcript (e.g., NM_003266.5)")
+        transcript = st.text_input("Transcript (e.g., NM_003266.5)", value=default_transcript)
         genome_assembly = st.selectbox("Genome assembly", ["GRCh38", "GRCh37", "Other"], index=0)
         edit_options = ["KO", "SNP-KI", "BaseEdit", "PrimeEdit"]
         edit_index = edit_options.index(default_edit_intent) if default_edit_intent in edit_options else 0
@@ -477,7 +581,14 @@ with st.form("design_v2"):
         primer_pairs_raw: list[dict] = []
         default_primers_count = min(max(len(default_primers_prefill), 0), 5)
         primer_count_value = default_primers_count if default_primers_count else 1
-        num_primers = st.number_input("Number of primer pairs", min_value=0, max_value=5, value=primer_count_value)
+        num_primers_pref = max(int(st.session_state.get("num_primers_autofill", 0)), primer_count_value)
+        num_primers = st.number_input(
+            "Number of primer pairs",
+            min_value=0,
+            max_value=5,
+            value=num_primers_pref,
+            key="num_primers_input",
+        )
         for idx in range(num_primers):
             primer_defaults = default_primers_prefill[idx] if idx < len(default_primers_prefill) else {}
             with st.expander(f"Primer Pair {idx + 1}"):
@@ -599,10 +710,19 @@ with st.form("design_v2"):
                 attachments[upload.name] = str(saved_path)
                 saved_attachment_paths.append(saved_path)
 
-        off_target_review = st.text_area("Off-target review summary (top sites, in silico flags)")
-        design_decision = st.text_input("Design decision (why these guides/donor)")
+        off_target_review = st.text_area(
+            "Off-target review summary (top sites, in silico flags)",
+            value=imported_design.get("off_target_review") or "",
+        )
+        design_decision = st.text_input(
+            "Design decision (why these guides/donor)",
+            value=imported_design.get("design_decision") or "",
+        )
 
         submitted = st.form_submit_button("Save snapshot & compute hash")
+
+if st.session_state.get("assured_design_attachment"):
+    attachments["assured_design_export.json"] = st.session_state["assured_design_attachment"]
 
 if submitted:
     try:

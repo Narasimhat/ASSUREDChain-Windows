@@ -26,8 +26,8 @@ WIZARD_STEPS: List[WizardStep] = [
     WizardStep(
         slug="design",
         title="Design",
-        description="Capture guides, donors, primers, and target edits for each construct.",
-        recommended_attachments=["CRISPR design export", "Primer design PDF", "gRNA scoring sheet"],
+        description="Run Assured Design, import the assured-qc-design/1 hand-off, then capture guides/donors/primers.",
+        recommended_attachments=["Assured Design export (JSON)", "Primer design PDF", "gRNA scoring sheet"],
         page_path="pages/1_Design_Log.py",
     ),
     WizardStep(
@@ -40,8 +40,8 @@ WIZARD_STEPS: List[WizardStep] = [
     WizardStep(
         slug="assessment",
         title="Assessment",
-        description="Log PCR and sequencing outcomes, including ICE/TIDE/DECODR summaries.",
-        recommended_attachments=["ICE/TIDE report", "Gel image", "QC spreadsheet"],
+        description="Run Assured QC on control/edited AB1 pairs (or ICE/TIDE/DECODR) and log the decision.",
+        recommended_attachments=["Assured QC results CSV", "ICE/TIDE report", "Gel image"],
         page_path="pages/4_Assessment_Log.py",
     ),
     WizardStep(

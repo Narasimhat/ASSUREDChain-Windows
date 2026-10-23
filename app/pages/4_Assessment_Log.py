@@ -21,6 +21,12 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))
 
+from app.components.assured_tools import (
+    hub_url,
+    parse_assured_qc_export,
+    qc_url,
+    render_assured_launcher,
+)
 from app.components.file_utils import build_step_filename, preview_file, save_uploaded_file, snapshot_to_pdf
 from app.components.layout import init_page
 from app.components.project_state import (
@@ -320,11 +326,11 @@ selected_project = use_project("project")
 project_meta = load_project_meta(selected_project) if selected_project else {}
 st.title("Step 4 - Assessment (Sanger / PCR)")
 st.caption(
-    "Upload Sanger results (TIDE / ICE / DECODR / SeqScreener / TIDER) or log PCR genotyping. "
-    "Then anchor on-chain as step 'Assessment'."
+    "Run Assured QC (recommended) or upload Sanger results (TIDE / ICE / DECODR / SeqScreener / TIDER) "
+    "or log PCR genotyping. Then anchor on-chain as step 'Assessment'."
 )
 
-# resolve project paths early for ICE runner
+# resolve project paths early for ICE runner / Assured QC import
 if selected_project:
     snapshot_dir = project_subdir(selected_project, "snapshots", "assessment")
     upload_dir = project_subdir(selected_project, "uploads", "assessment")
@@ -336,6 +342,7 @@ else:
 
 with st.expander("Which tool should I pick?"):
     st.markdown(
+        "- **Assured QC** (recommended): browser Sanger QC with accept/hold/re-sequence decisions and Assured Design hand-off.\n"
         "- **DECODR**: accuracy on complex/large indels.\n"
         "- **TIDE / SeqScreener**: best for low-edit samples (<10%).\n"
         "- **TIDER**: knock-in % quantification (tag insertions).\n"
@@ -344,8 +351,10 @@ with st.expander("Which tool should I pick?"):
     )
 
 st.markdown(
-    """
+    f"""
     **Sequencing & analysis resources**  
+    • **[Assured QC (FAIR)]({qc_url()})** – recommended ASSURED trace analysis (control/edited AB1 pairs)  
+    • [ASSURED Hub FAIR Trace Analysis]({hub_url()}studio/) – Bench step with FAIR Passport hand-off  
     • [Synthego ICE](https://ice.synthego.com/) – rapid indel quantification with batch export  
     • [TIDE / TIDER](https://tide.deskgen.com/) – Sanger-based indel and knock-in analysis  
     • [DECODR](https://decodr.org/) – handles complex edit mixtures and large indels  
@@ -353,10 +362,56 @@ st.markdown(
     """
 )
 
+with st.expander("Assured QC — launch & import", expanded=True):
+    render_assured_launcher(
+        title="Assured QC",
+        url=qc_url(),
+        caption=(
+            "Analyse control/edited AB1 pairs in Assured QC (optionally with an Assured Design hand-off), "
+            "download the results CSV/JSON, then import here to fill indel/HDR % and the cloning decision."
+        ),
+        key="assessment_assured_qc",
+    )
+    assured_qc_file = st.file_uploader(
+        "Import Assured QC results (CSV or JSON)",
+        type=["csv", "json"],
+        key="assured_qc_results_upload",
+    )
+    if assured_qc_file is not None and st.button("Apply Assured QC import", key="assured_qc_apply"):
+        try:
+            parsed_qc = parse_assured_qc_export(assured_qc_file.getvalue(), assured_qc_file.name)
+            st.session_state["assured_qc_import"] = parsed_qc
+            saved_qc = save_uploaded_file(
+                selected_project,
+                assured_qc_file,
+                upload_dir,
+                category="uploads",
+                context={"step": "assessment", "kind": "assured_qc_export"},
+            )
+            st.session_state["assured_qc_attachment"] = str(saved_qc)
+            st.success(
+                f"Imported Assured QC ({parsed_qc.get('preferred_sample') or 'sample'}). "
+                f"Decision → {parsed_qc.get('decision')}; indel % → {parsed_qc.get('total_indel_pct')}."
+            )
+            st.rerun()
+        except Exception as exc:
+            st.error(f"Assured QC import failed: {exc}")
+    if st.session_state.get("assured_qc_import"):
+        preview = st.session_state["assured_qc_import"]
+        st.info(
+            f"Ready to log: tool=Assured QC · sample={preview.get('preferred_sample')} · "
+            f"indel={preview.get('total_indel_pct')}% · HDR/intended={preview.get('hdr_pct')}% · "
+            f"decision={preview.get('decision')}"
+        )
+
 attachments: dict[str, str] = {}
 saved_attachment_paths: list[Path] = []
 
 assessment_defaults = project_meta.get("assessment_defaults", {})
+if st.session_state.get("assured_qc_import"):
+    assessment_defaults = {**assessment_defaults, **st.session_state["assured_qc_import"]}
+if st.session_state.get("assured_qc_attachment"):
+    attachments["assured_qc_export"] = st.session_state["assured_qc_attachment"]
 ice_defaults = {}
 default_guides, default_donor = _default_guides_and_donor(project_meta)
 
@@ -620,13 +675,15 @@ with st.form("assessment_form"):
     pcr_bands: Optional[PCRBands] = None
 
     if assay_type == "Sanger-Indel":
-        tool_options = ["DECODR", "ICE", "TIDE", "SeqScreener", "TIDER"]
-        default_tool = assessment_defaults.get("tool_used", tool_options[0])
+        tool_options = ["Assured QC", "DECODR", "ICE", "TIDE", "SeqScreener", "TIDER"]
+        default_tool = assessment_defaults.get("tool_used", "Assured QC")
         tool_used = st.selectbox(
             "Tool used",
             tool_options,
             index=tool_options.index(default_tool) if default_tool in tool_options else 0,
         )
+        if tool_used == "Assured QC":
+            st.caption(f"Open Assured QC at {qc_url()} if you still need to run the analysis.")
         st.markdown("**Provide results** (upload export and/or enter values)")
 
         res_file = st.file_uploader(

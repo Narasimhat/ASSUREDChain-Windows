@@ -1,6 +1,12 @@
 ﻿# ASSUREDChain
 
-Day 1 scaffold for a Streamlit + Web3 workflow logger that mirrors the ASSURED protocol. The current focus is capturing **Design** stage metadata, saving an immutable JSON snapshot, and computing a SHA-256 hash that will be anchored on-chain in a later iteration.
+Streamlit + Web3 workflow logger that mirrors the ASSURED protocol. Capture each stage as an immutable JSON snapshot, hash it (SHA-256), and optionally anchor the digest on Sepolia.
+
+**Assured tools at the right steps**
+
+- **Design Log** launches [Assured Design (FAIR)](https://assured-design-fair.vercel.app/) and imports `assured-qc-design/1` hand-off JSON into guides/donors/primers.
+- **Assessment Log** launches [Assured QC (FAIR)](https://assured-qc-fair.vercel.app/) and imports results CSV/JSON into indel/HDR % plus cloning decision.
+- Override URLs with `ASSURED_DESIGN_URL`, `ASSURED_QC_URL`, and `ASSURED_HUB_FAIR_URL` in `.env` (see `.env.template`).
 
 ## Getting Started
 
