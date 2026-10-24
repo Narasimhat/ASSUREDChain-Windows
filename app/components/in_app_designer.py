@@ -1,0 +1,337 @@
+"""In-App CRISPR Design Studio and Report Generator for ASSUREDChain."""
+
+from __future__ import annotations
+
+import json
+import os
+import subprocess
+import time
+from pathlib import Path
+from typing import Any, Optional
+
+import streamlit as st
+
+from app.components.assured_tools import (
+    apply_design_import_to_session,
+    parse_assured_design_export,
+)
+import hashlib
+
+def sha256_bytes(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+from app.components.project_state import (
+    append_audit,
+    normalize_path_for_storage,
+    project_subdir,
+    register_file,
+)
+
+ROOT = Path(__file__).resolve().parents[2]
+CLI_SCRIPT = ROOT / "scripts" / "bench_design_cli.mjs"
+
+
+def run_in_silico_design(
+    gene: str,
+    edit_type: str = "ko",
+    mutation: str = "",
+    tag: str = "FLAG",
+    arm_length: int = 400,
+    genbank_text: str = "",
+    options: Optional[dict] = None,
+) -> dict[str, Any]:
+    """Execute the ASSURED Bench in-silico CRISPR design engine via Node CLI."""
+    if not CLI_SCRIPT.exists():
+        raise RuntimeError(f"Design engine CLI script not found at {CLI_SCRIPT}")
+
+    payload = {
+        "gene": (gene or "").strip(),
+        "editType": (edit_type or "ko").strip().lower(),
+        "mutation": (mutation or "").strip(),
+        "tag": (tag or "FLAG").strip(),
+        "armLength": int(arm_length),
+        "genbankText": (genbank_text or "").strip(),
+        "options": options or {},
+    }
+
+    try:
+        proc = subprocess.run(
+            ["node", str(CLI_SCRIPT)],
+            input=json.dumps(payload),
+            capture_output=True,
+            text=True,
+            check=False,
+            encoding="utf-8",
+            timeout=30,
+        )
+    except FileNotFoundError:
+        raise RuntimeError("Node.js is not installed or not found on PATH.")
+    except subprocess.TimeoutExpired:
+        raise RuntimeError("In-silico design timed out after 30 seconds.")
+
+    if proc.returncode != 0:
+        err_msg = proc.stderr.strip() or proc.stdout.strip() or f"Process exited with code {proc.returncode}"
+        try:
+            parsed_err = json.loads(proc.stdout)
+            if parsed_err.get("error"):
+                err_msg = parsed_err["error"]
+        except Exception:
+            pass
+        raise RuntimeError(f"Design engine error: {err_msg}")
+
+    try:
+        output = json.loads(proc.stdout)
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(f"Invalid response from design engine: {exc}") from exc
+
+    if not output.get("success"):
+        raise RuntimeError(output.get("error") or "Design generation failed.")
+
+    return output
+
+
+def save_design_reports(
+    selected_project: Optional[str],
+    design_output: dict[str, Any],
+) -> dict[str, Path]:
+    """Save HTML report and design JSON into the project's repository directories."""
+    gene = design_output.get("gene") or "target"
+    edit_type = design_output.get("editType") or "edit"
+    timestamp = int(time.time())
+
+    if selected_project:
+        reports_dir = project_subdir(selected_project, "reports", "design")
+        snapshots_dir = project_subdir(selected_project, "snapshots", "design")
+    else:
+        reports_dir = ROOT / "data" / "design_logs_v2"
+        snapshots_dir = ROOT / "data" / "design_logs_v2"
+
+    reports_dir.mkdir(parents=True, exist_ok=True)
+    snapshots_dir.mkdir(parents=True, exist_ok=True)
+
+    slug = f"{gene.lower()}_{edit_type.lower()}_{timestamp}"
+
+    # 1. Save HTML report
+    html_content = design_output.get("reportHtml") or ""
+    html_file = reports_dir / f"{slug}_report.html"
+    html_file.write_text(html_content, encoding="utf-8")
+
+    # 2. Save Design JSON (schema assured-qc-design/1)
+    qc_spec = design_output.get("qcDesignSpec") or {}
+    json_file = snapshots_dir / f"{slug}_design.json"
+    json_file.write_text(json.dumps(qc_spec, indent=2), encoding="utf-8")
+
+    # 3. Save SVG locus schematic if available
+    svg_content = design_output.get("svg") or ""
+    svg_file = reports_dir / f"{slug}_locus.svg"
+    if svg_content:
+        svg_file.write_text(svg_content, encoding="utf-8")
+
+    # Register files in project manifest
+    if selected_project:
+        now_unix = timestamp
+        register_file(
+            selected_project,
+            "reports",
+            {
+                "step": "design",
+                "path": normalize_path_for_storage(html_file),
+                "timestamp": now_unix,
+                "digest": sha256_bytes(html_file.read_bytes()),
+                "type": "html",
+            },
+        )
+        register_file(
+            selected_project,
+            "snapshots",
+            {
+                "step": "design",
+                "path": normalize_path_for_storage(json_file),
+                "timestamp": now_unix,
+                "digest": sha256_bytes(json_file.read_bytes()),
+                "type": "json",
+            },
+        )
+        append_audit(
+            selected_project,
+            {
+                "ts": now_unix,
+                "step": "design",
+                "action": "in_app_design_saved",
+                "gene": gene,
+                "edit_type": edit_type,
+                "report_html": html_file.name,
+                "design_json": json_file.name,
+            },
+        )
+
+    return {
+        "html_file": html_file,
+        "json_file": json_file,
+        "svg_file": svg_file if svg_content else None,
+    }
+
+
+def render_in_app_designer(selected_project: Optional[str]) -> None:
+    """Render the In-App CRISPR Design Studio UI in Streamlit."""
+    with st.expander("⚡ In-App CRISPR Designer (Instant Design & Report Generation)", expanded=True):
+        st.caption(
+            "Design CRISPR guides, donor templates (with silent blocking mutations), and primers "
+            "directly inside ASSUREDChain. Automatically preview locus schematics and save FAIR design reports."
+        )
+
+        col_g, col_t, col_m = st.columns([1.5, 1.5, 2])
+        with col_g:
+            target_gene = st.text_input("Target Gene Symbol", value="TP53", key="in_app_target_gene")
+        with col_t:
+            edit_options = {
+                "Point Mutation (SNP-KI)": "pm",
+                "Gene Knockout (KO)": "ko",
+                "C-Terminal Tag": "ct",
+                "N-Terminal Tag": "nt",
+            }
+            edit_choice = st.selectbox("Edit Type", list(edit_options.keys()), index=0, key="in_app_edit_choice")
+            selected_edit_type = edit_options[edit_choice]
+        with col_m:
+            if selected_edit_type == "pm":
+                mutation_val = st.text_input("Mutation / Codon Edit (e.g. R176C)", value="R176C", key="in_app_mutation")
+                tag_val = ""
+            elif selected_edit_type in ("ct", "nt"):
+                tag_presets = ["FLAG", "2xHA", "EGFP", "mCherry", "mScarlet", "mStayGold2", "dTAG-2xHA"]
+                tag_val = st.selectbox("Tag / Reporter", tag_presets, index=0, key="in_app_tag")
+                mutation_val = ""
+            else:
+                st.caption("Knockout: automatically selects high-efficiency dual guides spanning target exon.")
+                mutation_val = ""
+                tag_val = ""
+
+        with st.expander("Advanced Reference / Options", expanded=False):
+            custom_gb = st.text_area(
+                "Custom GenBank sequence (optional — defaults to Ensembl MANE Select or bundled reference)",
+                value="",
+                height=100,
+                key="in_app_custom_gb",
+            )
+            col_arm, col_meth = st.columns(2)
+            with col_arm:
+                arm_len = st.number_input("Homology arm length (bp)", value=400, step=50, key="in_app_arm_len")
+            with col_meth:
+                delivery_method = st.selectbox("Delivery method", ["rnp", "plasmid", "mrna"], index=0, key="in_app_delivery")
+
+        if st.button("🚀 Run In-App CRISPR Design", type="primary", use_container_width=True, key="in_app_run_btn"):
+            with st.spinner(f"Designing CRISPR edit for {target_gene} ({edit_choice})..."):
+                try:
+                    res = run_in_silico_design(
+                        gene=target_gene,
+                        edit_type=selected_edit_type,
+                        mutation=mutation_val,
+                        tag=tag_val,
+                        arm_length=arm_len,
+                        genbank_text=custom_gb,
+                        options={"deliveryMethod": delivery_method},
+                    )
+                    st.session_state["in_app_design_result"] = res
+                    st.success(f"Design completed successfully for {target_gene}!")
+                except Exception as exc:
+                    st.error(f"Design failed: {exc}")
+
+        # Render results if available
+        result_data = st.session_state.get("in_app_design_result")
+        if result_data:
+            dr = result_data.get("designResult") or {}
+            guides = dr.get("gs") or dr.get("guides") or []
+            donors = dr.get("os") or dr.get("donors") or ([{"seq": dr["donor"]}] if "donor" in dr else [])
+            primers = dr.get("ps") or dr.get("primers") or []
+            svg = result_data.get("svg") or ""
+            html_report = result_data.get("reportHtml") or ""
+
+            st.markdown("---")
+            st.markdown(f"#### 🎯 Design Candidates for **{result_data.get('gene')}** ({result_data.get('editType').upper()})")
+
+            tab_guides, tab_donor, tab_primers, tab_scheme = st.tabs(
+                [f"Guides ({len(guides)})", "Donor Template", f"Primers ({len(primers)})", "Locus Schematic"]
+            )
+
+            with tab_guides:
+                for idx, g in enumerate(guides):
+                    spacer = g.get("sp") or g.get("spacer") or g.get("sequence") or ""
+                    pam = g.get("pam") or "NGG"
+                    strand = g.get("str") or g.get("strand") or "+"
+                    offset = g.get("d") if g.get("d") is not None else g.get("offsetFromEdit", "N/A")
+                    st.markdown(f"**Guide {idx + 1}**: `{spacer}` &nbsp; (PAM: **{pam}** | Strand: `{strand}` | Offset: `{offset} bp`)")
+
+            with tab_donor:
+                if donors:
+                    d0 = donors[0]
+                    d_seq = d0.get("seq") or d0.get("sequence") or ""
+                    d_fmt = d0.get("format") or d0.get("donor_type") or "ssODN/dsDNA"
+                    st.markdown(f"**Format**: `{d_fmt}` &nbsp;|&nbsp; **Length**: `{len(d_seq)} bp`")
+                    st.code(d_seq, language="text")
+                else:
+                    st.info("Dual-guide knockout does not require a donor template.")
+
+            with tab_primers:
+                if primers:
+                    for p in primers:
+                        p_name = p.get("name") or "Primer"
+                        p_seq = p.get("seq") or p.get("sequence") or ""
+                        p_tm = p.get("tm") or ""
+                        st.markdown(f"**{p_name}**: `{p_seq}`" + (f" (Tm: {p_tm}°C)" if p_tm else ""))
+                    if dr.get("amp"):
+                        st.caption(f"Amplicon: {dr['amp']}")
+                else:
+                    st.info("Primers auto-calculated for PCR validation.")
+
+            with tab_scheme:
+                if svg:
+                    st.components.v1.html(svg, height=220, scrolling=True)
+                else:
+                    st.caption("Schematic not generated.")
+
+            st.markdown("---")
+            # Action buttons: Apply to form + Save reports
+            c_apply, c_save = st.columns([1.5, 2])
+
+            with c_apply:
+                if st.button("📋 Apply to Design Log Form", use_container_width=True, key="in_app_apply_btn"):
+                    try:
+                        spec = result_data.get("qcDesignSpec") or {}
+                        parsed = parse_assured_design_export(spec)
+                        apply_design_import_to_session(parsed)
+                        st.success("Autofilled Design Log form below!")
+                        st.rerun()
+                    except Exception as err:
+                        st.error(f"Could not apply to form: {err}")
+
+            with c_save:
+                if st.button("💾 Save Design Reports & Register", type="primary", use_container_width=True, key="in_app_save_btn"):
+                    try:
+                        saved_paths = save_design_reports(selected_project, result_data)
+                        st.session_state["in_app_saved_reports"] = saved_paths
+                        st.success(f"Saved reports: {saved_paths['html_file'].name} & {saved_paths['json_file'].name}")
+                    except Exception as err:
+                        st.error(f"Could not save reports: {err}")
+
+            saved_reports = st.session_state.get("in_app_saved_reports")
+            if saved_reports and saved_reports.get("html_file") and saved_reports["html_file"].exists():
+                c_d_html, c_d_json = st.columns(2)
+                with c_d_html:
+                    with open(saved_reports["html_file"], "rb") as hf:
+                        st.download_button(
+                            "📥 Download Full HTML Report",
+                            hf,
+                            file_name=saved_reports["html_file"].name,
+                            mime="text/html",
+                            use_container_width=True,
+                            key="in_app_download_html",
+                        )
+                with c_d_json:
+                    with open(saved_reports["json_file"], "rb") as jf:
+                        st.download_button(
+                            "📥 Download QC Design JSON",
+                            jf,
+                            file_name=saved_reports["json_file"].name,
+                            mime="application/json",
+                            use_container_width=True,
+                            key="in_app_download_json",
+                        )

@@ -30,6 +30,7 @@ from app.components.assured_tools import (
     parse_assured_design_export,
     render_assured_launcher,
 )
+from app.components.in_app_designer import render_in_app_designer
 from app.components.autofill import parse_guides_and_donors
 from app.components.file_utils import (
     build_step_filename,
@@ -280,7 +281,9 @@ else:
     attachment_dir = FALLBACK_ATTACHMENT_DIR
     report_dir = FALLBACK_DATA_DIR
 
-with st.expander("ASSURED Bench — launch & import", expanded=True):
+render_in_app_designer(selected_project)
+
+with st.expander("ASSURED Bench (External Workbench) — launch & import", expanded=False):
     render_assured_launcher(
         title="ASSURED Bench",
         url=bench_url(),
