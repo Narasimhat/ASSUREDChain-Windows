@@ -20,7 +20,7 @@ if str(ROOT) not in sys.path:
 
 from app.components.file_utils import build_step_filename, merge_pdfs
 from app.components.layout import init_page
-from app.components.lifecycle_header import render_lifecycle_header
+from app.components.lifecycle_header import is_stage_completed, render_lifecycle_header
 from app.components.project_state import (
     append_audit,
     ensure_dirs,
@@ -57,6 +57,9 @@ def _ordered_pdf_entries(manifest: Dict[str, Any]) -> List[Dict[str, Any]]:
     grouped: Dict[str, List[Dict[str, Any]]] = {}
     for entry in reports:
         if not isinstance(entry, dict):
+            continue
+        path_str = str(entry.get("path") or entry.get("stored_as") or "")
+        if not path_str.lower().endswith(".pdf"):
             continue
         if entry.get("type") and entry.get("type") != "pdf":
             continue
@@ -208,12 +211,26 @@ def main() -> None:
 
     with tab_stepper:
         st.markdown("##### FDA Batch Record Stages")
-        st.page_link("pages/1_Project_Request.py", label="Stage 1: Project Request & Target Product Profile (TPP)", icon="📋")
-        st.page_link("pages/2_CRISPR_Design.py", label="Stage 2: CRISPR In-Silico Design & Reagent Specifications", icon="🧬")
-        st.page_link("pages/3_Transfection_Bulk_QC.py", label="Stage 3: Transfection & Bulk In-Process Control (IPC)", icon="⚡")
-        st.page_link("pages/4_Single_Cell_Cloning.py", label="Stage 4: Single-Cell Cloning & Monoclonality Proof", icon="🧫")
-        st.page_link("pages/5_Dual_Clone_QC.py", label="Stage 5: Dual-Clone Comprehensive Release Testing", icon="🧪")
-        st.page_link("pages/6_Master_Bank_and_CoA.py", label="Stage 6: Master Banking, Certificate of Analysis & FAIR Blockchain Release", icon="🏆")
+        stage_defs = [
+            (1, "Stage 1: Project Request & Target Product Profile (TPP)", "pages/1_Project_Request.py", "📋", "stage_1_locked_at"),
+            (2, "Stage 2: CRISPR In-Silico Design & Reagent Specifications", "pages/2_CRISPR_Design.py", "🧬", "design_hash"),
+            (3, "Stage 3: Transfection & Bulk In-Process Control (IPC)", "pages/3_Transfection_Bulk_QC.py", "⚡", "stage3_bulk_qc_hash"),
+            (4, "Stage 4: Single-Cell Cloning & Monoclonality Proof", "pages/4_Single_Cell_Cloning.py", "🧫", "cloning_hash"),
+            (5, "Stage 5: Dual-Clone Comprehensive Release Testing", "pages/5_Dual_Clone_QC.py", "🧪", "stage5_qc_hash"),
+            (6, "Stage 6: Master Banking, Certificate of Analysis & FAIR Blockchain Release", "pages/6_Master_Bank_and_CoA.py", "🏆", "final_release_hash"),
+        ]
+        for s_num, s_title, s_page, s_icon, s_key in stage_defs:
+            is_done = is_stage_completed(meta, s_num)
+            col_link, col_stat = st.columns([3.2, 1.2])
+            with col_link:
+                st.page_link(s_page, label=s_title, icon=s_icon)
+            with col_stat:
+                if is_done:
+                    ref_val = meta.get(s_key) or "Locked"
+                    ref_disp = f"{str(ref_val)[:8]}..." if isinstance(ref_val, str) and len(str(ref_val)) > 10 else "Locked"
+                    st.markdown(f"<div style='padding-top:8px;'><span style='background-color:#ecfdf3; color:#027a48; border:1px solid #a6f4c5; border-radius:12px; padding:2px 8px; font-weight:700; font-size:0.75rem;'>✓ Completed ({ref_disp})</span></div>", unsafe_allow_html=True)
+                else:
+                    st.markdown("<div style='padding-top:8px;'><span style='background-color:#f2f4f7; color:#667085; border:1px solid #d0d5dd; border-radius:12px; padding:2px 8px; font-weight:500; font-size:0.75rem;'>○ Pending</span></div>", unsafe_allow_html=True)
 
     with tab_ledger:
         st.markdown("##### Ethereum Sepolia On-Chain Transaction Receipts")

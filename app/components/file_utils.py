@@ -26,9 +26,12 @@ ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_LOGO_PATH = ROOT / "assets" / "assured_logo.png"
 
 try:
-    from PyPDF2 import PdfMerger
-except ImportError:  # pragma: no cover
-    PdfMerger = None
+    from pypdf import PdfWriter as PdfMerger
+except ImportError:
+    try:
+        from PyPDF2 import PdfMerger
+    except ImportError:  # pragma: no cover
+        PdfMerger = None
 
 
 def save_uploaded_file(

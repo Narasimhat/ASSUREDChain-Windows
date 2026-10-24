@@ -116,15 +116,37 @@ def save_manifest(project_id: str, manifest: Dict[str, Any]) -> None:
         st.error(f"Unexpected error saving manifest for {project_id}: {e}")
 
 
-def append_audit(project_id: str, entry: Dict[str, Any]) -> None:
+def append_audit(project_id: str, action: Any, details: Optional[Dict[str, Any]] = None) -> None:
     manifest = load_manifest(project_id)
+    if isinstance(action, dict):
+        entry = action
+    else:
+        entry = {
+            "ts": int(time.time()),
+            "action": str(action),
+            **(details or {}),
+        }
     manifest.setdefault("audit", []).append(entry)
     save_manifest(project_id, manifest)
 
 
-def register_file(project_id: str, category: str, payload: Dict[str, Any]) -> None:
+def register_file(project_id: str, category: str, payload: Any = None, **kwargs) -> None:
     manifest = load_manifest(project_id)
-    manifest.setdefault("files", {}).setdefault(category, []).append(payload)
+    if isinstance(payload, (Path, str)):
+        p = Path(payload)
+        ext = p.suffix.lstrip(".").lower()
+        entry = {
+            "path": normalize_path_for_storage(p),
+            "filename": p.name,
+            "timestamp": int(time.time()),
+            "type": ext if ext else "unknown",
+            **kwargs,
+        }
+    elif isinstance(payload, dict):
+        entry = {**payload, **kwargs}
+    else:
+        entry = kwargs
+    manifest.setdefault("files", {}).setdefault(category, []).append(entry)
     save_manifest(project_id, manifest)
 
 

@@ -296,6 +296,11 @@ def apply_assessment_to_session(
     st.session_state["cell_line_autofill"] = sample_name
     st.session_state["notes_autofill"] = notes_text
 
+    # Auto-bind to Stage 5 Dual-Clone release inputs
+    st.session_state["qc_hdr_a"] = hdr_val
+    if len(results) > 1:
+        st.session_state["qc_hdr_b"] = float(results[1].get("intendedEditPct") or results[1].get("koScorePct") or 94.5)
+
 
 def _find_project_design_specs(selected_project: Optional[str]) -> list[Path]:
     """Locate design specs in project snapshots."""

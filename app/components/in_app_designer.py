@@ -174,6 +174,12 @@ def save_design_reports(
 
 def render_in_app_designer(selected_project: Optional[str]) -> None:
     """Render the In-App CRISPR Design Studio UI in Streamlit."""
+    from app.components.project_state import load_project_meta
+    meta = load_project_meta(selected_project) if selected_project else {}
+    default_gene = meta.get("target_gene") or meta.get("gene") or "APOE"
+    default_mutation = meta.get("mutation_label") or meta.get("mutation") or "R176C"
+    meta_edit = str(meta.get("edit_program") or meta.get("edit_type") or "").lower()
+
     with st.expander("⚡ In-App CRISPR Designer (Instant Design & Report Generation)", expanded=True):
         st.caption(
             "Design CRISPR guides, donor templates (with silent blocking mutations), and primers "
@@ -182,7 +188,7 @@ def render_in_app_designer(selected_project: Optional[str]) -> None:
 
         col_g, col_t, col_m = st.columns([1.5, 1.5, 2])
         with col_g:
-            target_gene = st.text_input("Target Gene Symbol", value="TP53", key="in_app_target_gene")
+            target_gene = st.text_input("Target Gene Symbol", value=default_gene, key="in_app_target_gene")
         with col_t:
             edit_options = {
                 "Point Mutation (SNP-KI)": "pm",
@@ -190,11 +196,12 @@ def render_in_app_designer(selected_project: Optional[str]) -> None:
                 "C-Terminal Tag": "ct",
                 "N-Terminal Tag": "nt",
             }
-            edit_choice = st.selectbox("Edit Type", list(edit_options.keys()), index=0, key="in_app_edit_choice")
+            default_edit_idx = 1 if ("ko" in meta_edit or "knockout" in meta_edit) else (2 if ("tag" in meta_edit or "ct" in meta_edit) else 0)
+            edit_choice = st.selectbox("Edit Type", list(edit_options.keys()), index=default_edit_idx, key="in_app_edit_choice")
             selected_edit_type = edit_options[edit_choice]
         with col_m:
             if selected_edit_type == "pm":
-                mutation_val = st.text_input("Mutation / Codon Edit (e.g. R176C)", value="R176C", key="in_app_mutation")
+                mutation_val = st.text_input("Mutation / Codon Edit (e.g. R176C)", value=default_mutation, key="in_app_mutation")
                 tag_val = ""
             elif selected_edit_type in ("ct", "nt"):
                 tag_presets = ["FLAG", "2xHA", "EGFP", "mCherry", "mScarlet", "mStayGold2", "dTAG-2xHA"]

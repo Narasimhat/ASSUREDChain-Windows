@@ -20,7 +20,13 @@ import time
 from pathlib import Path
 from typing import Dict, List
 
-from PyPDF2 import PdfReader
+try:
+    from pypdf import PdfReader
+except ImportError:
+    try:
+        from PyPDF2 import PdfReader
+    except ImportError:
+        PdfReader = None
 
 # Local imports
 sys.path.append(str(Path(__file__).resolve().parents[1]))  # add repo root for app.components
@@ -53,6 +59,9 @@ def ordered_pdf_entries(manifest: Dict[str, object]) -> List[Dict[str, object]]:
     grouped: Dict[str, List[Dict[str, object]]] = {}
     for entry in reports:
         if not isinstance(entry, dict):
+            continue
+        path_str = str(entry.get("path") or entry.get("stored_as") or "")
+        if not path_str.lower().endswith(".pdf"):
             continue
         if entry.get("type") and entry.get("type") != "pdf":
             continue
