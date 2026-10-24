@@ -1,0 +1,161 @@
+{
+ "schema": "assured-qc-design/1",
+ "design": {
+  "type": "pm",
+  "editKind": "snp",
+  "gene": "APOE",
+  "label": "R176C (CGC>TGC)",
+  "tag": "",
+  "codingStrand": "+"
+ },
+ "reference": {
+  "sequence": "GCCTCGGCCTCCCAAAGTGCTGGGATTAGAGGCATGAGCCACCTTGCCCGGCCTCCTAGCTCCTTCTTCGTCTCTGCCTCTGCCCTCTGCATCTGCTCTCTGCATCTGTCTCTGTCTCCTTCTCTCGGCCTCTGCCCCGTTCCTTCTCTCCCTCTTGGGTCTCTCTGGCTCATCCCCATCTCGCCCGCCCCATCCCAGCCCTTCTCCCCGCCTCCCACTGTGCGACACCCTCCCGCCCTCTCGGCCGCAGGGCGCTGATGGACGAGACCATGAAGGAGTTGAAGGCCTACAAATCGGAACTGGAGGAACAACTGACCCCGGTGGCGGAGGAGACGCGGGCACGGCTGTCCAAGGAGCTGCAGGCGGCGCAGGCCCGGCTGGGCGCGGACATGGAGGACGTGTGCGGCCGCCTGGTGCAGTACCGCGGCGAGGTGCAGGCCATGCTCGGCCAGAGCACCGAGGAGCTGCGGGTGCGCCTCGCCTCCCACCTGCGCAAGCTGCGTAAGCGGCTCCTCCGCGATGCCGATGACCTGCAGAAGCGCCTGGCAGTGTACCAGGCCGGGGCCCGCGAGGGCGCCGAGCGCGGCCTCAGCGCCATCCGCGAGCGCCTGGGGCCCCTGGTGGAACAGGGCCGCGTGCGGGCCGCCACTGTGGGCTCCCTGGCCGGCCAGCCGCTACAGGAGCGGGCCCAGGCCTGGGGCGAGCGGCTGCGCGCGCGGATGGAGGAGATGGGCAGCCGGACCCGCGACCGCCTGGACGAGGTGAAGGAGCAGGTGGCGGAGGTGCGCGCCAAGCTGGAGGAGCAGGCCCAGCAGATACGCCTGCAGGCCGAGGCCTTCCAGGCCCGCCTCAAGAGCTGGTTCGAGCCCCTGGTGGAAGACATGCAGCGCCAGTGGGCCGGGCTGGTGGAGAAGGTGCAGGCTGCCGTGGGCACCAGCGCCGCCCCTGTGCCCAGCGACAATCACTGAACGCCGAAGCCTGCAGCCATGCGACCCCACGCCACCCCGTGCCTCCTGCCTCCGCGCAGCCTGCAGCGGGAGACCCTGTCCCCGCCCCAGCCGTCCTCCTGG",
+  "offset": 1902,
+  "convention": "0-based index into sequence; the + strand of the uploaded reference"
+ },
+ "guides": [
+  {
+   "name": "APOE_gRNA1",
+   "spacer": "ACACTGCCAGGCGCTTCTGC",
+   "pam": "AGG",
+   "strand": "-",
+   "cut": 535,
+   "protospacerStart": 532,
+   "protospacerEnd": 552,
+   "offsetFromEdit": -4,
+   "index": 1
+  },
+  {
+   "name": "APOE_gRNA2",
+   "spacer": "CCCCGGCCTGGTACACTGCC",
+   "pam": "AGG",
+   "strand": "-",
+   "cut": 547,
+   "protospacerStart": 544,
+   "protospacerEnd": 564,
+   "offsetFromEdit": 8,
+   "index": 2
+  }
+ ],
+ "donors": [
+  {
+   "name": "ssODN1 (matched to APOE_R176C_gRNA1)",
+   "format": "ssodn",
+   "sequence": "TCGGCCAGAGCACCGAGGAGCTGCGGGTGCGCCTCGCCTCCCACCTGCGCAAGCTGCGTAAGCGGCTCCTCCGCGATGCCGATGACCTCCAAAAGTGCCTGGCTGTCTACCAGGCCGGGGCCCGCGA",
+   "refStart": 444,
+   "refEnd": 571,
+   "insertBp": 0,
+   "arm5": null,
+   "arm3": null,
+   "replacedBp": 0,
+   "insertStart": null,
+   "guide": 1,
+   "orderSequence": "TCGGCCAGAGCACCGAGGAGCTGCGGGTGCGCCTCGCCTCCCACCTGCGCAAGCTGCGTAAGCGGCTCCTCCGCGATGCCGATGACCTCCAAAAGTGCCTGGCTGTCTACCAGGCCGGGGCCCGCGA",
+   "orderStrand": "+ strand target",
+   "carriesMarkers": [
+    532,
+    535,
+    539,
+    547,
+    550
+   ]
+  },
+  {
+   "name": "ssODN2 (matched to APOE_R176C_gRNA2)",
+   "format": "ssodn",
+   "sequence": "CCGAGGAGCTGCGGGTGCGCCTCGCCTCCCACCTGCGCAAGCTGCGTAAGCGGCTCCTCCGCGATGCCGATGACCTCCAAAAGTGCCTGGCTGTCTACCAGGCCGGGGCCCGCGAGGGCGCCGAGCG",
+   "refStart": 456,
+   "refEnd": 583,
+   "insertBp": 0,
+   "arm5": null,
+   "arm3": null,
+   "replacedBp": 0,
+   "insertStart": null,
+   "guide": 2,
+   "orderSequence": "CCGAGGAGCTGCGGGTGCGCCTCGCCTCCCACCTGCGCAAGCTGCGTAAGCGGCTCCTCCGCGATGCCGATGACCTCCAAAAGTGCCTGGCTGTCTACCAGGCCGGGGCCCGCGAGGGCGCCGAGCG",
+   "orderStrand": "+ strand target",
+   "carriesMarkers": [
+    532,
+    535,
+    539,
+    547,
+    550
+   ]
+  }
+ ],
+ "markers": [
+  {
+   "pos": 532,
+   "ref": "G",
+   "alt": "C",
+   "role": "blocking",
+   "guide": 1,
+   "label": "p.L173L",
+   "change": "CTG>CTC"
+  },
+  {
+   "pos": 535,
+   "ref": "G",
+   "alt": "A",
+   "role": "blocking",
+   "guide": 1,
+   "label": "p.Q174Q",
+   "change": "CAG>CAA"
+  },
+  {
+   "pos": 539,
+   "ref": "C",
+   "alt": "T",
+   "role": "intended",
+   "guide": null,
+   "label": "intended change",
+   "change": "C>T"
+  },
+  {
+   "pos": 547,
+   "ref": "A",
+   "alt": "T",
+   "role": "blocking",
+   "guide": 1,
+   "label": "p.A178A",
+   "change": "GCA>GCT"
+  },
+  {
+   "pos": 550,
+   "ref": "G",
+   "alt": "C",
+   "role": "blocking",
+   "guide": 2,
+   "label": "p.V179V",
+   "change": "GTG>GTC"
+  }
+ ],
+ "primers": [
+  {
+   "name": "APOE_R176C_Fw",
+   "sequence": "TGGAGGAACAACTGACCC",
+   "start": 300,
+   "end": 318,
+   "strand": "+"
+  },
+  {
+   "name": "APOE_R176C_Rev",
+   "sequence": "CTCCTTCACCTCGTCCAG",
+   "start": 752,
+   "end": 770,
+   "strand": "-"
+  }
+ ],
+ "amplicons": [
+  {
+   "name": "APOE_R176C_Fw + APOE_R176C_Rev",
+   "forward": "APOE_R176C_Fw",
+   "reverse": "APOE_R176C_Rev",
+   "wtBp": 470,
+   "editedBp": {
+    "ssODN1 (matched to APOE_R176C_gRNA1)": 470,
+    "ssODN2 (matched to APOE_R176C_gRNA2)": 470
+   }
+  }
+ ]
+}

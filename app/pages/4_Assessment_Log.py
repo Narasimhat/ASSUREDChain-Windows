@@ -28,6 +28,7 @@ from app.components.assured_tools import (
     qc_url,
     render_assured_launcher,
 )
+from app.components.in_app_analyzer import render_in_app_analyzer
 from app.components.file_utils import build_step_filename, preview_file, save_uploaded_file, snapshot_to_pdf
 from app.components.layout import init_page
 from app.components.project_state import (
@@ -364,7 +365,10 @@ st.markdown(
     """
 )
 
-with st.expander("ASSURED Bench (Trace Analysis) — launch & import", expanded=True):
+# In-App Sanger Trace QC & Clone Screening Engine
+render_in_app_analyzer(selected_project)
+
+with st.expander("ASSURED Bench (Trace Analysis) — external launch & import", expanded=False):
     render_assured_launcher(
         title="ASSURED Bench (Trace Analysis)",
         url=bench_url(),
@@ -644,7 +648,8 @@ if ice_defaults:
 
 delivery_defaults = project_meta.get("delivery_defaults", {})
 default_cell_line = (
-    assessment_defaults.get("cell_line")
+    st.session_state.get("cell_line_autofill")
+    or assessment_defaults.get("cell_line")
     or delivery_defaults.get("cell_line")
     or project_meta.get("cell_line")
     or "BIHi005-A-1X (bulk)"
@@ -679,15 +684,15 @@ with st.form("assessment_form"):
     pcr_bands: Optional[PCRBands] = None
 
     if assay_type == "Sanger-Indel":
-        tool_options = ["Assured QC", "DECODR", "ICE", "TIDE", "SeqScreener", "TIDER"]
-        default_tool = assessment_defaults.get("tool_used", "Assured QC")
+        tool_options = ["ASSURED Bench (Trace Analysis)", "Assured QC", "DECODR", "ICE", "TIDE", "SeqScreener", "TIDER"]
+        default_tool = st.session_state.get("tool_used_autofill") or assessment_defaults.get("tool_used", "ASSURED Bench (Trace Analysis)")
         tool_used = st.selectbox(
             "Tool used",
             tool_options,
             index=tool_options.index(default_tool) if default_tool in tool_options else 0,
         )
-        if tool_used == "Assured QC":
-            st.caption(f"Open Assured QC at {qc_url()} if you still need to run the analysis.")
+        if tool_used in ("Assured QC", "ASSURED Bench (Trace Analysis)"):
+            st.caption(f"In-app trace deconvolution is available above or open external Bench at {bench_url()}.")
         st.markdown("**Provide results** (upload export and/or enter values)")
 
         res_file = st.file_uploader(
@@ -710,7 +715,7 @@ with st.form("assessment_form"):
             min_value=0.0,
             max_value=100.0,
             step=0.1,
-            value=float(assessment_defaults.get("total_indel_pct") or 0.0),
+            value=float(st.session_state.get("total_indel_pct_autofill", assessment_defaults.get("total_indel_pct") or 0.0)),
         )
 
         if tool_used == "TIDER":
@@ -726,7 +731,7 @@ with st.form("assessment_form"):
             min_value=0.0,
             max_value=100.0,
             step=0.1,
-            value=float(assessment_defaults.get("hdr_pct") or 0.0),
+            value=float(st.session_state.get("hdr_pct_autofill", assessment_defaults.get("hdr_pct") or 0.0)),
         )
 
         st.markdown("Top indels (optional)")
@@ -808,7 +813,7 @@ with st.form("assessment_form"):
             saved_attachment_paths.append(saved_path)
 
     decision_options = ["proceed_to_cloning", "repeat_edit", "archive"]
-    default_decision = assessment_defaults.get("decision", "proceed_to_cloning")
+    default_decision = st.session_state.get("decision_autofill") or assessment_defaults.get("decision", "proceed_to_cloning")
     decision = st.selectbox(
         "Decision",
         decision_options,
@@ -816,7 +821,7 @@ with st.form("assessment_form"):
     )
     notes = st.text_area(
         "Notes",
-        value=assessment_defaults.get("notes", ""),
+        value=st.session_state.get("notes_autofill") or assessment_defaults.get("notes", ""),
     )
     author = st.text_input(
         "Author",
