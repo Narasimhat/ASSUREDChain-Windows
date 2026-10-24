@@ -26,7 +26,7 @@ def main() -> None:
     with col1:
         st.metric("ASSURED steps captured", "7", "Design -> QC")
         st.write(
-            "Structured forms for Design (Assured Design), Delivery, Assessment (Assured QC), "
+            "Structured forms for Design (ASSURED Bench / Assured Design), Delivery, Assessment (ASSURED Bench Trace QC), "
             "Cloning, Screening, Seed and Master Bank."
         )
     with col2:
@@ -49,10 +49,10 @@ def main() -> None:
     st.subheader("Workflow overview")
     workflow_cols = st.columns(3)
     workflow_steps = [
-        ("Design", "Launch Assured Design, import the QC hand-off, then snapshot guides/donors/primers."),
-        ("Assessment", "Launch Assured QC on AB1 pairs, import accept/hold decisions, then anchor."),
+        ("Design", "Launch ASSURED Bench, import the design JSON or .assured bundle, then snapshot guides/donors/primers."),
+        ("Assessment", "Launch ASSURED Bench Trace Analysis on AB1 pairs, import screening decisions, then anchor."),
         ("Chainproof", "Ship hashes on-chain and sync receipts back to your quality notebooks."),
-    )
+    ])
     for col, (title, description) in zip(workflow_cols, workflow_steps):
         with col:
             col.markdown(f"### {title}")

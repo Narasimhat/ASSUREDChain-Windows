@@ -24,6 +24,7 @@ from pydantic import (
 from app.components.assistant_panel import render_assistant
 from app.components.assured_tools import (
     apply_design_import_to_session,
+    bench_url,
     design_url,
     hub_url,
     parse_assured_design_export,
@@ -258,8 +259,9 @@ render_assistant(selected_project, context="design")
 st.markdown(
     f"""
     **Design resources**  
-    • **[Assured Design (FAIR)]({design_url()})** – recommended ASSURED design tool (guides, donors, primers, QC hand-off)  
-    • [ASSURED Hub FAIR Bench]({hub_url()}studio/) – full Design → Order → Trace Analysis → Passport chain  
+    • **[ASSURED Bench]({bench_url()})** – recommended ASSURED workbench (Design → Order → Trace QC → Reports)  
+    • [Assured Design (FAIR)]({design_url()}) – standalone design tool (guides, donors, primers, QC hand-off)  
+    • [ASSURED Hub FAIR Bench]({hub_url()}studio/) – full multi-step CRISPR editing chain  
     • [CRISPOR](http://crispor.tefor.net/) – guide scoring, HDR templates, off-target screening  
     • [CHOPCHOP](https://chopchop.cbu.uib.no/) – multi-enzyme gRNA search with PAM filtering  
     • [Benchling](https://www.benchling.com/) – collaborative plasmid design and sequence management  
@@ -278,22 +280,22 @@ else:
     attachment_dir = FALLBACK_ATTACHMENT_DIR
     report_dir = FALLBACK_DATA_DIR
 
-with st.expander("Assured Design — launch & import", expanded=True):
+with st.expander("ASSURED Bench — launch & import", expanded=True):
     render_assured_launcher(
-        title="Assured Design",
-        url=design_url(),
+        title="ASSURED Bench",
+        url=bench_url(),
         caption=(
-            "Design guides/donors/primers in Assured Design, download the QC hand-off JSON "
-            "(schema `assured-qc-design/1`), then import it here to fill this Design Log."
+            "Design guides/donors/primers in ASSURED Bench (or Assured Design), export the design JSON "
+            "(schema `assured-qc-design/1`) or `.assured` bundle, then import it here to autofill this Design Log."
         ),
-        key="design_assured",
+        key="design_assured_bench",
     )
     assured_design_file = st.file_uploader(
-        "Import Assured Design export (assured-qc-design/1 JSON)",
-        type=["json"],
+        "Import ASSURED Bench / Assured Design export (.json or .assured)",
+        type=["json", "assured"],
         key="assured_design_json_upload",
     )
-    if assured_design_file is not None and st.button("Apply Assured Design import", key="assured_design_apply"):
+    if assured_design_file is not None and st.button("Apply ASSURED Bench import", key="assured_design_apply"):
         try:
             parsed = parse_assured_design_export(assured_design_file.getvalue())
             apply_design_import_to_session(parsed)
@@ -308,11 +310,11 @@ with st.expander("Assured Design — launch & import", expanded=True):
             st.success(
                 f"Imported {len(parsed.get('selected_guides') or [])} guide(s), "
                 f"{len(parsed.get('donors') or [])} donor(s), "
-                f"{len(parsed.get('primer_pairs') or [])} primer pair(s) from Assured Design."
+                f"{len(parsed.get('primer_pairs') or [])} primer pair(s) from ASSURED Bench."
             )
             st.rerun()
         except Exception as exc:
-            st.error(f"Assured Design import failed: {exc}")
+            st.error(f"ASSURED Bench import failed: {exc}")
 
 compliance_defaults = meta.get("compliance", {}) if meta else {}
 imported_design = st.session_state.get("assured_design_import") or {}

@@ -22,6 +22,7 @@ if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))
 
 from app.components.assured_tools import (
+    bench_url,
     hub_url,
     parse_assured_qc_export,
     qc_url,
@@ -353,7 +354,8 @@ with st.expander("Which tool should I pick?"):
 st.markdown(
     f"""
     **Sequencing & analysis resources**  
-    • **[Assured QC (FAIR)]({qc_url()})** – recommended ASSURED trace analysis (control/edited AB1 pairs)  
+    • **[ASSURED Bench (Trace Analysis)]({bench_url()})** – recommended ASSURED trace QC & clone screening reports  
+    • [Assured QC (FAIR)]({qc_url()}) – browser Sanger QC (control/edited AB1 pairs)  
     • [ASSURED Hub FAIR Trace Analysis]({hub_url()}studio/) – Bench step with FAIR Passport hand-off  
     • [Synthego ICE](https://ice.synthego.com/) – rapid indel quantification with batch export  
     • [TIDE / TIDER](https://tide.deskgen.com/) – Sanger-based indel and knock-in analysis  
@@ -362,22 +364,22 @@ st.markdown(
     """
 )
 
-with st.expander("Assured QC — launch & import", expanded=True):
+with st.expander("ASSURED Bench (Trace Analysis) — launch & import", expanded=True):
     render_assured_launcher(
-        title="Assured QC",
-        url=qc_url(),
+        title="ASSURED Bench (Trace Analysis)",
+        url=bench_url(),
         caption=(
-            "Analyse control/edited AB1 pairs in Assured QC (optionally with an Assured Design hand-off), "
-            "download the results CSV/JSON, then import here to fill indel/HDR % and the cloning decision."
+            "Analyse control/edited AB1 pairs in ASSURED Bench (Trace Analysis) or Assured QC, "
+            "download the screening decisions CSV or `.assured` bundle, then import here to fill indel/HDR % and the cloning decision."
         ),
-        key="assessment_assured_qc",
+        key="assessment_assured_bench",
     )
     assured_qc_file = st.file_uploader(
-        "Import Assured QC results (CSV or JSON)",
-        type=["csv", "json"],
+        "Import ASSURED Bench / Assured QC results (CSV, JSON, or .assured)",
+        type=["csv", "json", "assured"],
         key="assured_qc_results_upload",
     )
-    if assured_qc_file is not None and st.button("Apply Assured QC import", key="assured_qc_apply"):
+    if assured_qc_file is not None and st.button("Apply Trace Analysis import", key="assured_qc_apply"):
         try:
             parsed_qc = parse_assured_qc_export(assured_qc_file.getvalue(), assured_qc_file.name)
             st.session_state["assured_qc_import"] = parsed_qc
@@ -389,17 +391,19 @@ with st.expander("Assured QC — launch & import", expanded=True):
                 context={"step": "assessment", "kind": "assured_qc_export"},
             )
             st.session_state["assured_qc_attachment"] = str(saved_qc)
+            tool_name = parsed_qc.get("tool_used") or "ASSURED Bench"
             st.success(
-                f"Imported Assured QC ({parsed_qc.get('preferred_sample') or 'sample'}). "
+                f"Imported {tool_name} ({parsed_qc.get('preferred_sample') or 'sample'}). "
                 f"Decision → {parsed_qc.get('decision')}; indel % → {parsed_qc.get('total_indel_pct')}."
             )
             st.rerun()
         except Exception as exc:
-            st.error(f"Assured QC import failed: {exc}")
+            st.error(f"Trace Analysis import failed: {exc}")
     if st.session_state.get("assured_qc_import"):
         preview = st.session_state["assured_qc_import"]
+        tool_name = preview.get("tool_used") or "ASSURED Bench"
         st.info(
-            f"Ready to log: tool=Assured QC · sample={preview.get('preferred_sample')} · "
+            f"Ready to log: tool={tool_name} · sample={preview.get('preferred_sample')} · "
             f"indel={preview.get('total_indel_pct')}% · HDR/intended={preview.get('hdr_pct')}% · "
             f"decision={preview.get('decision')}"
         )
