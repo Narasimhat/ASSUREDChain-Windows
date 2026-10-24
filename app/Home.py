@@ -1,3 +1,5 @@
+"""ASSUREDChain - FDA-Grade Precision Cell Line Manufacturing & FAIR Blockchain Registry."""
+
 import sys
 from pathlib import Path
 
@@ -16,91 +18,62 @@ def main() -> None:
     st.title("ASSUREDChain")
     st.markdown(
         """
-        **ASSUREDChain** keeps CRISPR projects inspection-ready by pairing the ASSURED protocol
-        with immutable chainproof receipts. Capture every experiment, register the evidence,
-        and anchor the hash on-chain without leaving Streamlit.
+        **ASSUREDChain** is an inspection-ready genome editing execution system designed according to FDA CBER/CDER human cell therapy guidance and 21 CFR Part 11 electronic records integrity.
+        From initial **Project Request** to releasing **Two Independent Validated Clonal Cell Lines**, every critical quality attribute (CQA) is verified in-app and immutably anchored to the **Ethereum Sepolia FAIR Blockchain**.
         """
     )
 
     col1, col2, col3 = st.columns(3)
     with col1:
-        st.metric("ASSURED steps captured", "7", "Design -> QC")
-        st.write(
-            "Structured forms for Design (ASSURED Bench / Assured Design), Delivery, Assessment (ASSURED Bench Trace QC), "
-            "Cloning, Screening, Seed and Master Bank."
-        )
+        st.metric("Product Deliverable", "2 Validated Clones", "Primary + Backup Line")
+        st.caption("Bi-allelic sequence confirmation, karyotype, STR match, sterility & viability.")
     with col2:
-        st.metric("Registry records", "Immutable")
-        st.write("Snapshots land in versioned registries with automated readiness scoring.")
+        st.metric("Lifecycle Stages", "6 FDA Stages", "Intake -> Master Bank")
+        st.caption("Clear line of custody from user specification to master cell bank inventory.")
     with col3:
-        st.metric("Chainproof receipts", "SHA-256 + Sepolia")
-        st.write("Push hashes to the AssuredRegistry smart contract with built-in audit logging.")
+        st.metric("FAIR Ledger", "SHA-256 + Sepolia", "21 CFR Part 11")
+        st.caption("Cryptographic audit receipts and verifiable Certificate of Analysis (CoA).")
 
     st.divider()
-    st.subheader("Why this matters")
+    st.subheader("🎯 6-Stage FDA Cell Line Production Pipeline")
+
     st.markdown(
         """
-        - **Traceability:** Every critical data point lives in a structured registry and carries a verifiable hash.
-        - **Audit readiness:** Chainproof JSON receipts bundle contract, chain ID, content hash, and tx metadata.
-        - **Operational focus:** Pre-baked templates and checklists reduce drift across labs and edit programs.
+        | Stage | Mission | Key In-Process & Release Deliverables |
+        | :--- | :--- | :--- |
+        | **1. Project Request & TPP** | Intake & Target Product Profile | Target gene, mutation, parent cell line authentication, and 2-clone acceptance criteria. |
+        | **2. CRISPR Design** | In-Silico Design & Reagent Specs | SpCas9 high-fidelity guides (CFD scores), HDR donor with silent PAM blockers, and PCR primer pairs. |
+        | **3. Transfection & Bulk QC** | Delivery & Bulk In-Process Control | Electroporation parameters, post-pulse viability, and 48h pool trace deconvolution. |
+        | **4. Single-Cell Cloning** | Monoclonality Assurance (FDA CQA) | Single-cell deposition proof (optical verification), 96-well expansion, and clone candidate selection. |
+        | **5. Dual-Clone QC** | Comprehensive Release Testing | Side-by-side release matrix for Clone A and Clone B (On-Target, Off-Target, Karyotype, Sterility, STR, Pluripotency). |
+        | **6. Master Bank & CoA** | Product Release & FAIR Anchoring | Master bank cryopreservation inventory, official regulatory Certificate of Analysis (Word/PDF), and Sepolia blockchain sealing. |
         """
     )
 
-    st.subheader("Workflow overview")
-    workflow_cols = st.columns(3)
-    workflow_steps = [
-        ("Design", "Launch ASSURED Bench, import the design JSON or .assured bundle, then snapshot guides/donors/primers."),
-        ("Assessment", "Launch ASSURED Bench Trace Analysis on AB1 pairs, import screening decisions, then anchor."),
-        ("Chainproof", "Ship hashes on-chain and sync receipts back to your quality notebooks."),
-    ]
-    for col, (title, description) in zip(workflow_cols, workflow_steps):
-        with col:
-            col.markdown(f"### {title}")
-            col.write(description)
+    st.divider()
+    st.subheader("🚀 Get Started")
+    col_start1, col_start2 = st.columns([1, 1])
+    with col_start1:
+        st.page_link("pages/1_Project_Request.py", label="Start Stage 1: Project Request & TPP", icon="📋")
+    with col_start2:
+        st.page_link("pages/0_Project_Dashboard.py", label="View Executive Batch Release Dashboard", icon="📊")
 
     st.divider()
-    st.subheader("Case studies")
-    case_tabs = st.tabs(["Seed Bank Release", "Regulatory Audit"])
-    with case_tabs[0]:
-        st.markdown(
-            """
-            **BIHi005-A Seed Bank Release**  
-            - Design snapshot validated with HDR donor template and STR report.  
-            - Delivery and Screening snapshots linked to Neon exports and gel imagery.  
-            - Master bank registry marked ready -> chainproof anchored in under 10 minutes.  
-            """
-        )
-    with case_tabs[1]:
-        st.markdown(
-            """
-            **Berlin S3 Audit Prep**  
-            - LAGESO compliance manager exported a bundle with Form Z, GenTAufzV, and SOP evidence.  
-            - Chainproof receipts shared with inspectors, eliminating manual spreadsheets.  
-            """
-        )
-
-    st.divider()
-    st.subheader("Get started")
-    st.write("Use the interactive protocol wizard to preload templates and jump directly into each stage.")
-    col_start, col_protocol = st.columns([2, 1])
-    with col_start:
-        st.page_link("pages/15_Assured_Protocol_Wizard.py", label="Launch protocol wizard", icon="🚀")
-        st.page_link("pages/0_Project_Dashboard.py", label="View project dashboard", icon="📊")
-    with col_protocol:
-        protocol_path = "assets/ASSURED_CRISPR_PROTOCOL.pdf"
-        try:
+    col_p1, col_p2 = st.columns(2)
+    with col_p1:
+        protocol_path = PROJECT_ROOT / "assets" / "ASSURED_CRISPR_PROTOCOL.pdf"
+        if protocol_path.exists():
             with open(protocol_path, "rb") as handle:
                 st.download_button(
-                    "Download ASSURED protocol",
+                    "📥 Download Published ASSURED Protocol (PDF)",
                     handle,
                     file_name="ASSURED_CRISPR_PROTOCOL.pdf",
                     mime="application/pdf",
                     use_container_width=True,
                 )
-        except FileNotFoundError:
-            st.caption("Protocol PDF not found in assets/.")
+    with col_p2:
         st.link_button(
-            "Open official protocol",
+            "🌐 View Official STAR Protocols Publication",
             "https://star-protocols.cell.com/protocols/2872",
             use_container_width=True,
         )

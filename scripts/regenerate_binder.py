@@ -28,13 +28,18 @@ from app.components.project_state import list_projects, load_manifest, project_s
 from app.components.file_utils import build_step_filename, merge_pdfs  # noqa: E402
 
 ASSURED_STEP_ORDER = [
-    ("charter", "Project Charter"),
-    ("design", "Design"),
-    ("delivery", "Delivery"),
-    ("assessment", "Assessment"),
-    ("cloning", "Cloning"),
-    ("seed_bank", "Seed Bank"),
-    ("master_bank_registry", "Master Bank Registry"),
+    ("charter", "Stage 1: Project Request"),
+    ("design", "Stage 2: CRISPR Design"),
+    ("delivery", "Stage 3: Transfection & Bulk QC"),
+    ("bulk_qc", "Stage 3: Transfection & Bulk QC"),
+    ("assessment", "Stage 3: Transfection & Bulk QC"),
+    ("cloning", "Stage 4: Single-Cell Cloning"),
+    ("dual_clone_qc", "Stage 5: Dual-Clone QC"),
+    ("qc_release", "Stage 5: Dual-Clone QC"),
+    ("master_bank_registry", "Stage 6: Master Bank & CoA"),
+    ("seed_bank", "Stage 6: Master Bank & CoA"),
+    ("coa", "Stage 6: Master Bank & CoA"),
+    ("release", "Stage 6: Master Bank & CoA"),
 ]
 STEP_LABEL_LOOKUP = {s: l for s, l in ASSURED_STEP_ORDER}
 
