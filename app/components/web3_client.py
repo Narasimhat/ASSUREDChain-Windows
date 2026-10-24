@@ -4,8 +4,13 @@ from pathlib import Path
 from typing import Any, Tuple
 
 from dotenv import load_dotenv
-from web3 import Web3
-from web3.contract import Contract
+
+try:
+    from web3 import Web3
+    from web3.contract import Contract
+except ImportError:
+    Web3 = None
+    Contract = Any
 
 load_dotenv()
 
@@ -70,7 +75,9 @@ def _load_abi() -> list[Any]:
     return _DEFAULT_ABI
 
 
-def get_client() -> Tuple[Web3, Contract]:
+def get_client() -> Tuple[Any, Any]:
+    if Web3 is None:
+        raise RuntimeError("web3 library is not installed. Install with 'pip install web3' to enable on-chain logging.")
     if not RPC:
         raise RuntimeError("WEB3_PROVIDER_URL missing in .env")
     if not CONTRACT_ADDRESS:

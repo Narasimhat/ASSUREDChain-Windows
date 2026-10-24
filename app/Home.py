@@ -52,7 +52,7 @@ def main() -> None:
         ("Design", "Launch ASSURED Bench, import the design JSON or .assured bundle, then snapshot guides/donors/primers."),
         ("Assessment", "Launch ASSURED Bench Trace Analysis on AB1 pairs, import screening decisions, then anchor."),
         ("Chainproof", "Ship hashes on-chain and sync receipts back to your quality notebooks."),
-    ])
+    ]
     for col, (title, description) in zip(workflow_cols, workflow_steps):
         with col:
             col.markdown(f"### {title}")
