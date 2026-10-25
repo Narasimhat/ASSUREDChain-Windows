@@ -4,13 +4,45 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 
 const BENCH_ROOT = path.resolve("c:/Users/ntelugu/Desktop/assured-bench");
+const CHAIN_ROOT = path.resolve("c:/Users/ntelugu/Desktop/ASSUREDChain-Windows");
 
 const designEngineUrl = pathToFileURL(path.join(BENCH_ROOT, "src/engine/design/designEngine.js")).href;
 const qcExportUrl = pathToFileURL(path.join(BENCH_ROOT, "src/engine/design/qcExport.js")).href;
 const designSchemeUrl = pathToFileURL(path.join(BENCH_ROOT, "src/engine/design/designScheme.js")).href;
 const designExportUrl = pathToFileURL(path.join(BENCH_ROOT, "src/services/designExport.js")).href;
 const ensemblUrl = pathToFileURL(path.join(BENCH_ROOT, "src/services/ensembl.js")).href;
-const tp53RefPath = path.join(BENCH_ROOT, "public/references/tp53-NG_017013.2.gb");
+
+function findBundledReference(gene) {
+  if (!gene) return null;
+  const sym = gene.trim().toUpperCase();
+  const searchDirs = [
+    path.join(CHAIN_ROOT, "data/references"),
+    path.join(BENCH_ROOT, "public/references"),
+    path.join(BENCH_ROOT, "test/fixtures"),
+  ];
+
+  for (const dir of searchDirs) {
+    if (!fs.existsSync(dir)) continue;
+    const files = fs.readdirSync(dir);
+    // 1. Exact or prefix match (e.g. apoe-*.gb, tp53-*.gb)
+    for (const f of files) {
+      if (!f.endsWith(".gb") && !f.endsWith(".genbank")) continue;
+      const lower = f.toLowerCase();
+      const symLower = sym.toLowerCase();
+      if (lower.startsWith(`${symLower}-`) || lower.startsWith(`${symLower}_`) || lower === `${symLower}.gb`) {
+        return path.join(dir, f);
+      }
+    }
+    // 2. Substring match
+    for (const f of files) {
+      if (!f.endsWith(".gb") && !f.endsWith(".genbank")) continue;
+      if (f.toLowerCase().includes(sym.toLowerCase())) {
+        return path.join(dir, f);
+      }
+    }
+  }
+  return null;
+}
 
 async function readInput() {
   const args = process.argv.slice(2);
@@ -52,18 +84,20 @@ async function main() {
     const { generateReportHtml } = await import(designExportUrl);
 
     if (!genbankText) {
-      if (gene.toUpperCase() === "TP53" && fs.existsSync(tp53RefPath)) {
-        genbankText = fs.readFileSync(tp53RefPath, "utf-8");
+      const bundledPath = findBundledReference(gene);
+      if (bundledPath && fs.existsSync(bundledPath)) {
+        genbankText = fs.readFileSync(bundledPath, "utf-8");
       } else if (gene) {
         try {
           const { fetchGeneGenbank } = await import(ensemblUrl);
           const ensemblRes = await fetchGeneGenbank(gene);
           genbankText = ensemblRes.genbankText || "";
         } catch (fetchErr) {
-          if (fs.existsSync(tp53RefPath) && gene.toUpperCase() === "TP53") {
-            genbankText = fs.readFileSync(tp53RefPath, "utf-8");
+          const fallbackPath = findBundledReference(gene);
+          if (fallbackPath && fs.existsSync(fallbackPath)) {
+            genbankText = fs.readFileSync(fallbackPath, "utf-8");
           } else {
-            throw new Error(`Could not fetch reference for gene '${gene}': ${fetchErr.message}`);
+            throw new Error(`Could not fetch reference for gene '${gene}': ${fetchErr.message}. You can upload or select a GenBank (.gb) reference file in Stage 2.`);
           }
         }
       }

@@ -59,6 +59,22 @@ class InAppDesignerTests(unittest.TestCase):
         self.assertGreater(html_file.stat().st_size, 100)
         self.assertGreater(json_file.stat().st_size, 100)
 
+    def test_in_silico_design_apoe_snp(self) -> None:
+        """Verify that APOE (R176C) in-silico design succeeds using bundled reference."""
+        result = run_in_silico_design(
+            gene="APOE",
+            edit_type="pm",
+            mutation="R176C",
+            arm_length=400,
+        )
+        self.assertTrue(result.get("success"), "APOE design must succeed")
+        dr = result.get("designResult") or {}
+        self.assertEqual(dr.get("gene"), "APOE")
+        self.assertTrue(len(dr.get("gs") or []) >= 1, "Must select at least 1 guide for APOE")
+        self.assertTrue(len(dr.get("ps") or []) == 2, "Must design 2 primers for APOE")
+        self.assertTrue(bool(result.get("svg")), "Must generate locus SVG for APOE")
+        self.assertTrue(bool(result.get("reportHtml")), "Must generate report HTML for APOE")
+
 
 if __name__ == "__main__":
     unittest.main()

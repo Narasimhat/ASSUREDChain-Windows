@@ -31,6 +31,24 @@ ROOT = Path(__file__).resolve().parents[2]
 CLI_SCRIPT = ROOT / "scripts" / "bench_design_cli.mjs"
 
 
+def get_bundled_references() -> dict[str, Path]:
+    """Return dictionary of gene symbol -> Path for bundled GenBank reference files."""
+    ref_dirs = [
+        ROOT / "data" / "references",
+        Path("c:/Users/ntelugu/Desktop/assured-bench/public/references"),
+        Path("c:/Users/ntelugu/Desktop/assured-bench/test/fixtures"),
+    ]
+    refs: dict[str, Path] = {}
+    for rdir in ref_dirs:
+        if not rdir.exists():
+            continue
+        for f in rdir.glob("*.gb"):
+            gene_name = f.stem.split("-")[0].split("_")[0].upper()
+            if gene_name not in refs:
+                refs[gene_name] = f
+    return refs
+
+
 def run_in_silico_design(
     gene: str,
     edit_type: str = "ko",
@@ -43,6 +61,16 @@ def run_in_silico_design(
     """Execute the ASSURED Bench in-silico CRISPR design engine via Node CLI."""
     if not CLI_SCRIPT.exists():
         raise RuntimeError(f"Design engine CLI script not found at {CLI_SCRIPT}")
+
+    # If no custom GenBank sequence is passed, check bundled offline references
+    if not (genbank_text or "").strip() and gene:
+        bundled = get_bundled_references()
+        sym = gene.strip().upper()
+        if sym in bundled and bundled[sym].exists():
+            try:
+                genbank_text = bundled[sym].read_text(encoding="utf-8")
+            except Exception:
+                pass
 
     payload = {
         "gene": (gene or "").strip(),
@@ -212,13 +240,47 @@ def render_in_app_designer(selected_project: Optional[str]) -> None:
                 mutation_val = ""
                 tag_val = ""
 
-        with st.expander("Advanced Reference / Options", expanded=False):
-            custom_gb = st.text_area(
-                "Custom GenBank sequence (optional — defaults to Ensembl MANE Select or bundled reference)",
-                value="",
-                height=100,
-                key="in_app_custom_gb",
+        with st.expander("🧬 Reference GenBank & Homology Options", expanded=False):
+            bundled_refs = get_bundled_references()
+            target_upper = (target_gene or "").strip().upper()
+            has_bundled = target_upper in bundled_refs
+
+            ref_mode = st.radio(
+                "Reference Sequence Mode",
+                [
+                    "✨ Auto-Resolve (Bundled Reference or Ensembl MANE Select)",
+                    "📁 Choose Bundled Benchmark Reference",
+                    "📤 Upload Custom GenBank File (.gb)",
+                    "📝 Paste GenBank Text",
+                ],
+                index=0,
+                key="in_app_ref_mode",
             )
+
+            custom_gb = ""
+            if "Auto-Resolve" in ref_mode:
+                if has_bundled:
+                    st.caption(f"✓ Found verified bundled reference for **{target_upper}** (`{bundled_refs[target_upper].name}`) — instant offline design enabled.")
+            elif "Choose Bundled" in ref_mode:
+                ref_list = sorted(list(bundled_refs.keys()))
+                sel_idx = ref_list.index(target_upper) if target_upper in ref_list else 0
+                chosen = st.selectbox("Bundled Gene Target", ref_list, index=sel_idx if ref_list else 0, key="in_app_chosen_ref")
+                if chosen in bundled_refs:
+                    custom_gb = bundled_refs[chosen].read_text(encoding="utf-8")
+                    st.caption(f"Loaded `{bundled_refs[chosen].name}` ({len(custom_gb)} characters).")
+            elif "Upload" in ref_mode:
+                uploaded = st.file_uploader("Upload GenBank file (.gb, .genbank)", type=["gb", "genbank", "txt"], key="in_app_upload_gb")
+                if uploaded:
+                    custom_gb = uploaded.getvalue().decode("utf-8", errors="ignore")
+                    st.caption(f"Uploaded `{uploaded.name}` ({len(custom_gb)} characters).")
+            elif "Paste" in ref_mode:
+                custom_gb = st.text_area(
+                    "Paste GenBank text",
+                    value="",
+                    height=120,
+                    key="in_app_custom_gb",
+                )
+
             col_arm, col_meth = st.columns(2)
             with col_arm:
                 arm_len = st.number_input("Homology arm length (bp)", value=400, step=50, key="in_app_arm_len")
@@ -241,6 +303,7 @@ def render_in_app_designer(selected_project: Optional[str]) -> None:
                     st.success(f"Design completed successfully for {target_gene}!")
                 except Exception as exc:
                     st.error(f"Design failed: {exc}")
+                    st.info("💡 Tip: If Ensembl is unreachable, you can select '📁 Choose Bundled Benchmark Reference' or '📤 Upload Custom GenBank File' under Reference Options above.")
 
         # Render results if available
         result_data = st.session_state.get("in_app_design_result")
