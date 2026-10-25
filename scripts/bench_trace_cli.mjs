@@ -11,6 +11,7 @@ const decisionUrl = pathToFileURL(path.join(BENCH_ROOT, "src/engine/qc/decision.
 const recommendUrl = pathToFileURL(path.join(BENCH_ROOT, "src/engine/qc/recommend.js")).href;
 const selectionFigureUrl = pathToFileURL(path.join(BENCH_ROOT, "src/engine/qc/selectionFigure.js")).href;
 const reportUrl = pathToFileURL(path.join(BENCH_ROOT, "src/engine/qc/report.js")).href;
+const quickUrl = pathToFileURL(path.join(BENCH_ROOT, "src/engine/qc/quick.js")).href;
 
 async function readInput() {
   const args = process.argv.slice(2);
@@ -34,6 +35,70 @@ function toArrayBuffer(buf) {
 async function main() {
   try {
     const input = await readInput();
+    const { readDesign, reportDonors } = await import(quickUrl);
+
+    // 0. Dedicated parse_design action for real-time frontend inspection
+    if (input.action === "parse_design") {
+      let text = input.text || "";
+      if (!text && input.path && fs.existsSync(input.path)) {
+        text = fs.readFileSync(input.path, "utf-8");
+      }
+      if (!text) {
+        throw new Error("No design file content or path provided to parse.");
+      }
+      const d = readDesign(text);
+      if (d.kind === "spec") {
+        const guides = (d.spec.guides || []).map((g, idx) => ({
+          name: g.name || `Guide ${idx + 1}`,
+          sequence: g.spacer || "",
+          pam: g.pam || "",
+          length: (g.spacer || "").length,
+        }));
+        const donors = (d.spec.donors || []).map((dn, idx) => ({
+          name: dn.name || `Donor ${idx + 1}`,
+          sequence: dn.sequence || "",
+          length: (dn.sequence || "").length,
+        }));
+        process.stdout.write(JSON.stringify({
+          success: true,
+          kind: "spec",
+          label: d.label || d.spec.design?.label || "Design Spec",
+          gene: d.spec.design?.gene || "",
+          nuclease: d.spec.design?.nuclease || "SpCas9",
+          editKind: d.spec.design?.editKind || (donors.length ? "snp" : (guides.length > 1 ? "deletion" : "knockout")),
+          guides,
+          donors,
+        }));
+        return;
+      } else if (d.kind === "report") {
+        const chosen = d.chosen || {};
+        const guides = (chosen.guides || []).map((g, idx) => ({
+          name: g.name || `Guide ${idx + 1}`,
+          sequence: g.sequence || "",
+          length: (g.sequence || "").length,
+        }));
+        const donors = (chosen.donors || []).map((dn, idx) => ({
+          name: dn.name || `ssODN ${idx + 1}`,
+          sequence: dn.sequence || "",
+          length: (dn.sequence || "").length,
+          recommended: dn.recommended,
+        }));
+        process.stdout.write(JSON.stringify({
+          success: true,
+          kind: "report",
+          label: d.label || chosen.title || "Design Report",
+          gene: chosen.gene || "",
+          nuclease: d.nuclease || "SpCas9",
+          editKind: donors.length > 0 ? "snp" : (guides.length > 1 ? "deletion" : "knockout"),
+          guides,
+          donors,
+        }));
+        return;
+      } else {
+        throw new Error("Could not parse design file. Ensure it is a valid Assured HTML report or JSON spec.");
+      }
+    }
+
     const { parseAbif } = await import(abifUrl);
     const { analyseSample, planDesign } = await import(batchUrl);
     const { decide } = await import(decisionUrl);
@@ -56,21 +121,51 @@ async function main() {
       throw new Error("At least one edited sample trace file must be provided.");
     }
 
-    // 3. Resolve QC Design Spec
+    // 3. Resolve QC Design Spec (JSON Spec, HTML Report, or Manual Sequences)
     let spec = input.qcDesignSpec || null;
-    if (!spec && input.qcDesignPath && fs.existsSync(input.qcDesignPath)) {
-      spec = JSON.parse(fs.readFileSync(input.qcDesignPath, "utf-8"));
+    let designFromHtml = null;
+
+    if (!spec && input.qcDesignHtml) {
+      designFromHtml = readDesign(input.qcDesignHtml);
+    } else if (!spec && input.qcDesignPath && fs.existsSync(input.qcDesignPath)) {
+      const ext = path.extname(input.qcDesignPath).toLowerCase();
+      const content = fs.readFileSync(input.qcDesignPath, "utf-8");
+      if (ext === ".html" || ext === ".htm" || content.trim().startsWith("<")) {
+        designFromHtml = readDesign(content);
+      } else {
+        spec = JSON.parse(content);
+      }
+    }
+
+    if (designFromHtml) {
+      if (designFromHtml.kind === "spec") {
+        spec = designFromHtml.spec;
+      } else if (designFromHtml.kind === "report") {
+        const guides = input.guides && input.guides.length ? input.guides : (designFromHtml.guides || []);
+        const donor = input.donor ? input.donor : reportDonors(designFromHtml.donors || []);
+        const plan = planDesign({
+          control,
+          guides,
+          donor,
+          gene: input.gene || designFromHtml.chosen?.gene || designFromHtml.label || "sample",
+          nuclease: input.nuclease || designFromHtml.nuclease || "SpCas9"
+        });
+        if (plan.error) {
+          throw new Error(`Could not construct QC design spec from report: ${plan.error}`);
+        }
+        spec = plan.spec;
+      }
     }
 
     if (!spec) {
-      // Build spec from control trace + guides + donor if provided
+      // Build spec from control trace + manual guides + donor
       const guides = input.guides || [];
       const donor = input.donor || "";
       const plan = planDesign({
         control,
         guides,
         donor,
-        gene: input.gene || "",
+        gene: input.gene || "sample",
         nuclease: input.nuclease || "SpCas9"
       });
       if (plan.error) {

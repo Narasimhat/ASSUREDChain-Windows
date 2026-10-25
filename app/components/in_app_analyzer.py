@@ -8,6 +8,7 @@ import os
 import shutil
 import subprocess
 import time
+import re
 from pathlib import Path
 from typing import Any, Optional
 
@@ -40,15 +41,55 @@ def get_demo_trace_dir() -> Path:
     return DEMO_TRACES_DIR
 
 
+def clean_dna(seq: str) -> str:
+    """Clean and validate DNA sequence string (uppercase ACGT only)."""
+    return "".join(c for c in (seq or "").upper() if c in "ACGTN")
+
+
+def parse_design_file(
+    path: Optional[Path | str] = None,
+    text: Optional[str] = None,
+) -> dict[str, Any]:
+    """Parse an HTML design report or JSON spec using the AssuredQC engine."""
+    if not CLI_SCRIPT.exists():
+        raise RuntimeError(f"CLI script not found at {CLI_SCRIPT}")
+    payload: dict[str, Any] = {"action": "parse_design"}
+    if path:
+        payload["path"] = str(Path(path).resolve())
+    if text:
+        payload["text"] = text
+
+    proc = subprocess.run(
+        ["node", str(CLI_SCRIPT)],
+        input=json.dumps(payload),
+        capture_output=True,
+        text=True,
+        check=False,
+        encoding="utf-8",
+        timeout=15,
+    )
+    if proc.returncode != 0:
+        err = proc.stderr.strip() or proc.stdout.strip()
+        try:
+            parsed_err = json.loads(err)
+            raise RuntimeError(parsed_err.get("error") or err)
+        except Exception:
+            raise RuntimeError(err)
+
+    return json.loads(proc.stdout)
+
+
 def run_in_silico_assessment(
     control_path: Path | str,
     sample_paths: list[Path | str],
     qc_design_spec: Optional[dict[str, Any]] = None,
     qc_design_path: Optional[Path | str] = None,
+    qc_design_html: Optional[str] = None,
     workflow: Optional[str] = None,
     guides: Optional[list[str]] = None,
     donor: Optional[str] = None,
     gene: Optional[str] = None,
+    nuclease: Optional[str] = None,
     title: Optional[str] = None,
     options: Optional[dict[str, Any]] = None,
 ) -> dict[str, Any]:
@@ -69,10 +110,12 @@ def run_in_silico_assessment(
         "sampleFiles": samples,
         "qcDesignSpec": qc_design_spec,
         "qcDesignPath": str(Path(qc_design_path).resolve()) if qc_design_path else None,
+        "qcDesignHtml": qc_design_html,
         "workflow": workflow,
         "guides": guides or [],
         "donor": donor or "",
         "gene": gene or "",
+        "nuclease": nuclease or "SpCas9",
         "title": title or "",
         "options": options or {},
     }
@@ -304,14 +347,266 @@ def apply_assessment_to_session(
         st.session_state["qc_hdr_b"] = float(results[1].get("intendedEditPct") or results[1].get("koScorePct") or 94.5)
 
 
-def _find_project_design_specs(selected_project: Optional[str]) -> list[Path]:
-    """Locate design specs in project snapshots."""
+def find_project_design_files(selected_project: Optional[str]) -> list[Path]:
+    """Locate all Stage 2 design files (HTML reports and JSON specs) for a project."""
     if not selected_project:
         return []
+    files: list[Path] = []
+    reports_dir = project_subdir(selected_project, "reports", "design")
+    if reports_dir.exists():
+        files.extend(reports_dir.glob("*.html"))
+        files.extend(reports_dir.glob("*.htm"))
     snapshots_dir = project_subdir(selected_project, "snapshots", "design")
-    if not snapshots_dir.exists():
-        return []
-    return sorted(snapshots_dir.glob("*_design_spec.json"), key=lambda p: p.stat().st_mtime, reverse=True)
+    if snapshots_dir.exists():
+        files.extend(snapshots_dir.glob("*.json"))
+    seen = set()
+    unique_files = []
+    for f in sorted(files, key=lambda p: p.stat().st_mtime, reverse=True):
+        if str(f) not in seen:
+            seen.add(str(f))
+            unique_files.append(f)
+    return unique_files
+
+
+_find_project_design_specs = find_project_design_files
+
+
+def render_assured_qc_design_section(
+    key_prefix: str,
+    selected_project: Optional[str],
+    default_gene: str = "Target",
+    default_workflow: str = "snp",
+) -> dict[str, Any]:
+    """Unified CRISPR Design & Sequence input section matching AssuredQC.
+    
+    Supports:
+    1. Loading/uploading exported Assured HTML design reports (.html/.htm) and JSON specs (.json).
+    2. Real-time extraction and preview of gRNAs, ssODN donors, and enzyme.
+    3. Manual sequence entry (gRNA spacers, donor ssODN, nuclease, workflow) with DNA validation.
+    4. One-click sequence override/customization directly from loaded designs.
+    """
+    mode_key = f"{key_prefix}_design_mode"
+    if mode_key not in st.session_state:
+        st.session_state[mode_key] = "📁 Design File (HTML Report / JSON Spec)"
+
+    # Segmented mode selector
+    mode = st.radio(
+        "CRISPR Design Specification Mode",
+        ["📁 Design File (HTML Report / JSON Spec)", "✍️ Manual Sequences (gRNA Spacers & Donor ssODN)"],
+        horizontal=True,
+        key=f"{key_prefix}_mode_radio",
+        index=0 if st.session_state[mode_key].startswith("📁") else 1,
+    )
+    st.session_state[mode_key] = mode
+
+    demo_dir = get_demo_trace_dir()
+    apoe_design_file = demo_dir / "apoe_r176c_snp.design.json"
+
+    resolved: dict[str, Any] = {
+        "mode": "file" if mode.startswith("📁") else "manual",
+        "qc_design_path": None,
+        "qc_design_html": None,
+        "qc_design_spec": None,
+        "guides": [],
+        "donor": "",
+        "nuclease": "SpCas9",
+        "gene": default_gene,
+        "workflow": default_workflow,
+        "goal": "homozygous",
+        "label": "",
+    }
+
+    if mode.startswith("📁"):
+        # ---------------------------------------------------------
+        # MODE 1: Design File (HTML Report or JSON Spec)
+        # ---------------------------------------------------------
+        design_files = find_project_design_files(selected_project)
+        design_options = ["Demo: APOE R176C SNP Spec", "Upload Design File (.html / .json)"]
+        if design_files:
+            for f in design_files:
+                prefix = "Stage 2 HTML Report" if f.suffix.lower() in [".html", ".htm"] else "Stage 2 JSON Spec"
+                design_options.insert(0, f"{prefix}: {f.name}")
+
+        choice = st.selectbox(
+            "Design Report / Spec Source",
+            design_options,
+            key=f"{key_prefix}_file_choice",
+            help="Select an exported Assured HTML design report, JSON spec, or demo.",
+        )
+
+        chosen_path: Optional[Path] = None
+        chosen_html: Optional[str] = None
+        parsed_info: Optional[dict[str, Any]] = None
+
+        if choice.startswith("Stage 2"):
+            clean_name = choice.split(":", 1)[1].strip()
+            matches = [f for f in design_files if f.name == clean_name]
+            if matches:
+                chosen_path = matches[0]
+                try:
+                    parsed_info = parse_design_file(path=chosen_path)
+                except Exception as e:
+                    st.warning(f"Could not parse design file: {e}")
+        elif choice == "Demo: APOE R176C SNP Spec":
+            if apoe_design_file.exists():
+                chosen_path = apoe_design_file
+                try:
+                    parsed_info = parse_design_file(path=chosen_path)
+                except Exception as e:
+                    st.warning(f"Could not parse demo design: {e}")
+        else:
+            uploaded = st.file_uploader(
+                "Upload Assured Design Report (.html / .htm) or JSON Spec (.json)",
+                type=["html", "htm", "json"],
+                key=f"{key_prefix}_uploaded_design",
+                help="Upload the exported Assured CRISPR design report HTML or JSON spec.",
+            )
+            if uploaded is not None:
+                text_content = uploaded.getvalue().decode("utf-8", errors="replace")
+                if uploaded.name.lower().endswith((".html", ".htm")) or text_content.strip().startswith("<"):
+                    chosen_html = text_content
+                else:
+                    try:
+                        resolved["qc_design_spec"] = json.loads(text_content)
+                    except Exception:
+                        pass
+                try:
+                    parsed_info = parse_design_file(text=text_content)
+                except Exception as e:
+                    st.warning(f"Could not parse uploaded design: {e}")
+
+        # If a design was successfully parsed, display rich preview matching AssuredQC
+        if parsed_info and parsed_info.get("success"):
+            p_label = parsed_info.get("label") or "Design File"
+            p_nuc = parsed_info.get("nuclease") or "SpCas9"
+            p_guides = parsed_info.get("guides") or []
+            p_donors = parsed_info.get("donors") or []
+            p_gene = parsed_info.get("gene") or default_gene
+            p_kind = parsed_info.get("editKind") or default_workflow
+
+            resolved["qc_design_path"] = chosen_path
+            resolved["qc_design_html"] = chosen_html
+            resolved["nuclease"] = p_nuc
+            resolved["gene"] = p_gene
+            resolved["workflow"] = p_kind
+            resolved["label"] = p_label
+            resolved["guides"] = [g.get("sequence") for g in p_guides if g.get("sequence")]
+            resolved["donor"] = p_donors[0].get("sequence", "") if p_donors else ""
+
+            # Card preview matching AssuredQC
+            st.markdown(
+                f"""
+                <div style="padding: 10px 14px; background: #ecfdf3; border-radius: 8px; border: 1px solid #a6f4c5; margin-bottom: 8px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                        <span style="font-weight: 700; color: #027a48; font-size: 0.92rem;">
+                            ✓ Design Loaded &amp; Parsed: <code>{p_label}</code>
+                        </span>
+                        <span style="font-size: 0.8rem; color: #475467; background: #f2f4f7; padding: 2px 8px; border-radius: 4px;">
+                            Enzyme: <strong>{p_nuc}</strong>
+                        </span>
+                    </div>
+                    <div style="font-size: 0.85rem; color: #344054;">
+                        <strong>gRNA Spacers ({len(p_guides)}):</strong> {', '.join([f"<code>{g.get('sequence', '')[:10]}...</code> ({g.get('length', 20)} nt)" for g in p_guides]) if p_guides else 'None (cut site inferred)'}<br/>
+                        <strong>Donor ssODN ({len(p_donors)}):</strong> {', '.join([f"{d.get('name', 'Donor')}: {d.get('length', 0)} nt" for d in p_donors]) if p_donors else 'None (Knockout/Deletion)'}
+                    </div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+            # Button to customize / override sequences
+            if st.button("✎ Customize / Override Sequences", key=f"{key_prefix}_override_btn", help="Transfer parsed sequences to manual input for editing"):
+                st.session_state[f"{key_prefix}_manual_nuc"] = p_nuc
+                st.session_state[f"{key_prefix}_manual_guides"] = ", ".join([g.get("sequence", "") for g in p_guides if g.get("sequence")])
+                st.session_state[f"{key_prefix}_manual_donor"] = p_donors[0].get("sequence", "") if p_donors else ""
+                st.session_state[f"{key_prefix}_manual_gene"] = p_gene
+                st.session_state[f"{key_prefix}_manual_wf"] = p_kind
+                st.session_state[mode_key] = "✍️ Manual Sequences (gRNA Spacers & Donor ssODN)"
+                st.rerun()
+
+    else:
+        # ---------------------------------------------------------
+        # MODE 2: Manual Sequence Input (matching AssuredQC Custom Mode)
+        # ---------------------------------------------------------
+        st.markdown(
+            """
+            <div style="padding: 8px 12px; background: #fffbeb; border: 1px solid #fef08a; border-radius: 6px; font-size: 0.85rem; color: #854d0e; margin-bottom: 8px;">
+                ⚠️ <strong>Manual Sequence Input Active:</strong> The deconvolution engine will use your custom gRNA spacers, donor ssODN, and enzyme entered below.
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        col_m1, col_m2 = st.columns(2)
+        with col_m1:
+            nuc_list = ["SpCas9", "enAsCas12a", "Cas12a", "SaCas9"]
+            cur_nuc = st.session_state.get(f"{key_prefix}_manual_nuc", "SpCas9")
+            nuc_idx = nuc_list.index(cur_nuc) if cur_nuc in nuc_list else 0
+            nuclease_val = st.selectbox("Enzyme / Nuclease", nuc_list, index=nuc_idx, key=f"{key_prefix}_nuc_input")
+
+            raw_guides = st.text_area(
+                "gRNA Spacer Sequence(s) *",
+                value=st.session_state.get(f"{key_prefix}_manual_guides", ""),
+                height=68,
+                placeholder="e.g. ACACTGCCAGGCGCTTCTGC, CCCCGGCCTGGTACACTGCC",
+                help="Enter 1 to 3 gRNA spacers. Comma, space, or newline separated. 20 nt DNA.",
+                key=f"{key_prefix}_guides_text",
+            )
+            # Parse and validate guides
+            guide_list = [clean_dna(g) for g in re.split(r"[,;\s]+", raw_guides) if clean_dna(g)]
+            if guide_list:
+                guide_badges = " ".join([f"`{g[:10]}...` ({len(g)} nt)" for g in guide_list])
+                st.caption(f"✓ {len(guide_list)} guide(s) entered: {guide_badges}")
+            else:
+                st.caption("ℹ️ If empty, the cut site will be inferred from where sample reads depart from control.")
+
+        with col_m2:
+            raw_donor = st.text_area(
+                "Donor Template Sequence (ssODN)",
+                value=st.session_state.get(f"{key_prefix}_manual_donor", ""),
+                height=68,
+                placeholder="Paste single-stranded donor oligonucleotide sequence (ssODN)...",
+                help="Required for SNP correction (HDR) or small tag insertion. Leave blank for knockout.",
+                key=f"{key_prefix}_donor_text",
+            )
+            clean_donor_val = clean_dna(raw_donor)
+            if clean_donor_val:
+                st.caption(f"✓ Donor entered: **{len(clean_donor_val)} nt DNA**")
+            else:
+                st.caption("ℹ️ Optional (leave blank for knockout or deletion workflows).")
+
+            col_wf1, col_wf2 = st.columns(2)
+            with col_wf1:
+                wf_opts = ["snp", "knockout", "deletion", "tag_small"]
+                cur_wf = st.session_state.get(f"{key_prefix}_manual_wf", "snp" if clean_donor_val else "knockout")
+                wf_idx = wf_opts.index(cur_wf) if cur_wf in wf_opts else (0 if clean_donor_val else 1)
+                wf_val = st.selectbox(
+                    "Workflow",
+                    wf_opts,
+                    index=wf_idx,
+                    format_func=lambda x: {
+                        "snp": "SNP Correction (ssODN, HDR)",
+                        "knockout": "Knockout (Indels at 1 cut)",
+                        "deletion": "Dual-cut Deletion",
+                        "tag_small": "Small Tag Knock-in",
+                    }.get(x, x),
+                    key=f"{key_prefix}_wf_input",
+                )
+            with col_wf2:
+                goal_val = st.selectbox("Editing Goal", ["homozygous", "heterozygous", "any"], index=0, key=f"{key_prefix}_goal_input")
+
+        resolved["guides"] = guide_list
+        resolved["donor"] = clean_donor_val
+        resolved["nuclease"] = nuclease_val
+        resolved["workflow"] = wf_val
+        resolved["goal"] = goal_val
+        resolved["label"] = f"Manual ({nuclease_val}, {len(guide_list)} guides)"
+
+        if st.button("↺ Revert to Design File Mode", key=f"{key_prefix}_revert_btn"):
+            st.session_state[mode_key] = "📁 Design File (HTML Report / JSON Spec)"
+            st.rerun()
+
+    return resolved
 
 
 def render_in_app_analyzer(selected_project: Optional[str]) -> None:
@@ -324,71 +619,12 @@ def render_in_app_analyzer(selected_project: Optional[str]) -> None:
 
         col_cfg1, col_cfg2 = st.columns(2)
 
-        # 1. Design Spec Source
+        # 1. CRISPR Design Specification & Sequences (Matching AssuredQC)
         with col_cfg1:
-            st.markdown("##### 1. CRISPR Design Specification")
-            design_files = _find_project_design_specs(selected_project)
-            design_options = ["Demo: APOE R176C SNP Spec", "Upload Custom Design JSON"]
-            if design_files:
-                for f in design_files:
-                    design_options.insert(0, f"Step 1 Design: {f.name}")
-
-            design_choice = st.selectbox(
-                "Design Spec Source",
-                design_options,
-                key="in_app_analyzer_design_choice",
-                help="Select design generated from Step 1 Design Log, upload a JSON spec, or use demo.",
-            )
-
-            qc_design_spec = None
-            qc_design_path = None
-
-            demo_dir = get_demo_trace_dir()
-            apoe_design_file = demo_dir / "apoe_r176c_snp.design.json"
-
-            if design_choice.startswith("Step 1 Design:"):
-                chosen_name = design_choice.replace("Step 1 Design:", "").strip()
-                match_files = [f for f in design_files if f.name == chosen_name]
-                if match_files:
-                    qc_design_path = match_files[0]
-                    try:
-                        qc_design_spec = json.loads(qc_design_path.read_text(encoding="utf-8"))
-                        st.caption(f"Loaded design: {qc_design_spec.get('design', {}).get('gene', 'Target')} ({qc_design_spec.get('design', {}).get('editKind', 'edit')})")
-                    except Exception as e:
-                        st.error(f"Failed to read design spec: {e}")
-            elif design_choice == "Demo: APOE R176C SNP Spec":
-                if apoe_design_file.exists():
-                    qc_design_path = apoe_design_file
-                    try:
-                        qc_design_spec = json.loads(apoe_design_file.read_text(encoding="utf-8"))
-                        st.caption("Loaded bundled APOE R176C SNP design spec.")
-                    except Exception as e:
-                        st.error(f"Failed to read demo design: {e}")
-                else:
-                    st.warning("Demo design spec not found on disk.")
-            else:
-                uploaded_design = st.file_uploader(
-                    "Upload .design.json or .json spec",
-                    type=["json"],
-                    key="in_app_analyzer_design_upload",
-                )
-                if uploaded_design is not None:
-                    try:
-                        qc_design_spec = json.loads(uploaded_design.getvalue().decode("utf-8"))
-                        st.caption(f"Loaded design spec: {uploaded_design.name}")
-                    except Exception as e:
-                        st.error(f"Invalid design JSON: {e}")
-
-            workflow_choice = st.selectbox(
-                "Experiment Workflow",
-                ["snp", "knockout", "deletion", "tag_small"],
-                format_func=lambda x: {
-                    "snp": "SNP Correction (ssODN, HDR)",
-                    "knockout": "Knockout (Indels at 1 cut)",
-                    "deletion": "Dual-cut Deletion",
-                    "tag_small": "Small Tag Knock-in",
-                }.get(x, x),
-                key="in_app_analyzer_workflow",
+            st.markdown("##### 1. CRISPR Design & Sequences")
+            design_info = render_assured_qc_design_section(
+                key_prefix="in_app_analyzer",
+                selected_project=selected_project,
             )
 
         # 2. Control and Sample Traces
@@ -435,8 +671,10 @@ def render_in_app_analyzer(selected_project: Optional[str]) -> None:
                     demo_dir / "apoe_snp_clone_het_edited.ab1",
                     demo_dir / "apoe_snp_clone_partial_het_edited.ab1",
                 ]
-                if not qc_design_spec and apoe_design_file.exists():
-                    qc_design_path = apoe_design_file
+                if not design_info.get("qc_design_spec") and not design_info.get("qc_design_path") and not design_info.get("qc_design_html") and not design_info.get("guides"):
+                    apoe_design_file = demo_dir / "apoe_r176c_snp.design.json"
+                    if apoe_design_file.exists():
+                        design_info["qc_design_path"] = apoe_design_file
             else:
                 if control_upload is not None:
                     ctrl_path = temp_dir / control_upload.name
@@ -460,9 +698,15 @@ def render_in_app_analyzer(selected_project: Optional[str]) -> None:
                     qc_output = run_in_silico_assessment(
                         control_path=ctrl_path,
                         sample_paths=sample_paths,
-                        qc_design_spec=qc_design_spec,
-                        qc_design_path=qc_design_path,
-                        workflow=workflow_choice,
+                        qc_design_spec=design_info.get("qc_design_spec"),
+                        qc_design_path=design_info.get("qc_design_path"),
+                        qc_design_html=design_info.get("qc_design_html"),
+                        workflow=design_info.get("workflow", "snp"),
+                        guides=design_info.get("guides"),
+                        donor=design_info.get("donor"),
+                        gene=design_info.get("gene"),
+                        nuclease=design_info.get("nuclease"),
+                        options={"goal": design_info.get("goal")},
                     )
                     st.session_state["in_app_analyzer_output"] = qc_output
                     st.success(f"Analysis complete: {qc_output.get('totalSamples', 0)} samples evaluated!")
@@ -626,71 +870,16 @@ def render_stage4_clone_screening(selected_project: Optional[str]) -> Optional[d
 
     col_cfg1, col_cfg2 = st.columns(2)
 
-    # 1. Design Spec Source
+    # 1. CRISPR Target, Design & Sequences (Matching AssuredQC)
     with col_cfg1:
-        st.markdown("##### 1. CRISPR Target & Design Spec")
-        design_files = _find_project_design_specs(selected_project)
-        design_options = ["Demo: APOE R176C SNP Spec", "Upload Custom Design JSON"]
-        if design_files:
-            for f in design_files:
-                design_options.insert(0, f"Stage 2 Design: {f.name}")
-
-        design_choice = st.selectbox(
-            "CRISPR Design Specification",
-            design_options,
-            key="stage4_screen_design_choice",
-            help="Select design generated from Stage 2 CRISPR Design Studio, upload a spec, or use demo.",
-        )
-
-        qc_design_spec = None
-        qc_design_path = None
-        demo_dir = get_demo_trace_dir()
-        apoe_design_file = demo_dir / "apoe_r176c_snp.design.json"
-
-        if design_choice.startswith("Stage 2 Design:"):
-            chosen_name = design_choice.replace("Stage 2 Design:", "").strip()
-            match_files = [f for f in design_files if f.name == chosen_name]
-            if match_files:
-                qc_design_path = match_files[0]
-                try:
-                    qc_design_spec = json.loads(qc_design_path.read_text(encoding="utf-8"))
-                    st.caption(f"Loaded design: {qc_design_spec.get('design', {}).get('gene', target_gene)} ({qc_design_spec.get('design', {}).get('editKind', 'edit')})")
-                except Exception as e:
-                    st.error(f"Failed to read design spec: {e}")
-        elif design_choice == "Demo: APOE R176C SNP Spec":
-            if apoe_design_file.exists():
-                qc_design_path = apoe_design_file
-                try:
-                    qc_design_spec = json.loads(apoe_design_file.read_text(encoding="utf-8"))
-                    st.caption("Loaded bundled APOE R176C SNP design spec.")
-                except Exception as e:
-                    st.error(f"Failed to read demo design: {e}")
-            else:
-                st.warning("Demo design spec not found on disk.")
-        else:
-            uploaded_design = st.file_uploader(
-                "Upload .design.json or .json spec",
-                type=["json"],
-                key="stage4_screen_design_upload",
-            )
-            if uploaded_design is not None:
-                try:
-                    qc_design_spec = json.loads(uploaded_design.getvalue().decode("utf-8"))
-                    st.caption(f"Loaded design spec: {uploaded_design.name}")
-                except Exception as e:
-                    st.error(f"Invalid design JSON: {e}")
-
-        workflow_choice = st.selectbox(
-            "Screening Workflow Mode",
-            ["snp", "knockout", "deletion", "tag_small"],
-            index=default_wf_idx,
-            format_func=lambda x: {
-                "snp": "SNP Correction (ssODN, HDR)",
-                "knockout": "Knockout (Indels at 1 cut)",
-                "deletion": "Dual-cut Deletion",
-                "tag_small": "Small Tag Knock-in",
-            }.get(x, x),
-            key="stage4_screen_workflow",
+        st.markdown("##### 1. CRISPR Target, Design & Sequences")
+        wf_name_map = {0: "snp", 1: "knockout", 2: "deletion", 3: "tag_small"}
+        default_wf = wf_name_map.get(default_wf_idx, "snp")
+        design_info = render_assured_qc_design_section(
+            key_prefix="stage4_screen",
+            selected_project=selected_project,
+            default_gene=target_gene,
+            default_workflow=default_wf,
         )
 
     # 2. Control and Sample Traces
@@ -738,8 +927,10 @@ def render_stage4_clone_screening(selected_project: Optional[str]) -> Optional[d
                 demo_dir / "apoe_snp_clone_het_edited.ab1",
                 demo_dir / "apoe_snp_clone_partial_het_edited.ab1",
             ]
-            if not qc_design_spec and apoe_design_file.exists():
-                qc_design_path = apoe_design_file
+            if not design_info.get("qc_design_spec") and not design_info.get("qc_design_path") and not design_info.get("qc_design_html") and not design_info.get("guides"):
+                apoe_design_file = demo_dir / "apoe_r176c_snp.design.json"
+                if apoe_design_file.exists():
+                    design_info["qc_design_path"] = apoe_design_file
         else:
             if control_upload is not None:
                 ctrl_path = temp_dir / control_upload.name
@@ -763,11 +954,16 @@ def render_stage4_clone_screening(selected_project: Optional[str]) -> Optional[d
                 qc_output = run_in_silico_assessment(
                     control_path=ctrl_path,
                     sample_paths=sample_paths,
-                    qc_design_spec=qc_design_spec,
-                    qc_design_path=qc_design_path,
-                    workflow=workflow_choice,
-                    gene=target_gene,
+                    qc_design_spec=design_info.get("qc_design_spec"),
+                    qc_design_path=design_info.get("qc_design_path"),
+                    qc_design_html=design_info.get("qc_design_html"),
+                    workflow=design_info.get("workflow", default_wf),
+                    guides=design_info.get("guides"),
+                    donor=design_info.get("donor"),
+                    gene=design_info.get("gene", target_gene),
+                    nuclease=design_info.get("nuclease"),
                     title=f"Stage 4 Screening - {selected_project or 'Project'}",
+                    options={"goal": design_info.get("goal")},
                 )
                 st.session_state["stage4_screening_output"] = qc_output
                 # Automatically save and register reports

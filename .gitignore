@@ -20,3 +20,5 @@ dist/
 /data/projects/**/snapshots/**
 /data/projects/**/uploads/**
 /data/projects/Test/
+data/temp_qc/
+data/assessment_logs/
