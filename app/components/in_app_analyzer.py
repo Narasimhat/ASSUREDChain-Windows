@@ -116,14 +116,16 @@ def run_in_silico_assessment(
 def save_assessment_reports(
     selected_project: Optional[str],
     qc_output: dict[str, Any],
+    subfolder: str = "screening",
+    context_step: str = "screening",
 ) -> dict[str, Path]:
     """Save screening CSV, HTML report, SVG figure, and JSON snapshot into project dirs."""
     workflow = qc_output.get("workflow") or "qc"
     timestamp = int(time.time())
 
     if selected_project:
-        reports_dir = project_subdir(selected_project, "reports", "assessment")
-        snapshots_dir = project_subdir(selected_project, "snapshots", "assessment")
+        reports_dir = project_subdir(selected_project, "reports", subfolder)
+        snapshots_dir = project_subdir(selected_project, "snapshots", subfolder)
     else:
         reports_dir = ROOT / "data" / "assessment_logs"
         snapshots_dir = ROOT / "data" / "assessment_logs"
@@ -189,7 +191,7 @@ def save_assessment_reports(
             sha256=sha256_bytes(csv_file.read_bytes()),
             size=csv_file.stat().st_size,
             mime="text/csv",
-            context={"step": "assessment", "kind": "screening_decisions_csv"},
+            context={"step": context_step, "kind": "screening_decisions_csv"},
         )
         register_file(
             selected_project,
@@ -198,7 +200,7 @@ def save_assessment_reports(
             sha256=sha256_bytes(html_file.read_bytes()),
             size=html_file.stat().st_size,
             mime="text/html",
-            context={"step": "assessment", "kind": "assessment_report_html"},
+            context={"step": context_step, "kind": "assessment_report_html"},
         )
         if svg_file:
             register_file(
@@ -208,7 +210,7 @@ def save_assessment_reports(
                 sha256=sha256_bytes(svg_file.read_bytes()),
                 size=svg_file.stat().st_size,
                 mime="image/svg+xml",
-                context={"step": "assessment", "kind": "clone_selection_svg"},
+                context={"step": context_step, "kind": "clone_selection_svg"},
             )
         # Register snapshot
         register_file(
@@ -218,13 +220,13 @@ def save_assessment_reports(
             sha256=sha256_bytes(json_file.read_bytes()),
             size=json_file.stat().st_size,
             mime="application/json",
-            context={"step": "assessment", "kind": "qc_results_json"},
+            context={"step": context_step, "kind": "qc_results_json"},
         )
 
         pref = qc_output.get("preferred") or {}
         append_audit(
             selected_project,
-            "assessment_in_app_screen",
+            f"{context_step}_in_app_screen",
             details={
                 "tool": "ASSURED Bench (Trace Analysis)",
                 "workflow": workflow,
@@ -590,3 +592,326 @@ def render_in_app_analyzer(selected_project: Optional[str]) -> None:
                         mime="text/html",
                         key="in_app_analyzer_dl_html",
                     )
+
+
+def render_stage4_clone_screening(selected_project: Optional[str]) -> Optional[dict[str, Any]]:
+    """Render the AssuredQC Clone Screening & Sanger Deconvolution studio for Stage 4."""
+    from app.components.project_state import load_project_meta, update_project_meta
+
+    st.markdown(
+        """
+        <div style="background-color:#f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px 16px; margin-bottom: 12px;">
+            <span style="font-weight: 700; color: #166534; font-size: 0.95rem;">🧬 AssuredQC In-App Clone Screening & Sanger Deconvolution</span><br/>
+            <span style="color: #374151; font-size: 0.88rem;">
+                Screen expanded single-cell colonies against parental WT control. AssuredQC deconvolves chromatograms via NNLS, 
+                quantifies intended edit % vs indels, and ranks candidates to assign <strong>Primary Clone A</strong> and <strong>Backup Clone B</strong> for Stage 5 release testing.
+            </span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    meta = load_project_meta(selected_project) if selected_project else {}
+    target_gene = meta.get("target_gene") or meta.get("gene") or "Target"
+    edit_program = meta.get("edit_program") or meta.get("edit_type") or "SNP Knock-in (ssODN)"
+
+    # Map program to default workflow
+    default_wf_idx = 0
+    if "knockout" in edit_program.lower() or "ko" in edit_program.lower():
+        default_wf_idx = 1
+    elif "deletion" in edit_program.lower():
+        default_wf_idx = 2
+    elif "tag" in edit_program.lower():
+        default_wf_idx = 3
+
+    col_cfg1, col_cfg2 = st.columns(2)
+
+    # 1. Design Spec Source
+    with col_cfg1:
+        st.markdown("##### 1. CRISPR Target & Design Spec")
+        design_files = _find_project_design_specs(selected_project)
+        design_options = ["Demo: APOE R176C SNP Spec", "Upload Custom Design JSON"]
+        if design_files:
+            for f in design_files:
+                design_options.insert(0, f"Stage 2 Design: {f.name}")
+
+        design_choice = st.selectbox(
+            "CRISPR Design Specification",
+            design_options,
+            key="stage4_screen_design_choice",
+            help="Select design generated from Stage 2 CRISPR Design Studio, upload a spec, or use demo.",
+        )
+
+        qc_design_spec = None
+        qc_design_path = None
+        demo_dir = get_demo_trace_dir()
+        apoe_design_file = demo_dir / "apoe_r176c_snp.design.json"
+
+        if design_choice.startswith("Stage 2 Design:"):
+            chosen_name = design_choice.replace("Stage 2 Design:", "").strip()
+            match_files = [f for f in design_files if f.name == chosen_name]
+            if match_files:
+                qc_design_path = match_files[0]
+                try:
+                    qc_design_spec = json.loads(qc_design_path.read_text(encoding="utf-8"))
+                    st.caption(f"Loaded design: {qc_design_spec.get('design', {}).get('gene', target_gene)} ({qc_design_spec.get('design', {}).get('editKind', 'edit')})")
+                except Exception as e:
+                    st.error(f"Failed to read design spec: {e}")
+        elif design_choice == "Demo: APOE R176C SNP Spec":
+            if apoe_design_file.exists():
+                qc_design_path = apoe_design_file
+                try:
+                    qc_design_spec = json.loads(apoe_design_file.read_text(encoding="utf-8"))
+                    st.caption("Loaded bundled APOE R176C SNP design spec.")
+                except Exception as e:
+                    st.error(f"Failed to read demo design: {e}")
+            else:
+                st.warning("Demo design spec not found on disk.")
+        else:
+            uploaded_design = st.file_uploader(
+                "Upload .design.json or .json spec",
+                type=["json"],
+                key="stage4_screen_design_upload",
+            )
+            if uploaded_design is not None:
+                try:
+                    qc_design_spec = json.loads(uploaded_design.getvalue().decode("utf-8"))
+                    st.caption(f"Loaded design spec: {uploaded_design.name}")
+                except Exception as e:
+                    st.error(f"Invalid design JSON: {e}")
+
+        workflow_choice = st.selectbox(
+            "Screening Workflow Mode",
+            ["snp", "knockout", "deletion", "tag_small"],
+            index=default_wf_idx,
+            format_func=lambda x: {
+                "snp": "SNP Correction (ssODN, HDR)",
+                "knockout": "Knockout (Indels at 1 cut)",
+                "deletion": "Dual-cut Deletion",
+                "tag_small": "Small Tag Knock-in",
+            }.get(x, x),
+            key="stage4_screen_workflow",
+        )
+
+    # 2. Control and Sample Traces
+    with col_cfg2:
+        st.markdown("##### 2. Colony Sanger Chromatograms (.ab1)")
+        control_upload = st.file_uploader(
+            "Parental / WT Control Trace (.ab1)",
+            type=["ab1", "abi", "scf"],
+            key="stage4_screen_ctrl_upload",
+        )
+        samples_upload = st.file_uploader(
+            "Expanded Colony Traces (.ab1)",
+            type=["ab1", "abi", "scf"],
+            accept_multiple_files=True,
+            key="stage4_screen_samples_upload",
+            help="Upload Sanger sequencing reads from 96-well plate colonies.",
+        )
+
+        load_demo_clicked = st.button("✨ Load Demo Clone Traces (Control + 3 Clones)", key="stage4_load_demo_traces_btn")
+        if load_demo_clicked:
+            st.session_state["stage4_screen_use_demo"] = True
+            st.success("APOE Demo Colony Traces loaded (1 parental control + 3 clone reads)!")
+
+        if st.session_state.get("stage4_screen_use_demo"):
+            st.info("Using bundled APOE clone traces (Control + 3 single-cell colonies).")
+
+    # Run Analysis Button
+    run_col1, run_col2 = st.columns([1.5, 3])
+    with run_col1:
+        run_screen_btn = st.button("🚀 Run AssuredQC Clone Screening", key="stage4_run_screening_btn", type="primary")
+
+    temp_dir = ROOT / "data" / "temp_qc"
+    temp_dir.mkdir(parents=True, exist_ok=True)
+
+    if run_screen_btn:
+        use_demo = st.session_state.get("stage4_screen_use_demo", False)
+        ctrl_path: Optional[Path] = None
+        sample_paths: list[Path] = []
+
+        if use_demo:
+            demo_dir = get_demo_trace_dir()
+            ctrl_path = demo_dir / "apoe_control.ab1"
+            sample_paths = [
+                demo_dir / "apoe_snp_clone_hom_edited.ab1",
+                demo_dir / "apoe_snp_clone_het_edited.ab1",
+                demo_dir / "apoe_snp_clone_partial_het_edited.ab1",
+            ]
+            if not qc_design_spec and apoe_design_file.exists():
+                qc_design_path = apoe_design_file
+        else:
+            if control_upload is not None:
+                ctrl_path = temp_dir / control_upload.name
+                ctrl_path.write_bytes(control_upload.getvalue())
+            if samples_upload:
+                for s in samples_upload:
+                    sp = temp_dir / s.name
+                    sp.write_bytes(s.getvalue())
+                    sample_paths.append(sp)
+
+        if not ctrl_path or not ctrl_path.exists():
+            st.error("Please upload a Parental Control trace (.ab1) or click 'Load Demo Clone Traces'.")
+            return None
+
+        if not sample_paths:
+            st.error("Please upload at least one Colony trace (.ab1) or click 'Load Demo Clone Traces'.")
+            return None
+
+        with st.spinner("Deconvolving chromatograms via NNLS and ranking clone candidates..."):
+            try:
+                qc_output = run_in_silico_assessment(
+                    control_path=ctrl_path,
+                    sample_paths=sample_paths,
+                    qc_design_spec=qc_design_spec,
+                    qc_design_path=qc_design_path,
+                    workflow=workflow_choice,
+                    gene=target_gene,
+                    title=f"Stage 4 Screening - {selected_project or 'Project'}",
+                )
+                st.session_state["stage4_screening_output"] = qc_output
+                # Automatically save and register reports
+                if selected_project:
+                    saved_paths = save_assessment_reports(
+                        selected_project,
+                        qc_output,
+                        subfolder="screening",
+                        context_step="screening",
+                    )
+                    st.session_state["stage4_screening_saved_paths"] = saved_paths
+                    st.session_state["stage4_screening_hash"] = sha256_bytes(saved_paths["json"].read_bytes())
+                    update_project_meta(selected_project, {"screening_hash": st.session_state["stage4_screening_hash"]})
+
+                st.success(f"AssuredQC complete: {qc_output.get('totalSamples', 0)} single-cell colonies screened and ranked!")
+            except Exception as err:
+                st.error(f"AssuredQC screening failed: {err}")
+                return None
+
+    # Render Results & Candidate Assignment
+    qc_output = st.session_state.get("stage4_screening_output")
+    if qc_output and qc_output.get("success"):
+        st.markdown("---")
+        results = qc_output.get("results") or []
+        pref = qc_output.get("preferred") or {}
+        pref_name = pref.get("name") or "Clone_1"
+        pref_decision = str(pref.get("decision") or "accept").upper()
+
+        # Highlights for Top 2 Clones
+        col_c1, col_c2 = st.columns(2)
+        with col_c1:
+            bg_a = "#d1fadf" if pref_decision == "ACCEPT" else "#fef0c7"
+            fg_a = "#067647" if pref_decision == "ACCEPT" else "#b54708"
+            st.markdown(
+                f"""
+                <div style="background-color: {bg_a}; border: 1px solid {fg_a}; border-radius: 8px; padding: 12px 16px;">
+                    <span style="font-size: 1.05rem; font-weight: bold; color: {fg_a};">
+                        🥇 Rank 1 Recommended: <code>{pref_name}</code> ({pref_decision})
+                    </span><br/>
+                    <span style="color: #344054; font-size: 0.9rem;">
+                        <strong>Edit (HDR):</strong> {pref.get('intendedEditPct', 0)}% &nbsp;|&nbsp;
+                        <strong>Indel:</strong> {pref.get('indelPct', 0)}% &nbsp;|&nbsp;
+                        <strong>WT:</strong> {pref.get('wtPct', 0)}%<br/>
+                        <strong>Genotype:</strong> {pref.get('genotypeSummary') or 'Targeted homozygous/heterozygous edit'}
+                    </span>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+        with col_c2:
+            runner_up = results[1] if len(results) > 1 else pref
+            runner_name = runner_up.get("name") or "Clone_2"
+            runner_dec = str(runner_up.get("decision") or "hold").upper()
+            bg_b = "#d1fadf" if runner_dec == "ACCEPT" else "#fef0c7"
+            fg_b = "#067647" if runner_dec == "ACCEPT" else "#b54708"
+            st.markdown(
+                f"""
+                <div style="background-color: {bg_b}; border: 1px solid {fg_b}; border-radius: 8px; padding: 12px 16px;">
+                    <span style="font-size: 1.05rem; font-weight: bold; color: {fg_b};">
+                        🥈 Rank 2 Backup: <code>{runner_name}</code> ({runner_dec})
+                    </span><br/>
+                    <span style="color: #344054; font-size: 0.9rem;">
+                        <strong>Edit (HDR):</strong> {runner_up.get('intendedEditPct', 0)}% &nbsp;|&nbsp;
+                        <strong>Indel:</strong> {runner_up.get('indelPct', 0)}% &nbsp;|&nbsp;
+                        <strong>WT:</strong> {runner_up.get('wtPct', 0)}%<br/>
+                        <strong>Genotype:</strong> {runner_up.get('genotypeSummary') or 'Confirmed targeted clone'}
+                    </span>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+        # Leaderboard Table
+        st.markdown("##### 🏆 Colony Screening & Ranking Leaderboard")
+        results_rows = []
+        for r in results:
+            results_rows.append({
+                "Rank": f"#{r.get('rank', 1)}",
+                "Colony Sample": r.get("name"),
+                "Decision": str(r.get("decision", "")).upper(),
+                "Intended Edit %": r.get("intendedEditPct"),
+                "Indel %": r.get("indelPct"),
+                "WT %": r.get("wtPct"),
+                "R² Quality": r.get("quality", {}).get("r2") if isinstance(r.get("quality"), dict) else r.get("r2"),
+                "Genotype Call": r.get("genotypeSummary") or "; ".join(r.get("reasons", [])[:1]),
+            })
+        results_df = pd.DataFrame(results_rows)
+        st.dataframe(results_df, use_container_width=True)
+
+        # Vector Clone Selection Figure
+        svg_content = qc_output.get("selectionFigureSvg")
+        if svg_content:
+            with st.expander("📊 Vector Clone Selection & Trace Alignment Figure", expanded=True):
+                st.components.v1.html(
+                    f"""
+                    <div style="background-color: white; padding: 10px; border-radius: 6px; overflow-x: auto;">
+                        {svg_content}
+                    </div>
+                    """,
+                    height=360,
+                    scrolling=True,
+                )
+
+        # Full HTML Report Preview
+        html_report = qc_output.get("reportHtml")
+        if html_report:
+            with st.expander("📄 Full Interactive AssuredQC Screening Report (HTML)", expanded=False):
+                st.components.v1.html(html_report, height=500, scrolling=True)
+
+        # Download & Assignment Controls
+        col_act1, col_act2, col_act3 = st.columns([2, 1, 1])
+        with col_act1:
+            auto_assign = st.button("🎯 Auto-Assign Screened Candidates (Rank 1 ➔ Clone A, Rank 2 ➔ Clone B)", key="stage4_auto_assign_btn", type="primary")
+            if auto_assign:
+                st.session_state["stage4_cand_a_val"] = pref_name
+                st.session_state["stage4_cand_b_val"] = runner_name
+                st.session_state["stage4_cand_a_origin"] = "Plate 1 - Well B04"
+                st.session_state["stage4_cand_b_origin"] = "Plate 1 - Well E09"
+                st.session_state["qc_hdr_a"] = float(pref.get("intendedEditPct") or 96.0)
+                st.session_state["qc_hdr_b"] = float(runner_up.get("intendedEditPct") or 94.5)
+                apply_assessment_to_session(qc_output)
+                st.success(f"Assigned {pref_name} to Clone A and {runner_name} to Clone B! Scroll down to lock milestone.")
+                st.rerun()
+
+        with col_act2:
+            if qc_output.get("screeningCsv"):
+                st.download_button(
+                    "📥 Download CSV",
+                    qc_output["screeningCsv"],
+                    file_name=f"screening_decisions_{selected_project or 'clones'}.csv",
+                    mime="text/csv",
+                    key="stage4_screen_dl_csv",
+                )
+        with col_act3:
+            if html_report:
+                st.download_button(
+                    "📥 Download HTML",
+                    html_report,
+                    file_name=f"screening_report_{selected_project or 'clones'}.html",
+                    mime="text/html",
+                    key="stage4_screen_dl_html",
+                )
+
+        return qc_output
+
+    return None

@@ -125,14 +125,21 @@ def test_full_e2e_pipeline() -> None:
     print("  [OK] Stage 3 verified & locked.")
 
     # ----------------------------------------------------
-    # STAGE 4: Single-Cell Cloning & Monoclonality
+    # STAGE 4: Single-Cell Cloning & AssuredQC Screening
     # ----------------------------------------------------
-    print("[4/6] Testing Stage 4: Single-Cell Cloning & Monoclonality...")
+    print("[4/6] Testing Stage 4: Single-Cell Cloning & AssuredQC Screening...")
     cloning_payload = {
         "deposition_method": "FACS Single-Cell Index Sorting",
         "day0_monoclonality_proof": "Confirmed (single cell per well imaged at 4x)",
         "outgrowth_wells": 48,
         "selected_clones": ["BIHi005-A-SORCS1-C1", "BIHi005-A-SORCS1-C2"],
+        "screening": {
+            "tool": "AssuredQC",
+            "workflow": "snp",
+            "total_samples": 3,
+            "accepted_count": 2,
+            "preferred_sample": "BIHi005-A-SORCS1-C1",
+        },
     }
     cloning_json = json.dumps(cloning_payload)
     cloning_hash = hashlib.sha256(cloning_json.encode("utf-8")).hexdigest()
@@ -143,6 +150,7 @@ def test_full_e2e_pipeline() -> None:
             "clone_b_id": "BIHi005-A-SORCS1-C2",
             "cloning_locked_at": now_ts,
             "cloning_hash": cloning_hash,
+            "screening_hash": cloning_hash,
             "active_stage": 5,
         },
     )

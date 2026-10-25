@@ -215,7 +215,7 @@ def main() -> None:
             (1, "Stage 1: Project Request & Target Product Profile (TPP)", "pages/1_Project_Request.py", "📋", "stage_1_locked_at"),
             (2, "Stage 2: CRISPR In-Silico Design & Reagent Specifications", "pages/2_CRISPR_Design.py", "🧬", "design_hash"),
             (3, "Stage 3: Transfection & Bulk In-Process Control (IPC)", "pages/3_Transfection_Bulk_QC.py", "⚡", "stage3_bulk_qc_hash"),
-            (4, "Stage 4: Single-Cell Cloning & Monoclonality Proof", "pages/4_Single_Cell_Cloning.py", "🧫", "cloning_hash"),
+            (4, "Stage 4: Single-Cell Cloning & AssuredQC Screening", "pages/4_Single_Cell_Cloning_and_Screening.py", "🧫", "cloning_hash"),
             (5, "Stage 5: Dual-Clone Comprehensive Release Testing", "pages/5_Dual_Clone_QC.py", "🧪", "stage5_qc_hash"),
             (6, "Stage 6: Master Banking, Certificate of Analysis & FAIR Blockchain Release", "pages/6_Master_Bank_and_CoA.py", "🏆", "final_release_hash"),
         ]

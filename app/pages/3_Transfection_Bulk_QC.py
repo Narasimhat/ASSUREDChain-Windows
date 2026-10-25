@@ -167,8 +167,8 @@ def main() -> None:
         except Exception:
             pass
 
-        st.success("Stage 3 Approved! Advancing to Stage 4 Single-Cell Cloning.")
-        st.page_link("pages/4_Single_Cell_Cloning.py", label="👉 Open Stage 4: Single-Cell Cloning", icon="🧫")
+        st.success("Stage 3 Approved! Advancing to Stage 4 Single-Cell Cloning & Screening.")
+        st.page_link("pages/4_Single_Cell_Cloning_and_Screening.py", label="👉 Open Stage 4: Single-Cell Cloning & Screening", icon="🧫")
 
 
 if __name__ == "__main__":

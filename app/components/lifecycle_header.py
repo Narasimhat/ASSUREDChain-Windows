@@ -11,7 +11,7 @@ STAGES = [
     (1, "1. Request & TPP", "pages/1_Project_Request.py"),
     (2, "2. CRISPR Design", "pages/2_CRISPR_Design.py"),
     (3, "3. Transfection & Bulk QC", "pages/3_Transfection_Bulk_QC.py"),
-    (4, "4. Single-Cell Cloning", "pages/4_Single_Cell_Cloning.py"),
+    (4, "4. Single-Cell Cloning & Screening", "pages/4_Single_Cell_Cloning_and_Screening.py"),
     (5, "5. Dual-Clone QC", "pages/5_Dual_Clone_QC.py"),
     (6, "6. Master Bank & CoA", "pages/6_Master_Bank_and_CoA.py"),
 ]
@@ -28,7 +28,7 @@ def is_stage_completed(meta: dict, stage_num: int) -> bool:
     elif stage_num == 3:
         return bool(meta.get("stage3_bulk_qc_hash") or meta.get("transfection") or meta.get("bulk_qc_hash"))
     elif stage_num == 4:
-        return bool(meta.get("cloning_locked_at") or meta.get("cloning_hash"))
+        return bool(meta.get("cloning_locked_at") or meta.get("cloning_hash") or meta.get("screening_hash"))
     elif stage_num == 5:
         return bool(meta.get("stage5_qc_hash") or meta.get("dual_clone_qc"))
     elif stage_num == 6:

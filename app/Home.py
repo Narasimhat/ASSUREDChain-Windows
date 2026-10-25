@@ -44,7 +44,7 @@ def main() -> None:
         | **1. Project Request & TPP** | Intake & Target Product Profile | Target gene, mutation, parent cell line authentication, and 2-clone acceptance criteria. |
         | **2. CRISPR Design** | In-Silico Design & Reagent Specs | SpCas9 high-fidelity guides (CFD scores), HDR donor with silent PAM blockers, and PCR primer pairs. |
         | **3. Transfection & Bulk QC** | Delivery & Bulk In-Process Control | Electroporation parameters, post-pulse viability, and 48h pool trace deconvolution. |
-        | **4. Single-Cell Cloning** | Monoclonality Assurance (FDA CQA) | Single-cell deposition proof (optical verification), 96-well expansion, and clone candidate selection. |
+        | **4. Single-Cell Cloning & Screening** | Monoclonality & AssuredQC Screening | Single-cell deposition proof (optical verification), 96-well expansion, and AssuredQC Sanger trace deconvolution to rank and select Clone A & Clone B. |
         | **5. Dual-Clone QC** | Comprehensive Release Testing | Side-by-side release matrix for Clone A and Clone B (On-Target, Off-Target, Karyotype, Sterility, STR, Pluripotency). |
         | **6. Master Bank & CoA** | Product Release & FAIR Anchoring | Master bank cryopreservation inventory, official regulatory Certificate of Analysis (Word/PDF), and Sepolia blockchain sealing. |
         """
