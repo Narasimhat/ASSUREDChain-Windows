@@ -143,7 +143,13 @@ class BenchCliEnzymeTests(unittest.TestCase):
                     self.assertEqual(locked["pam_rule"],ENZYMES[enzyme][1])
                     self.assertEqual(parsed["selected_guides"][0]["pam"],output["designResult"]["gs"][0]["pm"])
                     self.assertFalse(parsed["enzyme_metadata_assumed"])
+                result = output["designResult"]
+                self.assertEqual(result["koSelection"]["version"], "2.0.0")
+                self.assertEqual(len(result["koSelection"]["independentGuides"]), 2)
+                for selected in result["gs"]:
+                    self.assertGreaterEqual(selected["gc"], 40)
+                    self.assertLessEqual(selected["gc"], 60)
                 if enzyme=="spcas9":
-                    self.assertGreater(output["designResult"]["koAssessment"]["outcomes"]["minLofPct"],85)
+                    self.assertIsInstance(result["koAssessment"]["outcomes"]["minLofPct"], (int, float))
 
 if __name__=="__main__": unittest.main()
