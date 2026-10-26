@@ -67,21 +67,18 @@ def render_assistant(project_id: Optional[str], context: str) -> None:
 
     agent: str
     if agent_mode == "Manual":
-        default_agent = st.session_state.get(agent_key, "openai")
+        default_agent = st.session_state.get(agent_key, "biomni")
+        agent_opts = ["biomni", "openai", "local"]
         agent = st.sidebar.selectbox(
             "Agent",
-            ["openai", "local"],
-            index=0 if default_agent == "openai" else 1,
+            agent_opts,
+            index=agent_opts.index(default_agent) if default_agent in agent_opts else 0,
             key=agent_key,
-            help="openai uses OPENAI_API_KEY; local uses ASSISTANT_LOCAL_ENDPOINT (e.g. Ollama).",
+            help="biomni runs the ASSURED-Biomni Co-Scientist (A1 + E1 tools); openai uses OPENAI_API_KEY; local uses Ollama.",
         )
     else:
-        # Prefer OpenAI when a key is present (typical on Streamlit Cloud).
-        if os.getenv("OPENAI_API_KEY"):
-            agent = "openai"
-        else:
-            agent = "openai" if context in {"design", "charter"} else "local"
-        st.sidebar.caption(f"Agent: {agent} (auto)")
+        agent = "biomni"
+        st.sidebar.caption("Agent: biomni co-scientist (auto)")
 
     history_key = f"assistant_history_{context}"
     if history_key not in st.session_state:
@@ -89,6 +86,10 @@ def render_assistant(project_id: Optional[str], context: str) -> None:
 
     for entry in st.session_state[history_key]:
         with st.sidebar.expander(entry["role"].capitalize(), expanded=True):
+            if entry.get("steps"):
+                st.caption(f"⚙️ Executed {len(entry['steps'])} ASSURED-E1 tools:")
+                for s in entry["steps"]:
+                    st.caption(f"  ✓ `{s.get('tool')}` ({s.get('duration_ms', 0)} ms)")
             st.markdown(entry["content"])
             if entry.get("references"):
                 st.caption("References:")
@@ -122,10 +123,11 @@ def render_assistant(project_id: Optional[str], context: str) -> None:
             else:
                 reply = result.get("reply", "")
                 references = result.get("references", [])
+                steps = result.get("steps", [])
                 st.session_state[history_key].append(
                     {"role": "user", "content": prompt.strip(), "references": []}
                 )
                 st.session_state[history_key].append(
-                    {"role": "assistant", "content": reply, "references": references}
+                    {"role": "assistant", "content": reply, "references": references, "steps": steps}
                 )
                 st.rerun()

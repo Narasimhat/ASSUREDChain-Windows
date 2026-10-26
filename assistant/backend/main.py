@@ -22,6 +22,8 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.append(str(PROJECT_ROOT))
 
 from app.components.project_state import load_manifest  # noqa: E402
+from assistant.biomni_agent import A1 as BiomniAgent  # noqa: E402
+from assistant.biomni_tools import list_environment_catalog  # noqa: E402
 
 
 load_dotenv()
@@ -51,6 +53,15 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     reply: str
     references: List[Dict[str, Any]] = []
+    steps: List[Dict[str, Any]] = []
+    plan: List[Dict[str, Any]] = []
+
+
+class BiomniRequest(BaseModel):
+    prompt: str
+    project_id: Optional[str] = None
+    llm: str = "auto"
+    default_gene: str = "TP53"
 
 
 app = FastAPI(title="ASSUREDChain Assistant API", version="0.1.0")
@@ -186,6 +197,23 @@ def health() -> Dict[str, str]:
     return {"status": "ok"}
 
 
+@app.get("/biomni/tools")
+def biomni_tools() -> Dict[str, Any]:
+    return {"environment": "ASSURED-E1", "tools": list_environment_catalog()}
+
+
+@app.post("/biomni/run")
+def biomni_run(request: BiomniRequest) -> Dict[str, Any]:
+    if not request.prompt.strip():
+        raise HTTPException(status_code=400, detail="prompt must not be empty")
+    agent = BiomniAgent(llm=request.llm, project_id=request.project_id)
+    res = agent.go(request.prompt, project_id=request.project_id, default_gene=request.default_gene)
+    # Strip heavy raw design/qc dicts over HTTP JSON if needed, or keep serializable fields
+    res.pop("design_output", None)
+    res.pop("qc_output", None)
+    return res
+
+
 @app.post("/chat", response_model=ChatResponse)
 def chat(request: ChatRequest) -> ChatResponse:
     if not request.messages:
@@ -195,29 +223,45 @@ def chat(request: ChatRequest) -> ChatResponse:
 
     assistant_mode = (request.agent or os.getenv("ASSISTANT_MODE") or "").strip().lower()
     if not assistant_mode:
-        assistant_mode = "openai" if os.getenv("OPENAI_API_KEY") else "local"
+        assistant_mode = "biomni"
 
-    reply: str
-    if assistant_mode == "local":
+    steps: List[Dict[str, Any]] = []
+    plan: List[Dict[str, Any]] = []
+    references: List[Dict[str, Any]] = []
+
+    if assistant_mode == "biomni":
+        latest_prompt = request.messages[-1].content
+        default_gene = str(project_context.get("target_gene") or "TP53")
+        agent = BiomniAgent(llm="auto", project_id=request.project_id)
+        biomni_res = agent.go(latest_prompt, project_id=request.project_id, default_gene=default_gene)
+        reply = biomni_res.get("reply", "")
+        steps = biomni_res.get("steps", [])
+        plan = biomni_res.get("plan", [])
+        references.extend(biomni_res.get("references", []))
+    elif assistant_mode == "local":
         try:
             reply = _call_local_model(request.messages, project_context)
         except Exception:
-            reply = _synthesise_response(request.messages, project_context)
+            agent = BiomniAgent(llm="auto", project_id=request.project_id)
+            biomni_res = agent.go(request.messages[-1].content, project_id=request.project_id)
+            reply = biomni_res.get("reply", "")
+            steps = biomni_res.get("steps", [])
+            plan = biomni_res.get("plan", [])
     else:
         try:
             reply = _call_openai(request.messages, project_context)
         except RuntimeError:
-            try:
-                reply = _call_local_model(request.messages, project_context)
-            except Exception:
-                reply = _synthesise_response(request.messages, project_context)
+            agent = BiomniAgent(llm="auto", project_id=request.project_id)
+            biomni_res = agent.go(request.messages[-1].content, project_id=request.project_id)
+            reply = biomni_res.get("reply", "")
+            steps = biomni_res.get("steps", [])
+            plan = biomni_res.get("plan", [])
 
-    references: List[Dict[str, Any]] = []
     latest = project_context.get("latest_snapshots", {})
     for step, entry in latest.items():
         references.append({"step": step, "path": entry.get("path")})
 
-    return ChatResponse(reply=reply, references=references)
+    return ChatResponse(reply=reply, references=references, steps=steps, plan=plan)
 
 
 if __name__ == "__main__":  # pragma: no cover
