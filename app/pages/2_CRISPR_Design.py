@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))
 
+from app.components.design_enzymes import ENZYMES, enzyme_metadata, build_locked_reagent_spec
 from app.components.file_utils import build_step_filename, save_uploaded_file
 from app.components.in_app_designer import render_in_app_designer
 from app.components.layout import init_page
@@ -42,7 +43,7 @@ def main() -> None:
     render_lifecycle_header(
         current_stage=2,
         selected_project=selected_project,
-        subtitle="Stage 2: Design and verify SpCas9 guides, HDR donors with silent PAM blocking, and PCR/Sanger primer pairs.",
+        subtitle="Stage 2: Design and verify enzyme-specific guides, HDR donors and PCR/Sanger primer pairs.",
     )
 
     if not selected_project:
@@ -60,10 +61,33 @@ def main() -> None:
     st.subheader("🔒 Approve & Lock Reagent Specification for Delivery")
 
     # Form to lock approved design specification into electronic batch record
-    design_import = st.session_state.get("assured_design_import") or {}
-    guides = design_import.get("selected_guides") or meta.get("compliance", {}).get("guides") or []
-    donors = design_import.get("donors") or meta.get("compliance", {}).get("donors") or []
-    primers = design_import.get("primer_pairs") or meta.get("compliance", {}).get("primers") or []
+    design_import = (st.session_state.get("assured_design_import") or {}) if st.session_state.get("assured_design_project") == selected_project else {}
+    seed = design_import or meta.get("compliance", {})
+    guides = seed.get("selected_guides", seed.get("guides")) or []
+    donors = seed.get("donors") or []
+    primers = seed.get("primer_pairs", seed.get("primers")) or []
+    try:
+        seed_enzyme = enzyme_metadata(seed.get("enzyme_id") or seed.get("cas_variant") or "spcas9")
+    except ValueError as error:
+        st.error(f"{error} Re-import a design with the correct enzyme before approval.")
+        return
+    token = hashlib.sha256(json.dumps(seed, sort_keys=True, default=str).encode("utf-8")).hexdigest()[:12]
+    options = [value[0] for value in ENZYMES.values()] + ["SpCas9 High-Fidelity (HiFi)", "SpCas9 Wild-Type"]
+    default_variant = seed.get("cas_variant") if seed.get("cas_variant") in options else seed_enzyme["cas_variant"]
+    for warning in design_import.get("import_warnings", []):
+        st.warning(warning)
+    col_cas, col_pam, col_vendor = st.columns(3)
+    with col_cas:
+        cas_variant = st.selectbox("Nuclease", options, index=options.index(default_variant),
+                                   disabled=bool(design_import) and not design_import.get("enzyme_metadata_assumed"), key=f"lock_enzyme_{selected_project}_{token}")
+    selected_enzyme = enzyme_metadata(cas_variant)
+    pam_rule = selected_enzyme["pam_rule"]
+    with col_pam:
+        st.text_input("PAM Requirement", value=pam_rule, disabled=True,
+                      key=f"lock_pam_{selected_project}_{token}_{selected_enzyme['enzyme_id']}")
+    with col_vendor:
+        reagent_vendor = st.selectbox("Synthesis Vendor", ["IDT (Alt-R RNP & Megamer)", "Synthego (CleanCap)", "ThermoFisher"], index=0)
+    needs_confirmation = bool(design_import.get("enzyme_metadata_assumed")) or bool(not design_import and guides and not seed.get("enzyme_id") and not seed.get("cas_variant"))
 
     with st.form("design_lock_form"):
         col_summary1, col_summary2, col_summary3 = st.columns(3)
@@ -73,19 +97,13 @@ def main() -> None:
             st.metric("HDR Donor Templates", len(donors))
         with col_summary3:
             st.metric("PCR/Sanger Primer Pairs", len(primers))
-
-        col_cas, col_pam, col_vendor = st.columns(3)
-        with col_cas:
-            cas_variant = st.selectbox("Nuclease", ["SpCas9 High-Fidelity (HiFi)", "SpCas9 Wild-Type", "AsCas12a"], index=0)
-        with col_pam:
-            pam_rule = st.text_input("PAM Requirement", value="NGG")
-        with col_vendor:
-            reagent_vendor = st.selectbox("Synthesis Vendor", ["IDT (Alt-R RNP & Megamer)", "Synthego (CleanCap)", "ThermoFisher"], index=0)
+        legacy_confirmed = st.checkbox("I verified the enzyme and PAM for these previously unlabelled guide records.",
+                                        value=False, key=f"lock_confirm_{selected_project}_{token}") if needs_confirmation else False
 
         design_signoff = st.text_input("Design Qualified By (Scientist / Lead)", value=meta.get("owner") or "Narasimha Telugu")
         design_notes = st.text_area(
             "Specification Notes / Lot Information",
-            value=meta.get("design_decision") or "In-silico verification complete. Silent blocking mutations prevent re-cleavage.",
+            value=meta.get("design_decision") or "Review the design report, enzyme identity, reagent compatibility and release requirements.",
             height=60,
         )
 
@@ -97,18 +115,17 @@ def main() -> None:
 
     if lock_btn:
         timestamp = int(time.time())
-        design_payload = {
-            "project_id": selected_project,
-            "cas_variant": cas_variant,
-            "pam_rule": pam_rule,
-            "vendor": reagent_vendor,
-            "guides": guides,
-            "donors": donors,
-            "primers": primers,
-            "signoff": design_signoff,
-            "notes": design_notes,
-            "timestamp_unix": timestamp,
-        }
+        try:
+            design_payload = build_locked_reagent_spec(
+                project_id=selected_project, cas_variant=cas_variant, pam_rule=pam_rule,
+                guides=guides, donors=donors, primers=primers, vendor=reagent_vendor,
+                signoff=design_signoff, notes=design_notes, timestamp=timestamp,
+                imported=design_import or None, legacy_confirmed=legacy_confirmed,
+                requires_confirmation=needs_confirmation,
+            )
+        except ValueError as error:
+            st.error(str(error))
+            return
 
         spec_json = json.dumps(design_payload, indent=2)
         spec_hash = hashlib.sha256(spec_json.encode("utf-8")).hexdigest()
@@ -132,7 +149,8 @@ def main() -> None:
                 "design_hash": spec_hash,
                 "active_stage": 3,
                 "compliance": {
-                    "guides": guides,
+                    **{key: design_payload.get(key) for key in ("enzyme_id", "cas_variant", "pam_rule", "pam_side", "enzyme_config_version", "enzyme_metadata_assumed", "enzyme_metadata_confirmed")},
+                    "guides": design_payload["guides"],
                     "donors": donors,
                     "primers": primers,
                 },

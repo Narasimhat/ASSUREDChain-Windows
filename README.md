@@ -164,3 +164,12 @@ If you later want durable disks, use the included `Dockerfile` + `railway.toml` 
 
 1. Track the master bank/QC registry and anchor finalized entries.
 2. Registry lives in data/registry/master_bank_registry.csv with anchored snapshots in data/registry/.
+
+
+### Enzyme identity in design records
+
+Design imports and Stage 2 approval retain the applied enzyme, its PAM motif/side and the supplied configuration version. All seven current Bench enzyme IDs are recognized, as are the legacy generic Cas12a and SpCas9 reagent labels. Actual guide PAM sequences are stored separately from the enzyme motif. Mixed, conflicting or unsupported declarations are rejected; observed concrete PAMs must be compatible before approval.
+
+The approval enzyme is fixed to an explicitly labelled import. Older files without enzyme metadata use a visibly marked SpCas9 compatibility default; select the correct enzyme and confirm it before locking. Newly generated Chain CLI handoffs include explicit configuration metadata even for SpCas9. Current imports and in-app results are scoped to their Chain project. Newly locked snapshots and project compliance metadata retain the enzyme identity; existing snapshots, hashes and anchored records are not rewritten.
+
+The in-app designer still requires a current ASSURED Bench checkout (or ASSURED_BENCH_ROOT) and Node.js. After updating this repository on the Windows host, restart Streamlit. The change does not provision Node/Bench into a separate cloud deployment.

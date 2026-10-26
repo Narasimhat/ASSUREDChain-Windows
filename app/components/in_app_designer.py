@@ -235,8 +235,8 @@ def render_in_app_designer(selected_project: Optional[str]) -> None:
                 "SpCas9 (NGG)": "spcas9",
                 "SpCas9-NG (NG)": "spcas9ng",
                 "SaCas9 (NNGRRT)": "sacas9",
-                "SpRY (NRN / NYN)": "spry",
-                "enAsCas12a (TTTV)": "ascas12a",
+                "SpRY (NNN)": "spry",
+                "AsCas12a (TTTV)": "ascas12a",
                 "LbCas12a (TTTV)": "lbcas12a",
                 "Mad7 (YTTN)": "mad7",
             }
@@ -321,13 +321,14 @@ def render_in_app_designer(selected_project: Optional[str]) -> None:
                         options={"deliveryMethod": delivery_method, "enzyme": selected_enzyme},
                     )
                     st.session_state["in_app_design_result"] = res
+                    st.session_state["in_app_design_project"] = selected_project
                     st.success(f"Design completed successfully for {target_gene}!")
                 except Exception as exc:
                     st.error(f"Design failed: {exc}")
                     st.info("💡 Tip: If Ensembl is unreachable, you can select '📁 Choose Bundled Benchmark Reference' or '📤 Upload Custom GenBank File' under Reference Options above.")
 
         # Render results if available
-        result_data = st.session_state.get("in_app_design_result")
+        result_data = st.session_state.get("in_app_design_result") if st.session_state.get("in_app_design_project") == selected_project else None
         if result_data:
             dr = result_data.get("designResult") or {}
             guides = dr.get("gs") or dr.get("guides") or []
@@ -337,7 +338,7 @@ def render_in_app_designer(selected_project: Optional[str]) -> None:
             html_report = result_data.get("reportHtml") or ""
 
             st.markdown("---")
-            enz_info = dr.get("enzyme") or {}
+            enz_info = dr.get("enzyme") or (result_data.get("qcDesignSpec") or {}).get("design", {}).get("enzyme") or {}
             enz_badge = f" · {enz_info.get('name', 'SpCas9')} ({enz_info.get('pam_pattern', 'NGG')})" if enz_info else ""
             st.markdown(f"#### 🎯 Design Candidates for **{result_data.get('gene')}** ({result_data.get('editType').upper()}{enz_badge})")
 
@@ -400,7 +401,7 @@ def render_in_app_designer(selected_project: Optional[str]) -> None:
                     try:
                         spec = result_data.get("qcDesignSpec") or {}
                         parsed = parse_assured_design_export(spec)
-                        apply_design_import_to_session(parsed)
+                        apply_design_import_to_session(parsed, project_id=selected_project)
                         st.success("Autofilled Design Log form below!")
                         st.rerun()
                     except Exception as err:
