@@ -349,13 +349,14 @@ def tool_rank_ko_guides_lindel(gene: str, top_n: int = 10) -> Dict[str, Any]:
         row["is_common_exon"] = other_gap == 0.0
         rows.append(row)
 
-    # Prioritize common-exon (100% isoform coverage) + NMD-safe ('robust') guides first, then LoF allele %
+    tier_order = {"robust": 4, "marginal": 3, "truncation": 2, "escape": 1}
+    # Prioritize NMD-safe ('robust') guides first, then common-exon coverage, then Lindel LoF allele %
     rows.sort(
         key=lambda r: (
-            1 if (r.get("is_common_exon") and r.get("panel_tier") == "robust") else 0,
+            tier_order.get(str(r.get("panel_tier") or "").lower(), 0),
             1 if r.get("is_common_exon") else 0,
-            float(r.get("isoform_coverage_pct") or 0.0),
             float(r.get("predicted_LoF_allele_pct") or 0.0),
+            float(r.get("isoform_coverage_pct") or 0.0),
             float(r.get("gc_percent") or 0.0),
         ),
         reverse=True,
