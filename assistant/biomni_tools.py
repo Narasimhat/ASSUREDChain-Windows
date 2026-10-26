@@ -336,6 +336,7 @@ def tool_rank_ko_guides_lindel(gene: str, top_n: int = 10) -> Dict[str, Any]:
             "predicted_LoF_allele_pct",
             "predicted_clear_NMD_allele_pct",
             "predicted_in_frame_pct",
+            "other_isoform_not_disrupted_pct",
             "predicted_biallelic_LoF_clone_pct",
         ):
             if num_key in row:
@@ -343,12 +344,29 @@ def tool_rank_ko_guides_lindel(gene: str, top_n: int = 10) -> Dict[str, Any]:
                     row[num_key] = float(row[num_key]) if "." in str(row[num_key]) else int(row[num_key])
                 except ValueError:
                     pass
+        other_gap = float(row.get("other_isoform_not_disrupted_pct") or 0.0)
+        row["isoform_coverage_pct"] = round(max(0.0, 100.0 - other_gap), 1)
+        row["is_common_exon"] = other_gap == 0.0
         rows.append(row)
+
+    # Prioritize common-exon (100% isoform coverage) + NMD-safe ('robust') guides first, then LoF allele %
+    rows.sort(
+        key=lambda r: (
+            1 if (r.get("is_common_exon") and r.get("panel_tier") == "robust") else 0,
+            1 if r.get("is_common_exon") else 0,
+            float(r.get("isoform_coverage_pct") or 0.0),
+            float(r.get("predicted_LoF_allele_pct") or 0.0),
+            float(r.get("gc_percent") or 0.0),
+        ),
+        reverse=True,
+    )
+    common_exons = sorted({int(r["coding_exon"]) for r in rows if r.get("is_common_exon") and "coding_exon" in r})
 
     return {
         "ok": True,
         "gene": sym,
         "total_candidates_ranked": len(rows),
+        "common_coding_exons": common_exons,
         "csv_path": str(out_csv),
         "top_guides": rows[: int(top_n)],
     }

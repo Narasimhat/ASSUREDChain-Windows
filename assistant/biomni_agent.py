@@ -490,14 +490,17 @@ class AssuredBiomniAgent:
         # 3. Full-Locus Lindel Ranking
         lin_out = by_tool.get("rank_ko_guides_lindel") or {}
         if lin_out.get("ok") and lin_out.get("top_guides"):
+            common_ex = lin_out.get("common_coding_exons") or []
+            common_str = f" · Common Exon(s) Across All Isoforms: `{', '.join(f'Exon {e}' for e in common_ex)}`" if common_ex else ""
             lines.append(
-                f"### 3. Locus-Wide Lindel KO Guide Ranking ({lin_out.get('total_candidates_ranked')} NGG Candidates Evaluated)"
+                f"### 3. Locus-Wide Lindel KO Guide Ranking ({lin_out.get('total_candidates_ranked')} NGG Candidates{common_str})"
             )
-            lines.append("| Rank | Spacer | Exon | Strand | Panel Tier | Lindel Frameshift % | Predicted LoF Allele % | Biallelic KO Clone % |")
-            lines.append("|---|---|---|---|---|---|---|---|")
+            lines.append("| Rank | Spacer | Exon | Isoform Coverage | Strand | Panel Tier | Lindel Frameshift % | Predicted LoF Allele % | Biallelic KO Clone % |")
+            lines.append("|---|---|---|---|---|---|---|---|---|")
             for idx, r in enumerate(lin_out["top_guides"][:5]):
+                iso_badge = f"{r.get('isoform_coverage_pct', 100)}% {'✅ Common' if r.get('is_common_exon') else ''}".strip()
                 lines.append(
-                    f"| {idx + 1} | `{r.get('spacer')}` | Exon {r.get('coding_exon')} | `{r.get('strand')}` | "
+                    f"| {idx + 1} | `{r.get('spacer')}` | Exon {r.get('coding_exon')} | {iso_badge} | `{r.get('strand')}` | "
                     f"`{r.get('panel_tier')}` | {r.get('lindel_frameshift_pct')}% | "
                     f"**{r.get('predicted_LoF_allele_pct')}%** | **{r.get('predicted_biallelic_LoF_clone_pct')}%** |"
                 )
