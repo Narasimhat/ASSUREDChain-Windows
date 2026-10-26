@@ -70,7 +70,31 @@ def tool_fetch_gene_reference(
             "file_path": str(gb_path),
         }
 
-    # Query Ensembl REST API for gene metadata
+    # Query NCBI Datasets v2 first (fast, immune to Ensembl outages), then Ensembl REST API
+    taxon_map = {"human": "9606", "mouse": "10090", "rat": "10116", "zebrafish": "7955"}
+    taxon = taxon_map.get(species.lower(), "9606")
+    try:
+        ncbi_resp = requests.get(
+            f"https://api.ncbi.nlm.nih.gov/datasets/v2/gene/symbol/{gene_clean}/taxon/{taxon}/product_report",
+            headers={"Accept": "application/json", "User-Agent": "ASSURED-Biomni/1.0"},
+            timeout=8,
+        )
+        if ncbi_resp.ok:
+            reports = (ncbi_resp.json() or {}).get("reports") or []
+            if reports:
+                prod = reports[0].get("product") or {}
+                txs = prod.get("transcripts") or []
+                mane = next((t for t in txs if t.get("select_category") == "MANE_SELECT"), txs[0] if txs else {})
+                return {
+                    "ok": True,
+                    "gene": prod.get("symbol") or gene_clean,
+                    "ncbi_gene_id": prod.get("gene_id"),
+                    "canonical_transcript": mane.get("accession_version"),
+                    "source": "NCBI Datasets v2 (RefSeq MANE Select)",
+                }
+    except Exception:
+        pass
+
     species_map = {
         "human": "homo_sapiens",
         "mouse": "mus_musculus",
@@ -82,7 +106,7 @@ def tool_fetch_gene_reference(
         resp = requests.get(
             f"https://rest.ensembl.org/lookup/symbol/{ens_species}/{gene_clean}?expand=1",
             headers={"Content-Type": "application/json", "User-Agent": "ASSURED-Biomni/1.0"},
-            timeout=15,
+            timeout=6,
         )
         if resp.ok:
             data = resp.json()

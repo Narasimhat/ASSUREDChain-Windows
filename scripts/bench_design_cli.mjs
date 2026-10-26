@@ -119,7 +119,7 @@ async function main() {
       } else if (gene) {
         try {
           const { fetchGeneReference } = await import(geneFetchUrl);
-          const ref = await fetchGeneReference({ query: gene, source: input.source || "ensembl", species: input.species || "human" });
+          const ref = await fetchGeneReference({ query: gene, source: input.source || "ncbi", species: input.species || "human" });
           genbankText = ref.genbank || "";
         } catch (primaryErr) {
           try {
