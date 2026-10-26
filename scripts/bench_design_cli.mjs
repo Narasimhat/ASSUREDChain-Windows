@@ -29,6 +29,7 @@ const designSchemeUrl = pathToFileURL(path.join(BENCH_ROOT, "src/engine/design/d
 const designExportUrl = pathToFileURL(path.join(BENCH_ROOT, "src/services/designExport.js")).href;
 const ensemblUrl = pathToFileURL(path.join(BENCH_ROOT, "src/services/ensembl.js")).href;
 const geneFetchUrl = pathToFileURL(path.join(BENCH_ROOT, "src/engine/design/geneFetch.js")).href;
+const enzymeConfigUrl = pathToFileURL(path.join(BENCH_ROOT, "src/engine/design/enzymeConfig.js")).href;
 const loadLindelUrl = pathToFileURL(path.join(BENCH_ROOT, "src/engine/design/lindel/loadLindel.js")).href;
 
 function findBundledReference(gene) {
@@ -148,6 +149,9 @@ async function main() {
     designResult.procurement = summarizeProcurementReadiness(designResult);
 
     const qcDesignSpec = buildQcDesignSpec(designResult);
+    const { getEnzyme } = await import(enzymeConfigUrl);
+    const enzymeConfig = getEnzyme(options.enzyme || "spcas9");
+    if (qcDesignSpec.design) qcDesignSpec.design.enzyme = enzymeConfig;
     const svg = buildDesignSchemeSvg(designResult);
     const project = {
       gene: gene || designResult.gene,

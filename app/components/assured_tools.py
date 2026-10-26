@@ -8,6 +8,8 @@ import json
 import os
 from typing import Any, Optional
 
+from app.components.design_enzymes import extract_design_enzyme
+
 DEFAULT_BENCH_URL = "https://assured-bench.vercel.app/"
 DEFAULT_DESIGN_URL = "https://assured-bench.vercel.app/"
 DEFAULT_QC_URL = "https://assured-bench.vercel.app/"
@@ -141,6 +143,7 @@ def _pair_primers(primers: list[dict], amplicons: list[dict]) -> list[dict]:
 def parse_assured_design_export(payload: Any) -> dict:
     """Map an Assured Design or ASSURED Bench export into Design Log fields."""
     data = _as_dict(payload)
+    enzyme = extract_design_enzyme(data)
 
     # Unwrap .assured project bundle or wrapped project
     top_gene = data.get("gene") or ""
@@ -202,7 +205,8 @@ def parse_assured_design_export(payload: Any) -> dict:
             {
                 "id": g.get("name") or g.get("id") or f"g{idx + 1}",
                 "sequence": spacer,
-                "pam": str(g.get("pam") or "NGG").upper(),
+                "pam": str(g.get("pam") or g.get("pm") or "").upper(),
+                "enzyme_id": None if enzyme["enzyme_metadata_assumed"] else enzyme["enzyme_id"],
                 "strand": g.get("strand") or g.get("str") or None,
                 "genomic_locus": None,
                 "distance_to_edit_bp": g.get("offsetFromEdit") if g.get("offsetFromEdit") is not None else g.get("d"),
@@ -244,8 +248,7 @@ def parse_assured_design_export(payload: Any) -> dict:
 
     return {
         "design_platform": platform,
-        "cas_variant": "SpCas9",
-        "pam_rule": "NGG",
+        **enzyme,
         "design_source_url": bench_url() if platform == "ASSURED Bench" else design_url(),
         "mutation": {
             "gene": gene,
@@ -267,7 +270,7 @@ def parse_assured_design_export(payload: Any) -> dict:
     }
 
 
-def apply_design_import_to_session(parsed: dict) -> None:
+def apply_design_import_to_session(parsed: dict, project_id: Optional[str] = None) -> None:
     """Write parsed Assured Design fields into Streamlit session_state for the Design form."""
     import streamlit as st
 
@@ -277,6 +280,7 @@ def apply_design_import_to_session(parsed: dict) -> None:
     primers = parsed.get("primer_pairs") or []
 
     st.session_state["assured_design_import"] = parsed
+    st.session_state["assured_design_project"] = project_id
     st.session_state["num_guides_autofill"] = max(len(guides), 1)
     st.session_state["num_donors_autofill"] = max(len(donors), 0)
     st.session_state["num_primers_autofill"] = max(len(primers), 0)
@@ -284,7 +288,7 @@ def apply_design_import_to_session(parsed: dict) -> None:
     for idx, g in enumerate(guides[:6]):
         st.session_state[f"guide_id_{idx}"] = g.get("id") or f"g{idx + 1}"
         st.session_state[f"guide_seq_{idx}"] = g.get("sequence") or ""
-        st.session_state[f"guide_pam_{idx}"] = g.get("pam") or "NGG"
+        st.session_state[f"guide_pam_{idx}"] = g.get("pam") or ""
         if g.get("strand"):
             st.session_state[f"guide_strand_{idx}"] = g["strand"]
         if g.get("distance_to_edit_bp") is not None:
@@ -306,7 +310,7 @@ def apply_design_import_to_session(parsed: dict) -> None:
     st.session_state["assured_design_transcript"] = mutation.get("transcript") or ""
     st.session_state["assured_design_edit_intent"] = mutation.get("edit_intent") or "SNP-KI"
     st.session_state["assured_design_region"] = mutation.get("region_context") or ""
-    st.session_state["assured_design_platform"] = "Assured Design"
+    st.session_state["assured_design_platform"] = parsed.get("design_platform") or "Assured Design"
     st.session_state["assured_design_cas"] = parsed.get("cas_variant") or "SpCas9"
     st.session_state["assured_design_pam"] = parsed.get("pam_rule") or "NGG"
     st.session_state["assured_design_source_url"] = parsed.get("design_source_url") or design_url()
