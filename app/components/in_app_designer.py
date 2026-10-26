@@ -35,6 +35,8 @@ def get_bundled_references() -> dict[str, Path]:
     """Return dictionary of gene symbol -> Path for bundled GenBank reference files."""
     ref_dirs = [
         ROOT / "data" / "references",
+        ROOT.parent / "assured-bench" / "public" / "references",
+        ROOT.parent / "assured-bench" / "test" / "fixtures",
         Path("c:/Users/ntelugu/Desktop/assured-bench/public/references"),
         Path("c:/Users/ntelugu/Desktop/assured-bench/test/fixtures"),
     ]
@@ -214,7 +216,7 @@ def render_in_app_designer(selected_project: Optional[str]) -> None:
             "directly inside ASSUREDChain. Automatically preview locus schematics and save FAIR design reports."
         )
 
-        col_g, col_t, col_m = st.columns([1.5, 1.5, 2])
+        col_g, col_t, col_e, col_m = st.columns([1.3, 1.4, 1.3, 1.8])
         with col_g:
             target_gene = st.text_input("Target Gene Symbol", value=default_gene, key="in_app_target_gene")
         with col_t:
@@ -223,20 +225,39 @@ def render_in_app_designer(selected_project: Optional[str]) -> None:
                 "Gene Knockout (KO)": "ko",
                 "C-Terminal Tag": "ct",
                 "N-Terminal Tag": "nt",
+                "Internal Tag (In-Frame)": "it",
             }
             default_edit_idx = 1 if ("ko" in meta_edit or "knockout" in meta_edit) else (2 if ("tag" in meta_edit or "ct" in meta_edit) else 0)
             edit_choice = st.selectbox("Edit Type", list(edit_options.keys()), index=default_edit_idx, key="in_app_edit_choice")
             selected_edit_type = edit_options[edit_choice]
+        with col_e:
+            enzyme_options = {
+                "SpCas9 (NGG)": "spcas9",
+                "SpCas9-NG (NG)": "spcas9ng",
+                "SaCas9 (NNGRRT)": "sacas9",
+                "SpRY (NRN / NYN)": "spry",
+                "enAsCas12a (TTTV)": "ascas12a",
+                "LbCas12a (TTTV)": "lbcas12a",
+                "Mad7 (YTTN)": "mad7",
+            }
+            enzyme_choice = st.selectbox("Enzyme / Nuclease", list(enzyme_options.keys()), index=0, key="in_app_enzyme_choice")
+            selected_enzyme = enzyme_options[enzyme_choice]
         with col_m:
             if selected_edit_type == "pm":
                 mutation_val = st.text_input("Mutation / Codon Edit (e.g. R176C)", value=default_mutation, key="in_app_mutation")
                 tag_val = ""
+            elif selected_edit_type == "it":
+                c_it1, c_it2 = st.columns(2)
+                with c_it1:
+                    tag_val = st.selectbox("Internal Tag", ["SPOT", "alphaBtx"], index=0, key="in_app_it_tag")
+                with c_it2:
+                    mutation_val = st.text_input("After AA (e.g. R154)", value="R154", key="in_app_it_pos")
             elif selected_edit_type in ("ct", "nt"):
-                tag_presets = ["FLAG", "2xHA", "EGFP", "mCherry", "mScarlet", "mStayGold2", "dTAG-2xHA"]
+                tag_presets = ["FLAG", "2xHA-only", "SD40-V5", "dTAG-V5", "dTAG-2xHA", "T2A-EGFP", "P2A-mCherry", "P2A-mScarlet"]
                 tag_val = st.selectbox("Tag / Reporter", tag_presets, index=0, key="in_app_tag")
                 mutation_val = ""
             else:
-                st.caption("Knockout: automatically selects high-efficiency dual guides spanning target exon.")
+                st.caption("Knockout: ranks pairs by NMD/truncation protein loss & Lindel LoF allele share.")
                 mutation_val = ""
                 tag_val = ""
 
@@ -297,7 +318,7 @@ def render_in_app_designer(selected_project: Optional[str]) -> None:
                         tag=tag_val,
                         arm_length=arm_len,
                         genbank_text=custom_gb,
-                        options={"deliveryMethod": delivery_method},
+                        options={"deliveryMethod": delivery_method, "enzyme": selected_enzyme},
                     )
                     st.session_state["in_app_design_result"] = res
                     st.success(f"Design completed successfully for {target_gene}!")
@@ -316,7 +337,17 @@ def render_in_app_designer(selected_project: Optional[str]) -> None:
             html_report = result_data.get("reportHtml") or ""
 
             st.markdown("---")
-            st.markdown(f"#### 🎯 Design Candidates for **{result_data.get('gene')}** ({result_data.get('editType').upper()})")
+            enz_info = dr.get("enzyme") or {}
+            enz_badge = f" · {enz_info.get('name', 'SpCas9')} ({enz_info.get('pam_pattern', 'NGG')})" if enz_info else ""
+            st.markdown(f"#### 🎯 Design Candidates for **{result_data.get('gene')}** ({result_data.get('editType').upper()}{enz_badge})")
+
+            ko_assess = dr.get("koAssessment")
+            if ko_assess:
+                tier = (ko_assess.get("tier") or "robust").upper()
+                outcomes = ko_assess.get("outcomes") or {}
+                min_lof = outcomes.get("minLofPct")
+                lof_text = f" | **Min Predicted LoF Alleles (Lindel):** `{min_lof}%` (~`{round((min_lof / 100.0) ** 2 * 100)}%` biallelic KO clones)" if min_lof is not None else ""
+                st.info(f"🧬 **Knockout Protein-Loss Tier:** `{tier}`{lof_text}" + (f"\n\n{ko_assess.get('isoformNote')}" if ko_assess.get("isoformNote") else ""))
 
             tab_guides, tab_donor, tab_primers, tab_scheme = st.tabs(
                 [f"Guides ({len(guides)})", "Donor Template", f"Primers ({len(primers)})", "Locus Schematic"]
@@ -325,10 +356,12 @@ def render_in_app_designer(selected_project: Optional[str]) -> None:
             with tab_guides:
                 for idx, g in enumerate(guides):
                     spacer = g.get("sp") or g.get("spacer") or g.get("sequence") or ""
-                    pam = g.get("pam") or "NGG"
+                    pam = g.get("pm") or g.get("pam") or enz_info.get("pam_pattern") or "NGG"
                     strand = g.get("str") or g.get("strand") or "+"
                     offset = g.get("d") if g.get("d") is not None else g.get("offsetFromEdit", "N/A")
-                    st.markdown(f"**Guide {idx + 1}**: `{spacer}` &nbsp; (PAM: **{pam}** | Strand: `{strand}` | Offset: `{offset} bp`)")
+                    ko_g = (g.get("ko") or {}).get("outcomes") or {}
+                    ko_extra = f" | Lindel LoF: `{ko_g['lofPct']}%` (Biallelic: `{ko_g.get('biallelicPct')}%`)" if "lofPct" in ko_g else ""
+                    st.markdown(f"**Guide {idx + 1}**: `{spacer}` &nbsp; (PAM: **{pam}** | Strand: `{strand}` | Offset: `{offset} bp`{ko_extra})")
 
             with tab_donor:
                 if donors:

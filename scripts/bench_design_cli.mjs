@@ -1,16 +1,35 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
-const BENCH_ROOT = path.resolve("c:/Users/ntelugu/Desktop/assured-bench");
-const CHAIN_ROOT = path.resolve("c:/Users/ntelugu/Desktop/ASSUREDChain-Windows");
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const CHAIN_ROOT = path.resolve(__dirname, "..");
+
+function resolveBenchRoot() {
+  const candidates = [
+    process.env.ASSURED_BENCH_ROOT,
+    path.resolve(CHAIN_ROOT, "../assured-bench"),
+    path.resolve(CHAIN_ROOT, "../Assured_Studio"),
+    "c:/Users/ntelugu/Desktop/assured-bench",
+  ].filter(Boolean);
+  for (const candidate of candidates) {
+    if (fs.existsSync(path.join(candidate, "src/engine/design/designEngine.js"))) {
+      return path.resolve(candidate);
+    }
+  }
+  return path.resolve(CHAIN_ROOT, "../assured-bench");
+}
+
+const BENCH_ROOT = resolveBenchRoot();
 
 const designEngineUrl = pathToFileURL(path.join(BENCH_ROOT, "src/engine/design/designEngine.js")).href;
 const qcExportUrl = pathToFileURL(path.join(BENCH_ROOT, "src/engine/design/qcExport.js")).href;
 const designSchemeUrl = pathToFileURL(path.join(BENCH_ROOT, "src/engine/design/designScheme.js")).href;
 const designExportUrl = pathToFileURL(path.join(BENCH_ROOT, "src/services/designExport.js")).href;
 const ensemblUrl = pathToFileURL(path.join(BENCH_ROOT, "src/services/ensembl.js")).href;
+const geneFetchUrl = pathToFileURL(path.join(BENCH_ROOT, "src/engine/design/geneFetch.js")).href;
+const loadLindelUrl = pathToFileURL(path.join(BENCH_ROOT, "src/engine/design/lindel/loadLindel.js")).href;
 
 function findBundledReference(gene) {
   if (!gene) return null;
@@ -78,10 +97,19 @@ async function main() {
 
     let genbankText = (input.genbankText || "").trim();
 
-    const { runDesign } = await import(designEngineUrl);
+    const { runDesign, summarizeProcurementReadiness } = await import(designEngineUrl);
     const { buildQcDesignSpec } = await import(qcExportUrl);
     const { buildDesignSchemeSvg } = await import(designSchemeUrl);
     const { generateReportHtml } = await import(designExportUrl);
+
+    if (editType === "ko" && (!options.enzyme || options.enzyme === "spcas9")) {
+      try {
+        const { loadLindel } = await import(loadLindelUrl);
+        options.koLindel = await loadLindel();
+      } catch (lindelErr) {
+        options.koOutcomesUnavailable = `the Lindel weights could not be loaded (${lindelErr?.message || lindelErr}).`;
+      }
+    }
 
     if (!genbankText) {
       const bundledPath = findBundledReference(gene);
@@ -89,15 +117,21 @@ async function main() {
         genbankText = fs.readFileSync(bundledPath, "utf-8");
       } else if (gene) {
         try {
-          const { fetchGeneGenbank } = await import(ensemblUrl);
-          const ensemblRes = await fetchGeneGenbank(gene);
-          genbankText = ensemblRes.genbankText || "";
-        } catch (fetchErr) {
-          const fallbackPath = findBundledReference(gene);
-          if (fallbackPath && fs.existsSync(fallbackPath)) {
-            genbankText = fs.readFileSync(fallbackPath, "utf-8");
-          } else {
-            throw new Error(`Could not fetch reference for gene '${gene}': ${fetchErr.message}. You can upload or select a GenBank (.gb) reference file in Stage 2.`);
+          const { fetchGeneReference } = await import(geneFetchUrl);
+          const ref = await fetchGeneReference({ query: gene, source: input.source || "ensembl", species: input.species || "human" });
+          genbankText = ref.genbank || "";
+        } catch (primaryErr) {
+          try {
+            const { fetchGeneGenbank } = await import(ensemblUrl);
+            const ensemblRes = await fetchGeneGenbank(gene);
+            genbankText = ensemblRes.genbankText || "";
+          } catch (fetchErr) {
+            const fallbackPath = findBundledReference(gene);
+            if (fallbackPath && fs.existsSync(fallbackPath)) {
+              genbankText = fs.readFileSync(fallbackPath, "utf-8");
+            } else {
+              throw new Error(`Could not fetch reference for gene '${gene}': ${primaryErr.message || fetchErr.message}. You can upload or select a GenBank (.gb) reference file in Stage 2.`);
+            }
           }
         }
       }
@@ -111,6 +145,7 @@ async function main() {
     if (!designResult || designResult.err) {
       throw new Error(designResult?.err || "Design engine failed to generate candidates.");
     }
+    designResult.procurement = summarizeProcurementReadiness(designResult);
 
     const qcDesignSpec = buildQcDesignSpec(designResult);
     const svg = buildDesignSchemeSvg(designResult);

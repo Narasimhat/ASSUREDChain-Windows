@@ -1,9 +1,27 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
-const BENCH_ROOT = path.resolve("c:/Users/ntelugu/Desktop/assured-bench");
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const CHAIN_ROOT = path.resolve(__dirname, "..");
+
+function resolveBenchRoot() {
+  const candidates = [
+    process.env.ASSURED_BENCH_ROOT,
+    path.resolve(CHAIN_ROOT, "../assured-bench"),
+    path.resolve(CHAIN_ROOT, "../Assured_Studio"),
+    "c:/Users/ntelugu/Desktop/assured-bench",
+  ].filter(Boolean);
+  for (const candidate of candidates) {
+    if (fs.existsSync(path.join(candidate, "src/engine/qc/abif.js"))) {
+      return path.resolve(candidate);
+    }
+  }
+  return path.resolve(CHAIN_ROOT, "../assured-bench");
+}
+
+const BENCH_ROOT = resolveBenchRoot();
 
 const abifUrl = pathToFileURL(path.join(BENCH_ROOT, "src/engine/qc/abif.js")).href;
 const batchUrl = pathToFileURL(path.join(BENCH_ROOT, "src/engine/qc/batch.js")).href;

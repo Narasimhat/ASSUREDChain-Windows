@@ -26,7 +26,11 @@ from app.components.project_state import (
 ROOT = Path(__file__).resolve().parents[2]
 CLI_SCRIPT = ROOT / "scripts" / "bench_trace_cli.mjs"
 DEMO_TRACES_DIR = ROOT / "data" / "demo_traces"
-BENCH_DEMO_DIR = Path("c:/Users/ntelugu/Desktop/assured-bench/public/demo_traces")
+BENCH_DEMO_DIR = (
+    ROOT.parent / "assured-bench" / "public" / "demo_traces"
+    if (ROOT.parent / "assured-bench" / "public" / "demo_traces").exists()
+    else Path("c:/Users/ntelugu/Desktop/assured-bench/public/demo_traces")
+)
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -539,7 +543,7 @@ def render_assured_qc_design_section(
 
         col_m1, col_m2 = st.columns(2)
         with col_m1:
-            nuc_list = ["SpCas9", "enAsCas12a", "Cas12a", "SaCas9"]
+            nuc_list = ["SpCas9", "SpCas9-NG", "SaCas9", "SpRY", "enAsCas12a", "LbCas12a", "Mad7", "Cas12a"]
             cur_nuc = st.session_state.get(f"{key_prefix}_manual_nuc", "SpCas9")
             nuc_idx = nuc_list.index(cur_nuc) if cur_nuc in nuc_list else 0
             nuclease_val = st.selectbox("Enzyme / Nuclease", nuc_list, index=nuc_idx, key=f"{key_prefix}_nuc_input")

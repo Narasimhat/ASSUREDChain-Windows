@@ -75,6 +75,31 @@ class InAppDesignerTests(unittest.TestCase):
         self.assertTrue(bool(result.get("svg")), "Must generate locus SVG for APOE")
         self.assertTrue(bool(result.get("reportHtml")), "Must generate report HTML for APOE")
 
+    def test_in_silico_design_dipk2a_ko_lindel_and_enzymes(self) -> None:
+        """Verify KO outcome ranking (Lindel in JS) on DIPK2A and multi-enzyme support."""
+        result = run_in_silico_design(
+            gene="DIPK2A",
+            edit_type="ko",
+            options={"enzyme": "spcas9"},
+        )
+        self.assertTrue(result.get("success"), "DIPK2A KO design must succeed")
+        dr = result.get("designResult") or {}
+        ko_assess = dr.get("koAssessment") or {}
+        self.assertEqual(ko_assess.get("tier"), "robust")
+        outcomes = ko_assess.get("outcomes") or {}
+        self.assertGreaterEqual(outcomes.get("minLofPct", 0), 85)
+        for g in dr.get("gs") or []:
+            self.assertGreaterEqual(((g.get("ko") or {}).get("outcomes") or {}).get("lofPct", 0), 85)
+
+        # Also test non-SpCas9 enzyme (Mad7) on TP53 KO
+        mad7_res = run_in_silico_design(
+            gene="TP53",
+            edit_type="ko",
+            options={"enzyme": "mad7"},
+        )
+        self.assertTrue(mad7_res.get("success"), "TP53 Mad7 KO design must succeed")
+        self.assertEqual(((mad7_res.get("designResult") or {}).get("enzyme") or {}).get("id"), "mad7")
+
 
 if __name__ == "__main__":
     unittest.main()
